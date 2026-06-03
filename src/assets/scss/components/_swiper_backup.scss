@@ -1,0 +1,236 @@
+@use "../_modules/fonts" as *;
+@use "../_modules/color" as *;
+
+// Swiperのカスタムスタイル
+.giver {
+  padding: 120px 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-top: 1px solid $trai-color-cyan;
+  border-bottom: 1px solid $trai-color-red;
+  position: relative;
+
+  // 上のボーダーの発光エフェクト
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: $trai-color-cyan;
+    box-shadow: 0 0 10px $trai-color-cyan, 0 0 20px $trai-color-cyan,
+      0 0 30px $trai-color-cyan, 0 0 40px $trai-color-cyan;
+    animation: glowTop 2s ease-in-out infinite alternate;
+    transition: all 0.3s ease;
+  }
+
+  // 下のボーダーの発光エフェクト
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: $trai-color-red;
+    box-shadow: 0 0 10px $trai-color-red, 0 0 20px $trai-color-red,
+      0 0 30px $trai-color-red, 0 0 40px $trai-color-red;
+    animation: glowBottom 2s ease-in-out infinite alternate;
+    transition: all 0.3s ease;
+  }
+
+  .giver-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: $trai-color-purple;
+  }
+}
+
+// 発光アニメーション
+@keyframes glowTop {
+  0% {
+    box-shadow: 0 0 5px $trai-color-cyan, 0 0 10px $trai-color-cyan,
+      0 0 15px $trai-color-cyan, 0 0 20px $trai-color-cyan;
+  }
+  100% {
+    box-shadow: 0 0 10px $trai-color-cyan, 0 0 20px $trai-color-cyan,
+      0 0 30px $trai-color-cyan, 0 0 40px $trai-color-cyan,
+      0 0 50px $trai-color-cyan;
+  }
+}
+
+@keyframes glowBottom {
+  0% {
+    box-shadow: 0 0 5px $trai-color-red, 0 0 10px $trai-color-red,
+      0 0 15px $trai-color-red, 0 0 20px $trai-color-red;
+  }
+  100% {
+    box-shadow: 0 0 10px $trai-color-red, 0 0 20px $trai-color-red,
+      0 0 30px $trai-color-red, 0 0 40px $trai-color-red,
+      0 0 50px $trai-color-red;
+  }
+}
+
+// Swiperコンテナ
+.swiper {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  overflow: hidden;
+
+  .swiper-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .swiper-slide {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 40px 30px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    height: auto;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    flex-shrink: 0;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      color: $trai-color-lightgray;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1rem;
+      color: $trai-color-lightgray;
+      line-height: 1.6;
+    }
+  }
+
+  .swiper-pagination {
+    position: relative;
+    margin-top: 30px;
+
+    .swiper-pagination-bullet {
+      background: #ddd;
+      opacity: 1;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: #007bff;
+    }
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:after {
+      display: none;
+    }
+
+    i {
+      color: #667eea;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 1);
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+      i {
+        color: #764ba2;
+      }
+    }
+  }
+
+  .swiper-button-next {
+    right: 10px;
+  }
+
+  .swiper-button-prev {
+    left: 10px;
+  }
+}
+
+// メディアクエリ
+@media (max-width: 768px) {
+  .giver {
+    padding: 40px 0;
+
+    .giver-title {
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+  }
+
+  .swiper {
+    padding: 10px;
+    max-width: 100%;
+
+    .swiper-wrapper {
+      justify-content: center;
+    }
+
+    .swiper-slide {
+      width: calc(100vw - 40px);
+      max-width: 350px;
+      margin: 0 auto;
+      height: 400px;
+      padding: 25px 20px;
+
+      h3 {
+        font-size: 1.2rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      width: 40px;
+      height: 40px;
+
+      i {
+        font-size: 14px;
+      }
+    }
+
+    .swiper-button-next {
+      right: 5px;
+    }
+
+    .swiper-button-prev {
+      left: 5px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .swiper .swiper-slide {
+    width: calc(100vw - 30px);
+    max-width: 300px;
+    height: 380px;
+  }
+}

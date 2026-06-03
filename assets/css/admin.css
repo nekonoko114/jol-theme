@@ -1,0 +1,59 @@
+/**
+ * 管理画面用カスタムCSS
+ * WordPress管理画面での投稿編集などに使用
+ */
+
+/* 投稿編集画面のカスタマイズ */
+.post-type-post .postbox,
+.post-type-page .postbox {
+  border-left: 4px solid #00ffff;
+}
+
+/* エディターのカスタマイズ */
+.wp-editor-wrap {
+  border: 1px solid #00ffff;
+  border-radius: 4px;
+}
+
+/* メタボックスのスタイル */
+.postbox .hndle {
+  background: linear-gradient(90deg, #00ffff 0%, #8a2be2 100%);
+  color: white;
+  border-radius: 4px 4px 0 0;
+}
+
+/* 投稿一覧のカスタマイズ */
+.wp-list-table .column-title strong a {
+  color: #8a2be2;
+}
+
+.wp-list-table .column-title strong a:hover {
+  color: #00ffff;
+}
+
+/* ダッシュボードウィジェットのカスタマイズ */
+#dashboard-widgets .postbox h2 {
+  background: rgba(0, 255, 255, 0.1);
+  border-left: 4px solid #00ffff;
+  padding-left: 12px;
+}
+
+/* カスタムフィールドのスタイル */
+.acf-field {
+  border-left: 2px solid #8a2be2;
+  padding-left: 10px;
+  margin-bottom: 15px;
+}
+
+/* 保存ボタンのカスタマイズ */
+#publish,
+#save-post {
+  background: linear-gradient(135deg, #00ffff, #8a2be2) !important;
+  border-color: #00ffff !important;
+  text-shadow: none !important;
+}
+
+#publish:hover,
+#save-post:hover {
+  background: linear-gradient(135deg, #8a2be2, #ff0000) !important;
+}

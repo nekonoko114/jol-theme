@@ -1,0 +1,114 @@
+@use "../_modules/color" as *;
+@use "../_modules/fonts" as *;
+@use "../_modules/mixin" as *;
+@use "../_modules/setting" as *;
+@use "../_modules/variables" as *;
+
+.page-id-23 {
+  .wpcf7 {
+    padding: 240px 0;
+    background: #525151;
+
+    @include mq("sm") {
+      padding: 60px 0;
+    }
+  }
+
+  form {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .form-group {
+    margin-top: 12px;
+  }
+
+  label {
+    font-weight: bold;
+    font-family: serif;
+    margin-bottom: 4px;
+    font-size: 1.5rem;
+  }
+
+  .corporate-name,
+  .corporate-person,
+  .corporate-email,
+  .corporate-tel,
+  textarea,
+  textarea {
+    width: 100%;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease;
+    border: none;
+
+    input {
+      // border: 1px solid #ccc;
+      height: 40px;
+      appearance: none;
+      border: none;
+      &:focus {
+        outline: none;
+        border: 1px solid $trai-color-red;
+      }
+    }
+  }
+
+  input[type="submit"] {
+    border: 2px solid $trai-color-cyan;
+    background: #000;
+    color: $trai-color-cyan;
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    display: block;
+    border-radius: 999px;
+    width: 250px;
+    font-size: 1.2rem;
+    text-align: center;
+    display: block;
+    margin: 60px auto;
+
+    &:hover {
+
+      
+    }
+  }
+
+  .corporate-name {
+  }
+
+  .corporate-person {
+  }
+
+  .corporate-email {
+  }
+
+  .corporate- {
+  }
+
+  .inquiry-content {
+  }
+
+  textarea {
+  }
+
+
+
+  //したの問い合わせの非表示
+
+  .contact{
+    display: none; 
+  }
+}
+
+.page-id-27 {
+    .contact {
+        display: none;
+    }
+}
+

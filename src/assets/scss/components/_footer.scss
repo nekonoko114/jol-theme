@@ -1,0 +1,66 @@
+@use "../_modules/color" as *;
+@use "../_modules/fonts" as *;
+@use "../_modules/mixin" as *;
+@use "../_modules/setting" as *;
+@use "../_modules/variables" as *;
+
+.footer {
+  padding: 40px 40px;
+  border-top: 1px solid $trai-color-red;
+}
+
+.footer-container {
+}
+
+.footer-logo {
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid $font-color;
+  padding: 60px 0;
+
+  @include mq("sm") {
+    padding: 20px 0;
+    text-align: center;
+  }
+
+  span {
+    font-size: 0.85rem;
+    margin-left: 14px;
+    @include mq("sm") {
+      display: block;
+    }
+  }
+}
+
+.footerfirst-copy {
+  margin-left: 100px;
+  @include mq("sm") {
+    margin-left: 0;
+  }
+}
+
+.footer-wrapper {
+  @include mq("sm") {
+    display: none;
+  }
+  @include mq("tb") {
+    display: none;
+  }
+  @include mq("pc") {
+    display: block;
+  }
+}
+.footer-menu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: space-around;
+  padding: 40px 0;
+}
+
+.footer-copy {
+  font-size: 14px;
+  text-align: center;
+}

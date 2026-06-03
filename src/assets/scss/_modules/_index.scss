@@ -1,0 +1,17 @@
+@use "./color";
+@use "./setting";
+@use "./variables";
+@use "./mixin";
+@use "./base";
+
+@use "../components/header";
+@use "../components/footer";
+@use "../components/sidebar";
+@use "../components/swiper";
+@use "../components/liver-slider";
+@use "../components/splash";
+@use "../components/contact";
+@use "../components/contact-partner";
+@use "../components/hamburger";
+@use "../components/loading-svg";
+

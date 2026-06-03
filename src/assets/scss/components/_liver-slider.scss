@@ -1,0 +1,646 @@
+@use "../_modules/color" as *;
+@use "../_modules/fonts" as *;
+@use "../_modules/mixin" as *;
+@use "./card" as *; // 共通カードプレースホルダを読み込む
+
+.top-liver-list {
+  overflow: hidden;
+  position: relative;
+  padding: 180px 0;
+
+  @include mq("sm") {
+    padding: 80px 0 60px 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, $trai-color-cyan, $trai-color-red);
+    box-shadow: 0 0 10px $trai-color-cyan;
+  }
+}
+
+// Desktop-only adjustment: limit inner swiper width to leave gutters from .liver-slider padding
+@media (min-width: 769px) {
+  .liver-slider {
+    .liver-swiper {
+    }
+  }
+}
+// 縦長デザインの横スクロールSwiper - 完全独立版
+.liver-slider {
+  padding: 20px 40px;
+  overflow: visible;
+  /* mobile-first: full width on small screens; desktop gutters applied via media query */
+  max-width: 100%;
+  margin: 0 auto;
+
+  // 背景パーティクルエフェクト
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle at 20% 80%,
+        rgba(120, 119, 198, 0.3) 0%,
+        transparent 50%
+      ),
+      radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%),
+      transparent 50%
+        radial-gradient(
+          circle at 40% 40%,
+          rgba(120, 219, 255, 0.2) 0%,
+          transparent 50%
+        );
+    animation: backgroundFloat 6s ease-in-out infinite alternate;
+    pointer-events: none; // クリックイベントを通すように設定
+  }
+
+  // Liver Slider専用のSwiperコンテナ
+  // Liver Slider専用のSwiperコンテナ
+  .liver-swiper {
+    padding: 20px 0;
+    overflow: visible;
+    /* Limit inner swiper width to account for .liver-slider horizontal padding (120px each side) */
+    // max-width: calc(100% - 240px);
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
+
+    // リンクのクリックイベントを妨害しないように設定
+    * {
+      pointer-events: auto;
+    }
+
+    // Swiperの標準クラスに対応（見た目はプレースホルダで共通化）
+    .swiper-slide {
+      @extend %liver-card-base;
+      height: 680px;
+      /* remove flex layout to avoid large bottom gap; use normal flow */
+      position: relative;
+
+      &:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+          0 0 20px rgba(102, 126, 234, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      }
+
+      img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 20px;
+      }
+
+      .liver-name {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: $font-color;
+        text-align: center;
+        margin-bottom: 10px;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      }
+
+      .liver-channel {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        margin-top: 40px;
+      }
+
+      /* .liver-account is sometimes inside the anchor (.liver-slide-link) within .swiper-slide
+           ensure styles apply whether markup uses .liver-slide wrapper or direct .swiper-slide */
+      .liver-account {
+        text-align: center;
+        font-size: 1rem;
+        color: $trai-color-cyan;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        margin-top: 40px;
+      }
+
+      /* Hover state when anchor inside swiper-slide is hovered */
+      .liver-slide-link:hover .liver-account {
+        color: $font-color;
+        margin-top: 30px;
+      }
+    }
+  }
+
+  // Liver Slider専用のWrapper
+  .liver-wrapper {
+    display: flex;
+    transition: transform 0.8s ease;
+  }
+
+  // Liver Slider専用のSlide
+  .liver-slide {
+    @extend %liver-card-base;
+    flex-shrink: 0;
+    height: 600px;
+    position: relative;
+    overflow: hidden;
+    margin: 0; /* spacing is handled by swiper / wrapper gap */
+
+    img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .liver-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: $font-color;
+      text-align: center;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      margin-top: 20px;
+    }
+
+    .liver-channel {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .liver-account {
+      text-align: center;
+      font-size: 1rem;
+      color: $trai-color-cyan;
+      text-align: center;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-top: 40px;
+    }
+
+    // リンクスタイル
+    .liver-slide-link {
+      text-decoration: none;
+      color: inherit;
+      height: 100%;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 10; // より高いz-indexでリンクを優先
+      pointer-events: auto;
+      cursor: pointer;
+
+      &:hover {
+        transform: translateY(-5px);
+        text-decoration: none;
+        color: inherit;
+
+        .liver-name {
+          color: $trai-color-cyan;
+          text-shadow: 0 0 15px $trai-color-cyan;
+          margin-top: 20px;
+        }
+
+        .liver-account {
+          color: $font-color;
+          margin-top: 30px;
+        }
+      }
+    }
+
+    // フォールバック用スタイル
+    .liver-slide-placeholder {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      img {
+        opacity: 0.5;
+      }
+
+      .liver-name,
+      .liver-channel {
+        opacity: 0.6;
+      }
+    }
+  }
+
+  .liver-slider-title {
+    text-align: center;
+    font-size: 3rem;
+    font-family: $font-condiment;
+    color: $font-color;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+
+    &::after {
+      content: "";
+      display: block;
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, $trai-color-cyan, $trai-color-red);
+      margin: 20px auto;
+      border-radius: 2px;
+      box-shadow: 0 0 10px $trai-color-cyan;
+    }
+  }
+
+  .liver-slider-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 50px;
+    font-weight: 300;
+  }
+}
+
+.liver-swiper {
+  width: 100%;
+  padding: 20px 20px 60px 20px;
+  position: relative;
+
+  .swiper-wrapper {
+    padding-bottom: 20px;
+  }
+
+  .swiper-slide {
+    height: 500px; // 縦長デザイン
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 30px 25px;
+
+    position: relative;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+
+    // 発光ボーダー
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 20px;
+      padding: 2px;
+      background: linear-gradient(
+        135deg,
+        $trai-color-cyan,
+        transparent,
+        $trai-color-purple
+      );
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none; // クリックイベントを通すように設定
+    }
+
+    &:hover {
+      transform: translateY(-15px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(102, 126, 234, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    .liver-card-header {
+      text-align: center;
+      margin-bottom: 20px;
+
+      .liver-number {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(
+          135deg,
+          $trai-color-cyan,
+          $trai-color-purple
+        );
+        border-radius: 50%;
+        /* Limit inner swiper width to account for .liver-slider horizontal padding (120px each side) */
+        max-width: calc(100% - 20px);
+        font-weight: bold;
+        line-height: 40px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      h3 {
+        font-size: 1.4rem;
+        color: $font-color;
+        margin-bottom: 10px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+
+      .liver-category {
+        font-size: 0.9rem;
+        color: $trai-color-cyan;
+        background: rgba(0, 255, 255, 0.1);
+        padding: 4px 12px;
+        border-radius: 12px;
+        display: inline-block;
+      }
+    }
+
+    .liver-card-body {
+      flex: 1;
+
+      p {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .liver-features {
+        list-style: none;
+        padding: 0;
+
+        li {
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.7);
+          margin-bottom: 8px;
+          position: relative;
+          padding-left: 20px;
+
+          &::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: $trai-color-cyan;
+            font-weight: bold;
+            pointer-events: none; // クリックイベントを通すように設定
+          }
+        }
+      }
+    }
+
+    .liver-card-footer {
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+
+      .liver-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background: linear-gradient(
+          135deg,
+          $trai-color-cyan,
+          $trai-color-purple
+        );
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+          background: linear-gradient(
+            135deg,
+            $trai-color-purple,
+            $trai-color-red
+          );
+        }
+      }
+    }
+  }
+
+  // ページネーション
+  .swiper-pagination {
+    position: relative;
+    margin-top: 40px;
+
+    .swiper-pagination-bullet {
+      width: 12px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.3);
+      opacity: 1;
+      transition: all 0.3s ease;
+
+      &-active {
+        background: $trai-color-cyan;
+        box-shadow: 0 0 10px $trai-color-cyan;
+        transform: scale(1.2);
+      }
+    }
+  }
+
+  // ナビゲーションボタン
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, $trai-color-cyan, $trai-color-purple);
+    border-radius: 50%;
+    color: white;
+    margin-top: -25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+
+    &::after {
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+
+      i {
+        color: $trai-color-cyan;
+      }
+    }
+  }
+
+  // Liver Slider専用のナビゲーションボタン
+  .liver-button-next,
+  .liver-button-prev {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, $trai-color-cyan, $trai-color-purple);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+      background: linear-gradient(135deg, $trai-color-purple, $trai-color-red);
+    }
+
+    &:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    i {
+      font-size: 1rem;
+      color: white;
+    }
+  }
+
+  .liver-button-next {
+    right: 20px;
+  }
+
+  .liver-button-prev {
+    left: 20px;
+  }
+
+  // Liver Slider専用のページネーション
+  .liver-pagination {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+
+    .liver-pagination-bullet {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+
+      &.liver-bullet-active {
+        background: linear-gradient(
+          135deg,
+          $trai-color-cyan,
+          $trai-color-purple
+        );
+        box-shadow: 0 0 15px rgba(102, 126, 234, 0.6);
+        transform: scale(1.2);
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.6);
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// 背景アニメーション
+@keyframes backgroundFloat {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+}
+
+// レスポンシブ対応
+@media (max-width: 768px) {
+  .liver-slider {
+    // add horizontal gutters on mobile
+    overflow: hidden;
+    .liver-slider-title {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+    }
+
+    .liver-slider-subtitle {
+      font-size: 1rem;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+  }
+
+  .liver-swiper {
+    max-width: 100%;
+    .swiper-slide {
+      // モバイル: 1カラム向けに高さとパディングを調整
+      height: auto; /* コンテンツに合わせる */
+      padding: 18px 14px;
+      max-width: 100%;
+      // width: 100% !important; /* Swiperのinline widthを上書き */
+      min-width: 100% !important; /* 確実に1カラム */
+      box-sizing: border-box;
+
+      .liver-card-header {
+        h3 {
+          font-size: 1.2rem;
+        }
+      }
+
+      .liver-card-body {
+        p {
+          font-size: 0.9rem;
+        }
+
+        .liver-features li {
+          font-size: 0.85rem;
+        }
+      }
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      width: 40px;
+      height: 40px;
+
+      i {
+        font-size: 14px;
+      }
+    }
+
+    // ページネーションは下に配置（小さめ）
+    .liver-pagination {
+      bottom: 10px;
+      gap: 8px;
+    }
+
+    .liver-pagination-bullet {
+      width: 8px;
+      height: 8px;
+    }
+  }
+}

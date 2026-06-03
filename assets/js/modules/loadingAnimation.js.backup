@@ -1,0 +1,474 @@
+/**
+ * ローディングアニメーションモジュール
+ * ページ読み込み時のローディング演出を管理
+ */
+class LoadingAnimation {
+  constructor(options = {}) {
+    // デフォルト設定
+    this.config = {
+      splashSelector: "#splash",
+      logoSelector: "#splash-logo",
+      containerSelector: "#container",
+      splashBgSelector: ".splashbg",
+      bodyAppearClass: "appear",
+      logo  /**
+   * フロントページ以外での強制完了（jQuery不要）
+   */
+  forceCompleteNonFrontPage() {
+    if (this.isCompleted) return;
+
+    // バニラJavaScriptでローディング要素を非表示にする
+    const splashElement = document.querySelector(this.config.splashSelector);
+    const logoElement = document.querySelector(this.config.logoSelector);
+    
+    if (splashElement) {
+      splashElement.style.display = 'none';
+    }
+    
+    if (logoElement) {
+      logoElement.style.display = 'none';
+    }
+
+    // bodyにappearクラスを追加
+    document.body.classList.add(this.config.bodyAppearClass);
+
+    this.isCompleted = true;
+    console.log("フロントページ以外: ローディングアニメーション即座完了");
+  }
+
+  /**
+   * アニメーション強制完了
+   */
+  forceComplete() {
+    if (this.isCompleted) return;
+
+    // SVGアニメーションを完了状態にする
+    const svgElement = $(this.config.logoSelector).find("svg");
+    if (svgElement.length > 0) {
+      svgElement.addClass("active");
+    }
+
+    $(this.config.logoSelector).stop(true, true).hide();
+    $(this.config.splashSelector).stop(true, true).hide();
+    $("body").addClass(this.config.bodyAppearClass);
+
+    this.isCompleted = true;
+    this.dispatchCompleteEvent();
+    console.log("ローディングアニメーションを強制完了しました");
+  }   splashFadeDelay: 5000,
+      fadeSpeed: "slow",
+      enabled: true, // ローディングアニメーションを一時的に無効化
+      // SVGアニメーション設定
+      svgElementSelector: 'svg [class*="svg-elem"]',
+      svgMaxWaitTime: 4000, // SVGアニメーション最大待機時間（ミリ秒）
+      svgCheckInterval: 100, // SVGアニメーション状態チェック間隔（ミリ秒）
+      ...options,
+    };
+
+    this.isInitialized = false;
+    this.isCompleted = false;
+  }
+
+  /**
+   * ローディングアニメーションの初期化
+   */
+  init() {
+    // ローディングアニメーションが無効化されている場合
+    if (!this.config.enabled) {
+      console.log("ローディングアニメーション: 無効化されています");
+      this.forceComplete();
+      return Promise.resolve(false);
+    }
+
+    // フロントページ以外では即座に完了させる
+    if (!this.isFrontPage()) {
+      console.log("フロントページ以外: ローディングを即座に完了します");
+      this.forceCompleteNonFrontPage();
+      return Promise.resolve(false);
+    }
+
+    // jQueryが利用可能かチェック（より柔軟な方法）
+    return this.waitForjQuery()
+      .then(() => {
+        // 必要な要素が存在するかチェック
+        if (!this.checkRequiredElements()) {
+          console.log("ローディングアニメーション: 必要な要素が見つかりません");
+          return false;
+        }
+
+        this.setupLoadingAnimation();
+        this.isInitialized = true;
+        console.log("ローディングアニメーション初期化完了");
+        return true;
+      })
+      .catch((error) => {
+        console.error("ローディングアニメーション初期化エラー:", error);
+        return false;
+      });
+  }
+
+  /**
+   * jQueryの読み込み完了を待つ
+   */
+  waitForjQuery(maxAttempts = 10, interval = 100) {
+    return new Promise((resolve, reject) => {
+      let attempts = 0;
+
+      const checkjQuery = () => {
+        if (typeof $ !== "undefined" && typeof jQuery !== "undefined") {
+          resolve();
+          return;
+        }
+
+        attempts++;
+        if (attempts >= maxAttempts) {
+          reject(new Error("jQueryの読み込みがタイムアウトしました"));
+          return;
+        }
+
+        setTimeout(checkjQuery, interval);
+      };
+
+      checkjQuery();
+    });
+  }
+
+  /**
+   * フロントページかどうか判定
+   */
+  isFrontPage() {
+    // WordPressのbody_classを利用してフロントページを判定
+    return (
+      document.body.classList.contains("home") ||
+      document.body.classList.contains("front-page")
+    );
+  }
+
+  /**
+   * 必要な要素の存在チェック
+   */
+  checkRequiredElements() {
+    const requiredSelectors = [
+      this.config.splashSelector,
+      this.config.logoSelector,
+      this.config.containerSelector,
+    ];
+
+    return requiredSelectors.every((selector) => {
+      return $(selector).length > 0;
+    });
+  }
+
+  /**
+   * ローディングアニメーションのセットアップ
+   */
+  setupLoadingAnimation() {
+    $(window).on("load", () => {
+      // SVGアニメーションを開始
+      this.triggerSVGAnimation();
+      this.startAnimation();
+    });
+  }
+
+  /**
+   * SVGアニメーションを開始（activeクラス追加）
+   */
+  triggerSVGAnimation() {
+    const $svg = $(this.config.logoSelector + " svg");
+    if ($svg.length === 0) {
+      console.log("SVG要素が見つかりません");
+      return;
+    }
+
+    console.log("SVGアニメーション開始");
+    $svg.addClass("active");
+  }
+
+  /**
+   * アニメーション開始
+   */
+  startAnimation() {
+    if (this.isCompleted) return;
+
+    // フロントページの場合のSVGアニメーションの完了を待つ
+    this.waitForSVGAnimation()
+      .then(() => {
+        this.fadeOutAnimation();
+      })
+      .catch(() => {
+        // SVGアニメーションが見つからない場合は通常のフェードアウト
+        this.fadeOutAnimation();
+      });
+  }
+
+  /**
+   * SVGアニメーションの完了を待つ
+   */
+  waitForSVGAnimation() {
+    return new Promise((resolve, reject) => {
+      const svgElement = $(this.config.logoSelector).find("svg");
+
+      if (svgElement.length === 0) {
+        console.log(
+          "SVG要素が見つかりません。通常のアニメーションを開始します。"
+        );
+        reject(new Error("SVG要素が見つかりません"));
+        return;
+      }
+
+      const svgElements = svgElement.find(this.config.svgElementSelector);
+
+      if (svgElements.length === 0) {
+        console.log(
+          "SVGアニメーション要素が見つかりません。通常のアニメーションを開始します。"
+        );
+        reject(new Error("SVGアニメーション要素が見つかりません"));
+        return;
+      }
+
+      console.log(`SVGアニメーション要素を${svgElements.length}個検出しました`);
+
+      let animationCompleted = false;
+
+      // 最後のSVG要素のアニメーション完了を検出
+      const lastElement = svgElements.last()[0];
+
+      // transitionendイベントリスナーを追加
+      const onTransitionEnd = (event) => {
+        if (event.target === lastElement && !animationCompleted) {
+          animationCompleted = true;
+          lastElement.removeEventListener("transitionend", onTransitionEnd);
+          console.log("SVGアニメーションが完了しました（transitionend検出）");
+          resolve();
+        }
+      };
+
+      // animationendイベントリスナーを追加
+      const onAnimationEnd = (event) => {
+        if (event.target === lastElement && !animationCompleted) {
+          animationCompleted = true;
+          lastElement.removeEventListener("animationend", onAnimationEnd);
+          console.log("SVGアニメーションが完了しました（animationend検出）");
+          resolve();
+        }
+      };
+
+      lastElement.addEventListener("transitionend", onTransitionEnd);
+      lastElement.addEventListener("animationend", onAnimationEnd);
+
+      // フォールバック: 定期的にアニメーション状態をチェック
+      const checkAnimationComplete = () => {
+        const computedStyle = window.getComputedStyle(lastElement);
+        if (
+          computedStyle.opacity === "1" &&
+          (computedStyle.fill === "rgb(255, 255, 255)" ||
+            computedStyle.fill === "#ffffff" ||
+            computedStyle.fill === "white")
+        ) {
+          if (!animationCompleted) {
+            animationCompleted = true;
+            lastElement.removeEventListener("transitionend", onTransitionEnd);
+            lastElement.removeEventListener("animationend", onAnimationEnd);
+            console.log("SVGアニメーションが完了しました（状態検出）");
+            resolve();
+          }
+        }
+      };
+
+      const checkInterval = setInterval(
+        checkAnimationComplete,
+        this.config.svgCheckInterval
+      );
+
+      // タイムアウト
+      setTimeout(() => {
+        clearInterval(checkInterval);
+        if (!animationCompleted) {
+          animationCompleted = true;
+          lastElement.removeEventListener("transitionend", onTransitionEnd);
+          lastElement.removeEventListener("animationend", onAnimationEnd);
+          console.log(
+            "SVGアニメーションがタイムアウトしました。アニメーションを続行します。"
+          );
+          resolve();
+        }
+      }, this.config.svgMaxWaitTime);
+
+      // 初回チェック
+      setTimeout(checkAnimationComplete, 500);
+    });
+  }
+
+  /**
+   * フェードアウトアニメーション
+   */
+  fadeOutAnimation() {
+    // ロゴを1.2秒でフェードアウト
+    $(this.config.logoSelector)
+      .delay(this.config.logoFadeDelay)
+      .fadeOut(this.config.fadeSpeed);
+
+    // ローディングエリア（splashエリア）を1.5秒でフェードアウト
+    $(this.config.splashSelector)
+      .delay(this.config.splashFadeDelay)
+      .fadeOut(this.config.fadeSpeed, () => {
+        this.onSplashComplete();
+      });
+
+    // 背景アニメーション完了後の処理
+    this.setupBackgroundAnimation();
+  }
+
+  /**
+   * スプラッシュ完了時の処理
+   */
+  onSplashComplete() {
+    // フェードアウト後bodyにappearクラス付与
+    $("body").addClass(this.config.bodyAppearClass);
+
+    this.isCompleted = true;
+    console.log("ローディングアニメーション完了");
+
+    // カスタムイベントを発火
+    this.dispatchCompleteEvent();
+  }
+
+  /**
+   * 背景アニメーションのセットアップ
+   */
+  setupBackgroundAnimation() {
+    // 背景が伸びた後に実行したい処理
+    $(this.config.splashBgSelector).on("animationend", () => {
+      this.onBackgroundAnimationEnd();
+    });
+  }
+
+  /**
+   * 背景アニメーション完了時の処理
+   */
+  onBackgroundAnimationEnd() {
+    console.log("背景アニメーション完了");
+
+    // カスタムイベントを発火
+    this.dispatchBackgroundCompleteEvent();
+  }
+
+  /**
+   * 完了イベントの発火
+   */
+  dispatchCompleteEvent() {
+    const event = new CustomEvent("loadingAnimationComplete", {
+      detail: { animation: this },
+    });
+    window.dispatchEvent(event);
+  }
+
+  /**
+   * 背景アニメーション完了イベントの発火
+   */
+  dispatchBackgroundCompleteEvent() {
+    const event = new CustomEvent("backgroundAnimationComplete", {
+      detail: { animation: this },
+    });
+    window.dispatchEvent(event);
+  }
+
+  /**
+   * フロントページ以外での強制完了（jQuery不要）
+   */
+  forceCompleteNonFrontPage() {
+    if (this.isCompleted) return;
+
+    // バニラJavaScriptでローディング要素を非表示にする
+    const splashElement = document.querySelector(this.config.splashSelector);
+    const logoElement = document.querySelector(this.config.logoSelector);
+    
+    if (splashElement) {
+      splashElement.style.display = 'none';
+    }
+    
+    if (logoElement) {
+      logoElement.style.display = 'none';
+    }
+
+    // bodyにappearクラスを追加
+    document.body.classList.add(this.config.bodyAppearClass);
+
+    this.isCompleted = true;
+    console.log("フロントページ以外: ローディングアニメーション即座完了");
+  }
+
+  /**
+   * アニメーションを強制的に完了
+   */
+  forceComplete() {
+    if (this.isCompleted) return;
+
+    // SVGアニメーションを完了状態にする
+    const svgElement = $(this.config.logoSelector).find("svg");
+    if (svgElement.length > 0) {
+      svgElement.addClass("active");
+    }
+
+    $(this.config.logoSelector).stop(true, true).hide();
+    $(this.config.splashSelector).stop(true, true).hide();
+    $("body").addClass(this.config.bodyAppearClass);
+
+    this.isCompleted = true;
+    this.dispatchCompleteEvent();
+    console.log("ローディングアニメーションを強制完了しました");
+  }
+
+  /**
+   * アニメーションをリセット
+   */
+  reset() {
+    $(this.config.logoSelector).show();
+    $(this.config.splashSelector).show();
+    $("body").removeClass(this.config.bodyAppearClass);
+
+    this.isCompleted = false;
+    console.log("ローディングアニメーションをリセットしました");
+  }
+
+  /**
+   * 現在の状態を取得
+   */
+  getStatus() {
+    return {
+      isInitialized: this.isInitialized,
+      isCompleted: this.isCompleted,
+      hasSVGElements:
+        $(this.config.logoSelector).find(this.config.svgElementSelector)
+          .length > 0,
+    };
+  }
+
+  /**
+   * SVGアニメーションの設定を更新
+   */
+  updateSVGConfig(newConfig) {
+    this.config = { ...this.config, ...newConfig };
+    console.log("SVGアニメーション設定を更新しました:", newConfig);
+  }
+
+  /**
+   * SVGアニメーションをリセット（開発・デバッグ用）
+   */
+  resetSVGAnimation() {
+    const svgElement = $(this.config.logoSelector).find("svg");
+    if (svgElement.length > 0) {
+      // activeクラスを削除してアニメーションをリセット
+      svgElement.removeClass("active");
+
+      // 少し遅延してから再度activeクラスを追加
+      setTimeout(() => {
+        svgElement.addClass("active");
+        console.log("SVGアニメーションをリセット・再開始しました");
+      }, 100);
+    }
+  }
+}
+
+// モジュールをグローバルに公開
+window.LoadingAnimation = LoadingAnimation;

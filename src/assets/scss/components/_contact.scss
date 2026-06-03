@@ -1,0 +1,218 @@
+@use "../_modules/fonts" as *;
+@use "../_modules/color" as *;
+@use "../_modules/mixin" as *;
+
+// CONTACTセクション
+.contact {
+  padding: 240px 0;
+  background: #000;
+  position: relative;
+  border-top: 1px solid $trai-color-purple;
+
+  @include mq("sm") {
+    padding: 60px 0;
+  }
+
+  .contact-title {
+    margin-bottom: 2rem;
+    &::before {
+      content: "お問い合わせ";
+    }
+  }
+}
+
+// カードコンテナ
+.contact-cards {
+  display: flex;
+  gap: 120px;
+  max-width: 1000px;
+  margin: 0 auto;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+// カードスタイル
+.contact-card {
+  flex: 1;
+  max-width: 400px;
+  background: white;
+  border-radius: 20px;
+  padding: 60px 40px;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+  .contact-card-arrow {
+    display: inline-block;
+    background: #000;
+    padding: 20px 25px;
+    border-radius: 999px;
+    border: #000 solid 1px;
+
+    @include mq("sm") {
+      padding: 10px 15px;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    .contact-card-arrow {
+      transform: translateX(10px);
+      background: #fff;
+      color: #000;
+    }
+  }
+}
+
+// カードコンテンツ
+.contact-card-content {
+  position: relative;
+  z-index: 2;
+}
+
+.contact-card-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.contact-card-text {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+.contact-card-arrow {
+  display: inline-block;
+  font-size: 1.5rem;
+  color: #999;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+// 代理店募集カードの特別スタイル
+.contact-partner {
+  box-shadow: 0 0 10px 2px $trai-color-purple;
+  animation: border-glow-purple 2s infinite alternate;
+  @keyframes border-glow-purple {
+    0% {
+      box-shadow: 0 0 5px $trai-color-purple, 0 0 10px $trai-color-purple,
+        0 0 15px $trai-color-purple;
+    }
+    100% {
+      box-shadow: 0 0 10px $trai-color-purple, 0 0 20px $trai-color-purple,
+        0 0 30px $trai-color-purple, 0 0 40px $trai-color-purple;
+    }
+  }
+  &:hover {
+    .contact-card-title {
+      color: $trai-color-purple;
+    }
+
+    .contact-card-arrow {
+      color: $trai-color-purple;
+      border: $trai-color-purple solid 1px;
+    }
+  }
+}
+
+// コンタクトカードの特別スタイル
+.contact-contact {
+  box-shadow: 0 0 10px 2px $trai-color-red;
+  animation: border-glow-red 2s infinite alternate;
+  @keyframes border-glow-red {
+    0% {
+      box-shadow: 0 0 10px $trai-color-red, 0 0 20px $trai-color-red,
+        0 0 30px $trai-color-red, 0 0 40px $trai-color-red;
+    }
+    100% {
+      box-shadow: 0 0 5px $trai-color-red, 0 0 10px $trai-color-red,
+        0 0 15px $trai-color-red;
+    }
+  }
+  &:hover {
+    .contact-card-title {
+      color: $trai-color-red;
+    }
+
+    .contact-card-arrow {
+      color: $trai-color-red;
+      border: $trai-color-red solid 1px;
+    }
+  }
+}
+
+// アニメーション定義（最小限）
+
+// レスポンシブ対応
+@media (max-width: 768px) {
+  .contact {
+    padding: 80px 0;
+
+    .contact-title {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+
+    .contact-subtitle {
+      font-size: 1rem;
+      margin-bottom: 40px;
+    }
+  }
+
+  .contact-cards {
+    flex-direction: column;
+    gap: 30px;
+    padding: 0 20px;
+  }
+
+  .contact-card {
+    padding: 50px 30px;
+
+    .contact-card-title {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    .contact-card-text {
+      font-size: 1rem;
+      margin-bottom: 25px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .contact {
+    padding: 60px 0;
+
+    .contact-title {
+      font-size: 2rem;
+    }
+  }
+
+  .contact-cards {
+    gap: 20px;
+    padding: 0 15px;
+  }
+
+  .contact-card {
+    padding: 40px 25px;
+
+    .contact-card-title {
+      font-size: 1.5rem;
+    }
+
+    .contact-card-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+  }
+}
