@@ -33,7 +33,7 @@ get_header(); ?>
                         <!-- TOP3ライバー表示（ACF対応） -->
                         <?php
                         // TOP3のライバー情報を取得（既存ACFフィールド対応）
-                        $top_ranking = get_liver_ranking('total', 3);
+                        $top_ranking = jol_get_liver_ranking('total', 3);
                         $rank = 1;
 
                         if ($top_ranking && $top_ranking->have_posts()) :
@@ -121,7 +121,7 @@ get_header(); ?>
                         <!-- 4位以降のランキング表示（サブクエリ対応） -->
                         <?php
                         // 4位以降のライバー情報を直接取得（3件をスキップして7件取得）
-                        $general_ranking = get_liver_ranking('total', 7, 3);
+                        $general_ranking = jol_get_liver_ranking('total', 7, 3);
                         $rank = 4; // 4位からスタート
 
                         if ($general_ranking && $general_ranking->have_posts()) :
