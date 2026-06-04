@@ -237,4 +237,3 @@ if (window.app.config.autoInit) {
 
 // モジュールをグローバルに公開
 window.App = App;
-

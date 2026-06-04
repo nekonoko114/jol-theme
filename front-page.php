@@ -158,12 +158,6 @@
                 ?>
             </div>
             <div class="liver-pagination"></div>
-            <div class="liver-button-next">
-                <i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="liver-button-prev">
-                <i class="fas fa-chevron-left"></i>
-            </div>
         </div>
     </div>
 </section>
