@@ -30,6 +30,11 @@
   background-color: #7a0880;
   padding: 10px;
   border-radius: 4px;
+
+  @include mq("sm") {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
 }
 
 .headding-area {

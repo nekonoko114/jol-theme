@@ -1,7 +1,5 @@
 @charset "UTF-8";
 
-@import url("https://fonts.googleapis.com/css2?family=Condiment&family=M+PLUS+Rounded+1c&display=swap");
-
 html {
   font-size: 16px;
 }
@@ -4573,6 +4571,820 @@ svg.active .svg-elem-32 {
   font-size: 0.95rem;
 }
 
+/* Custom CSS for Liver Archive and Single */
+
+/* ==============================================================
+   LIVER PREMIUM ARCHIVE (Giant Watermark & Micro-Animations)
+   ============================================================== */
+
+.liver-premium-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+  /* 大きな余白で高級感を演出 */
+  padding: 6rem 0;
+  font-family: "Outfit", "Noto Sans JP", sans-serif;
+  overflow: hidden;
+  /* 透かし文字のはみ出しを制御 */
+}
+
+.liver-premium-item {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* ジグザグをやめ、中央揃えをベースにしながら内部でレイアウトする */
+}
+
+/* 巨大な透かし文字（ウォーターマーク） */
+
+.liver-bg-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Playfair Display", serif;
+  font-size: 25rem;
+  /* 画面を覆う巨大なサイズ */
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.02);
+  /* 極めて薄い色で背景に溶け込ませる */
+  line-height: 1;
+  white-space: nowrap;
+  z-index: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.liver-premium-item:hover .liver-bg-watermark {
+  transform: translate(-50%, -52%) scale(1.02);
+  /* ホバー時にわずかに動く視差効果 */
+}
+
+/* メインカードコンテナ */
+
+.liver-premium-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  width: 100%;
+  max-width: 1000px;
+  background: transparent;
+}
+
+/* 交互のレイアウト（画像を左右に配置するが、より自然に） */
+
+.liver-premium-item.premium-odd .liver-premium-card {
+  flex-direction: row;
+}
+
+.liver-premium-item.premium-even .liver-premium-card {
+  flex-direction: row-reverse;
+}
+
+/* 画像ラッパー */
+
+.liver-image-wrapper {
+  flex: 1;
+  max-width: 450px;
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  /* オーバーレイを角丸に沿わせる */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.liver-premium-item:hover .liver-image-wrapper {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+}
+
+.image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.liver-image-wrapper img {
+  width: 100%;
+  height: auto;
+  -o-object-fit: cover;
+  object-fit: cover;
+  aspect-ratio: 3/4;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 画像上のプレミアムなベール（オーバーレイ） */
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+  opacity: 1;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.liver-premium-item:hover .liver-image-wrapper img {
+  transform: scale(1.05);
+  /* ホバーで滑らかにズームイン */
+}
+
+.liver-premium-item:hover .image-overlay {
+  opacity: 0;
+  /* ホバーでベールがスッと晴れる */
+}
+
+/* テキスト情報ラッパー */
+
+.liver-info-wrapper {
+  flex: 1;
+  max-width: 400px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.liver-premium-item:hover .liver-info-wrapper {
+  transform: translateX(5px);
+  /* ホバー時にテキスト全体がわずかにスライド */
+}
+
+.liver-premium-item.premium-even:hover .liver-info-wrapper {
+  transform: translateX(-5px);
+}
+
+.liver-number-small {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+  color: #cfa98c;
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+}
+
+.liver-name {
+  font-size: 2.8rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+.liver-name a {
+  text-decoration: none;
+  color: #1a1a1a;
+  transition: color 0.3s ease;
+}
+
+.liver-premium-item:hover .liver-name a {
+  color: #b58d6f;
+}
+
+.liver-id {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #8c827a;
+  margin-bottom: 3rem;
+  letter-spacing: 0.05em;
+}
+
+/* アクションボタン（洗練されたラインボタン） */
+
+.btn-premium {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  background: transparent;
+  color: #1a1a1a;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  position: relative;
+}
+
+.btn-premium::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #b58d6f;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-premium .btn-arrow {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-premium:hover {
+  color: #b58d6f;
+}
+
+.btn-premium:hover::after {
+  width: 100%;
+}
+
+.btn-premium:hover .btn-arrow {
+  transform: translateX(8px);
+}
+
+/* SINGLE LIVER - AGENCY THEME */
+
+.mysterious-theme {
+  background-color: #121212;
+  color: #f5f5f5;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.mysterious-theme .hedding-area,
+.mysterious-theme .page-subtitle,
+.mysterious-theme .page-title {
+  display: none;
+  /* Hide default header stuff for custom hero */
+}
+
+.agency-hero {
+  position: relative;
+  padding-top: 100px;
+  padding-bottom: 80px;
+  overflow: hidden;
+  border-bottom: 1px solid #333;
+}
+
+.agency-hero .hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.2;
+}
+
+.agency-hero .hero-bg img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  filter: blur(20px) grayscale(50%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.agency-breadcrumbs {
+  color: #888;
+}
+
+.agency-breadcrumbs a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.hero-profile-flex {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  margin-top: 3rem;
+}
+
+.hero-image {
+  width: 300px;
+  height: 400px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.agency-subtitle {
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.agency-title {
+  font-size: 4rem;
+  font-weight: 200;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.agency-id {
+  font-size: 1.5rem;
+  color: #aaa;
+  letter-spacing: 0.1em;
+}
+
+.agency-main {
+  padding: 5rem 0;
+}
+
+.agency-details-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+  margin-bottom: 5rem;
+}
+
+.section-heading {
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
+  color: #666;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.agency-profile-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #ccc;
+}
+
+.agency-data-list {
+  list-style: none;
+  padding: 0;
+}
+
+.agency-data-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid #222;
+}
+
+.data-label {
+  color: #777;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+}
+
+.data-val {
+  color: #eee;
+  font-weight: 500;
+}
+
+.agency-action {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4rem;
+}
+
+.btn-agency-tiktok {
+  display: inline-block;
+  padding: 1.2rem 4rem;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  text-transform: uppercase;
+}
+
+.btn-agency-tiktok:hover {
+  background: #00f2fe;
+  color: #000;
+  border-color: #00f2fe;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+}
+
+.agency-back {
+  text-align: center;
+}
+
+.btn-agency-back {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  transition: color 0.3s;
+}
+
+.btn-agency-back:hover {
+  color: #fff;
+}
+
+/* Responsive */
+
+/* ==============================================================
+   RANKING DETAIL & ARCHIVE STYLES (Premium Mysterious Theme)
+   ============================================================== */
+
+.single-ranking,
+.archive-ranking {
+  font-family: "Outfit", "Noto Sans JP", sans-serif;
+}
+
+/* 2カラムレイアウト */
+
+.ranking-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  margin-top: 4rem;
+  margin-bottom: 5rem;
+}
+
+/* カラムタイトル */
+
+.ranking-column-title {
+  text-align: center;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid rgba(207, 169, 140, 0.3);
+  padding-bottom: 1.5rem;
+}
+
+.ranking-column-title .title-en {
+  display: block;
+  font-family: "Playfair Display", serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: #cfa98c;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+}
+
+.ranking-column-title .title-ja {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #8c827a;
+  letter-spacing: 0.2em;
+  margin-top: 0.5rem;
+}
+
+/* ランキングアイテムリスト */
+
+.ranking-item-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 各ランキングアイテム */
+
+.ranking-list-item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.8rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ranking-list-item:last-child {
+  border-bottom: none;
+}
+
+.ranking-list-item:hover {
+  background: rgba(255, 255, 255, 0.02);
+  transform: translateX(8px);
+}
+
+.ranking-list-item:hover .liver-avatar-wrap {
+  transform: scale(1.05);
+  border-color: #cfa98c;
+}
+
+.ranking-list-item:hover .creator-name a {
+  color: #cfa98c;
+}
+
+/* 順位バッジ */
+
+.rank-badge-wrap {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-family: "Playfair Display", serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  /* 1位: ゴールド */
+  /* 2位: シルバー */
+  /* 3位: ブロンズ */
+}
+
+.rank-badge-wrap .rank-number {
+  display: inline-block;
+  line-height: 1;
+}
+
+.rank-badge-wrap.rank-num-1 {
+  background: linear-gradient(135deg, #ffd700, #b8860b);
+  color: #000;
+  border: none;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.35);
+}
+
+.rank-badge-wrap.rank-num-2 {
+  background: linear-gradient(135deg, #e0e0e0, #7f8c8d);
+  color: #000;
+  border: none;
+  box-shadow: 0 4px 15px rgba(224, 224, 224, 0.25);
+}
+
+.rank-badge-wrap.rank-num-3 {
+  background: linear-gradient(135deg, #cd7f32, #8e5431);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.25);
+}
+
+/* アバター画像 */
+
+.liver-avatar-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.liver-avatar-wrap a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.liver-avatar-wrap img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+/* ライバー詳細情報 */
+
+.liver-details {
+  flex: 1;
+  min-width: 0;
+  /* 長いテキストのはみ出しを防止 */
+}
+
+.liver-details .creator-name {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.05em;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+.liver-details .creator-name a {
+  color: #f5f5f5;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.liver-details .creator-id {
+  font-size: 0.95rem;
+  color: #8c827a;
+  font-family: "Outfit", sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+/* エラー/データなしメッセージ */
+
+.no-data-msg {
+  text-align: center;
+  color: #8c827a;
+  padding: 3rem 0;
+  font-size: 1rem;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
+/* ==============================================================
+   RANKING ARCHIVE LIST STYLES
+   ============================================================== */
+
+.ranking-archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 4rem;
+  margin-top: 4rem;
+  margin-bottom: 5rem;
+}
+
+.ranking-archive-card {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ranking-archive-card .ranking-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.ranking-archive-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(207, 169, 140, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.ranking-archive-card:hover .ranking-card-image-wrap img {
+  transform: scale(1.05);
+}
+
+.ranking-archive-card:hover .ranking-card-overlay {
+  opacity: 1;
+}
+
+.ranking-archive-card:hover .trophy-svg {
+  transform: scale(1.1) rotate(5deg);
+  color: rgba(207, 169, 140, 0.6);
+}
+
+.ranking-archive-card:hover .ranking-card-title {
+  color: #cfa98c;
+}
+
+.ranking-card-image-wrap {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: #181818;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.ranking-card-image-wrap img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ranking-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.ranking-card-overlay .btn-detail-view {
+  border: 1px solid #cfa98c;
+  padding: 0.8rem 2.2rem;
+  color: #cfa98c;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.default-ranking-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1b1b1b, #111);
+}
+
+.default-ranking-icon .trophy-svg {
+  width: 64px;
+  height: 64px;
+  color: rgba(207, 169, 140, 0.25);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ranking-card-content {
+  padding: 2.2rem;
+}
+
+.ranking-card-content .ranking-card-tag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #cfa98c;
+  letter-spacing: 0.2em;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.ranking-card-content .ranking-card-title {
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.4;
+  margin-bottom: 1.2rem;
+  color: #f5f5f5;
+  transition: color 0.3s ease;
+}
+
+.ranking-card-content .ranking-card-date {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 300;
+}
+
+.agency-pagination {
+  margin-top: 5rem;
+  text-align: center;
+}
+
+.agency-pagination .nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.agency-pagination .page-numbers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #8c827a;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.agency-pagination .page-numbers.current {
+  border-color: #cfa98c;
+  color: #cfa98c;
+  background: rgba(207, 169, 140, 0.05);
+}
+
+.agency-pagination .page-numbers:hover:not(.current) {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+/* ==============================================================
+   RESPONSIVE DESIGN
+   ============================================================== */
+
+/* ==============================================================
+   FLOATING RANKING BUTTON (Fixed Desktop Navigation)
+   ============================================================== */
+
+.floating-ranking-btn {
+  display: none;
+}
+
 @media screen and (min-width: 768px) {
   .inner {
     width: 767px;
@@ -4664,6 +5476,55 @@ svg.active .svg-elem-32 {
   .footer-wrapper {
     display: block;
   }
+
+  .floating-ranking-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.2rem;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 9999;
+    padding: 1.1rem 2.2rem;
+    background: rgba(18, 18, 18, 0.8);
+    border: 1px solid rgba(207, 169, 140, 0.3);
+    border-radius: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    text-decoration: none;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .floating-ranking-btn .btn-icon {
+    font-size: 1.2rem;
+    color: #cfa98c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .floating-ranking-btn .btn-text {
+    font-family: "Outfit", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #f5f5f5;
+    letter-spacing: 0.15em;
+    white-space: nowrap;
+  }
+
+  .floating-ranking-btn:hover {
+    transform: translateY(-6px);
+    border-color: #cfa98c;
+    background: rgba(24, 24, 24, 0.95);
+    box-shadow: 0 15px 35px rgba(207, 169, 140, 0.25), 0 5px 15px rgba(0, 0, 0, 0.4);
+  }
+
+  .floating-ranking-btn:hover .btn-icon {
+    transform: scale(1.15) rotate(15deg);
+    color: #fff;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -4691,6 +5552,12 @@ svg.active .svg-elem-32 {
 @media screen and (min-width: 1600px) {
   .inner {
     width: 1700px;
+  }
+}
+
+@media (max-width: 992px) {
+  .ranking-layout-grid {
+    gap: 3.5rem;
   }
 }
 
@@ -4976,6 +5843,84 @@ svg.active .svg-elem-32 {
     display: block;
     margin-top: 12px;
   }
+
+  .liver-zigzag-item {
+    flex-direction: column !important;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .liver-image-col,
+  .liver-info-col {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .liver-number {
+    top: -1rem;
+    left: 0 !important;
+    right: auto !important;
+  }
+
+  .hero-profile-flex {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .agency-details-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .agency-title {
+    font-size: 1.6rem;
+  }
+
+  .ranking-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 5rem;
+    margin-top: 3rem;
+  }
+
+  .ranking-column-title {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .ranking-column-title .title-en {
+    font-size: 1.8rem;
+  }
+
+  .ranking-list-item {
+    padding: 1.2rem 0.5rem;
+    gap: 1rem;
+    /* スマホでは間隔を詰める */
+  }
+
+  .rank-badge-wrap {
+    width: 36px;
+    /* バッジを小さく */
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .liver-avatar-wrap {
+    width: 60px;
+    /* アバターを小さく */
+    height: 60px;
+  }
+
+  .liver-details .creator-name {
+    font-size: 1.2rem;
+    /* フォントサイズ調整 */
+  }
+
+  .ranking-archive-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -4989,6 +5934,11 @@ svg.active .svg-elem-32 {
 
   .page-title {
     font-size: 1.8rem;
+  }
+
+  .breadcrumbs {
+    font-size: 0.8rem;
+    padding: 8px 12px;
   }
 
   .header-title,

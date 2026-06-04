@@ -22,6 +22,16 @@
     </div>
     <div class="footer-copy">© <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. All rights reserved.</div>
 </footer>
+
+<?php if ( ! is_singular('ranking') && ! is_post_type_archive('ranking') ) : ?>
+    <?php if (get_post_type_archive_link('ranking')) : ?>
+        <a href="<?php echo esc_url(get_post_type_archive_link('ranking')); ?>" class="floating-ranking-btn">
+            <span class="btn-icon"><i class="fas fa-trophy"></i></span>
+            <span class="btn-text">RANKING ARCHIVES</span>
+        </a>
+    <?php endif; ?>
+<?php endif; ?>
+
 </div><!-- #container end -->
 
 <?php wp_footer(); ?>

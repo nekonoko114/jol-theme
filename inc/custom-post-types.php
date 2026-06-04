@@ -30,7 +30,7 @@ function jol_create_post_type_liver()
       'capability_type'     => 'post',
       'hierarchical'        => false,
       'rewrite'             => array('slug' => 'livers'),
-      'supports'            => array('title', 'editor', 'thumbnail', 'excerpt'),
+      'supports'            => array('title', 'editor', 'thumbnail', 'excerpt', 'page-attributes'),
       'taxonomies'          => array('liver_tag', 'liver_category'),
       'show_in_rest'        => true,
       'rest_base'           => 'livers',
@@ -119,10 +119,50 @@ function jol_create_post_type_event()
 }
 add_action('init', 'jol_create_post_type_event', 0);
 
+// カスタム投稿タイプ「ランキング実績」の作成
+function jol_create_post_type_ranking()
+{
+  register_post_type(
+    'ranking',
+    array(
+      'labels' => array(
+        'name'                  => 'ランキング実績',
+        'singular_name'         => 'ランキング実績',
+        'menu_name'             => 'ランキング実績',
+        'add_new'               => '新規追加',
+        'add_new_item'          => '新しいランキング実績を追加',
+        'edit_item'             => 'ランキング実績を編集',
+        'new_item'              => '新しいランキング実績',
+        'view_item'             => 'ランキング実績を表示',
+        'search_items'          => 'ランキング実績を検索',
+        'not_found'             => 'ランキング実績が見つかりません',
+        'not_found_in_trash'    => 'ゴミ箱にランキング実績はありません',
+      ),
+      'public'              => true,
+      'has_archive'         => true,
+      'publicly_queryable'  => true,
+      'show_ui'             => true,
+      'show_in_menu'        => true,
+      'show_in_nav_menus'   => true,
+      'show_in_admin_bar'   => true,
+      'menu_position'       => 8,
+      'menu_icon'           => 'dashicons-awards',
+      'capability_type'     => 'post',
+      'hierarchical'        => false,
+      'rewrite'             => array('slug' => 'rankings'),
+      'supports'            => array('title', 'editor', 'thumbnail', 'excerpt'),
+      'taxonomies'          => array(),
+      'show_in_rest'        => true,
+      'rest_base'           => 'rankings',
+    )
+  );
+}
+add_action('init', 'jol_create_post_type_ranking', 0);
+
 // カスタム投稿タイプの管理画面がクラシックエディターになっているので、Gutenbergエディターに変更
 function jol_enable_gutenberg_for_custom_post_types($can_edit, $post_type)
 {
-  if (in_array($post_type, array('liver', 'interview', 'event'))) {
+  if (in_array($post_type, array('liver', 'interview', 'event', 'ranking'))) {
     return true;
   }
   return $can_edit;
@@ -133,7 +173,7 @@ add_filter('use_block_editor_for_post_type', 'jol_enable_gutenberg_for_custom_po
 function jol_force_gutenberg_for_custom_post_types()
 {
   add_filter('use_block_editor_for_post', function ($use_block_editor, $post) {
-    if (in_array($post->post_type, array('liver', 'interview', 'event'))) {
+    if (in_array($post->post_type, array('liver', 'interview', 'event', 'ranking'))) {
       return true;
     }
     return $use_block_editor;
@@ -147,7 +187,8 @@ function jol_ensure_rest_support_for_custom_post_types()
   $cpts = [
     'liver' => 'livers',
     'interview' => 'interviews',
-    'event' => 'events'
+    'event' => 'events',
+    'ranking' => 'rankings'
   ];
 
   foreach ($cpts as $type => $base) {

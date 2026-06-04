@@ -5,6 +5,10 @@ function jol_enqueue_theme_assets()
   // CSS Reset
   wp_enqueue_style('modern-css-reset', 'https://unpkg.com/modern-css-reset/dist/reset.min.css', array(), null);
 
+  // Google Fonts
+  wp_enqueue_style('google-fonts-base', 'https://fonts.googleapis.com/css2?family=Condiment&family=M+PLUS+Rounded+1c&display=swap', array(), null);
+  wp_enqueue_style('google-fonts-premium', 'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,300;0,400;0,600;1,400&family=Noto+Sans+JP:wght@300;400;500;700&display=swap', array(), null);
+
   // Font Awesome
   wp_enqueue_style('font-awesome', 'https://use.fontawesome.com/releases/v6.2.0/css/all.css', array(), '6.2.0');
 
