@@ -3,9 +3,6 @@
 @use "./mixin" as *;
 @use "./variables" as *;
 
-.l-common-page {
-}
-
 .page-subtitle {
   font-size: 2rem;
   font-family: $font-condiment;
@@ -114,30 +111,107 @@
 }
 
 .interview {
-  padding: 240px 0;
+  padding: 180px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
-
-  // 背景画像（不透明度調整のため疑似要素で配置）
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url("../images/bg/circle-neon.png") repeat center center /
-      contain fixed;
-    opacity: 0.1;
-    z-index: -1;
-    pointer-events: none;
-  }
+  overflow: hidden;
+  background: transparent; // 背景の幾何学模様を透かす
 
   @include mq("sm") {
-    padding: 60px 0;
+    padding: 100px 0;
+  }
+
+  // 背後の巨大デコレーションテキスト
+  .interview-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.015);
+    letter-spacing: 0.15em;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.02);
   }
 }
 
-.interview-title,
+.interview-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+
+  @include mq("sm") {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .interview-title {
+    margin-bottom: 0;
+  }
+
+  .interview-more {
+    align-self: center;
+    font-size: 1rem;
+
+    a {
+      border: 1px solid $trai-color-purple;
+      padding: 8px 24px;
+      border-radius: 30px;
+      display: inline-block;
+      transition: all 0.3s ease;
+      color: $trai-color-purple;
+      text-decoration: none;
+
+      &:hover {
+        background: $trai-color-purple;
+        color: #fff;
+        box-shadow: 0 0 15px rgba($trai-color-purple, 0.4);
+      }
+    }
+  }
+}
+
+.interview-title {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, $trai-color-purple, $trai-color-cyan);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba($trai-color-purple, 0.2);
+  position: relative;
+  z-index: 1;
+
+  &::before {
+    content: "インタビュー";
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.6); // グラデーション解除
+  }
+
+  @include mq("sm") {
+    font-size: 2.2rem;
+  }
+}
+
+
 .event-title,
 .contact-title {
   font-size: 4rem;
@@ -238,261 +312,219 @@
 }
 
 .event {
-  padding: 120px 0;
-  border-top: 2px solid rgba($trai-color-cyan, 0.2);
-  transition: all 0.3s ease;
+  padding: 180px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
-  // 背景グラデーションアニメーション
-  background: linear-gradient(
-    45deg,
-    rgba($trai-color-cyan, 0.05) 0%,
-    rgba($trai-color-purple, 0.03) 25%,
-    rgba($trai-color-red, 0.05) 50%,
-    rgba($trai-color-purple, 0.03) 75%,
-    rgba($trai-color-cyan, 0.05) 100
-  );
-  animation: eventBackgroundFlow 8s ease-in-out infinite,
-    eventBorderGlow 4s ease-in-out infinite alternate;
+  background: transparent; // 背景の幾何学模様を透かす
+
   @include mq("sm") {
-    padding: 60px 0;
+    padding: 100px 0;
   }
 
-  // 動的な背景パーティクルエフェクト
-  &::before {
-    content: "";
+  // 背後の巨大デコレーションテキスト
+  .event-bg-text {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-        circle at 20% 20%,
-        rgba($trai-color-cyan, 0.1) 0%,
-        transparent 30%
-      ),
-      radial-gradient(
-        circle at 80% 40%,
-        rgba($trai-color-purple, 0.08) 0%,
-        transparent 25%
-      ),
-      radial-gradient(
-        circle at 40% 80%,
-        rgba($trai-color-red, 0.06) 0%,
-        transparent 35%
-      ),
-      radial-gradient(
-        circle at 90% 10%,
-        rgba($trai-color-cyan, 0.05) 0%,
-        transparent 20%
-      ),
-      radial-gradient(
-        circle at 10% 90%,
-        rgba($trai-color-purple, 0.07) 0%,
-        transparent 30%
-      );
-    animation: eventParticleFloat 12s ease-in-out infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.015);
+    letter-spacing: 0.15em;
+    pointer-events: none;
+    user-select: none;
     z-index: 0;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.02);
   }
-
-  // 上下のライン装飾
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      $trai-color-cyan 20%,
-      $trai-color-purple 50%,
-      $trai-color-red 80%,
-      transparent 100%
-    );
-    animation: eventLineFlow 3s linear infinite;
-  }
-
-  // 背景グラデーションの流れるアニメーション
-  @keyframes eventBackgroundFlow {
-    0% {
-      background-position: 0% 50%;
-    }
-    25% {
-      background-position: 50% 100%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    75% {
-      background-position: 50% 0%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  // ボーダーグローエフェクト
-  @keyframes eventBorderGlow {
-    0% {
-      border-top-color: rgba($trai-color-cyan, 0.2);
-      box-shadow: 0 -2px 20px rgba($trai-color-cyan, 0.1);
-    }
-    33% {
-      border-top-color: rgba($trai-color-purple, 0.4);
-      box-shadow: 0 -2px 30px rgba($trai-color-purple, 0.2);
-    }
-    66% {
-      border-top-color: rgba($trai-color-red, 0.4);
-      box-shadow: 0 -2px 30px rgba($trai-color-red, 0.2);
-    }
-    100% {
-      border-top-color: rgba($trai-color-cyan, 0.6);
-      box-shadow: 0 -2px 40px rgba($trai-color-cyan, 0.3);
-    }
-  }
-
-  // パーティクルの浮遊アニメーション
-  @keyframes eventParticleFloat {
-    0%,
-    100% {
-      transform: translateX(0) translateY(0) rotate(0deg);
-      opacity: 0.3;
-    }
-    25% {
-      transform: translateX(10px) translateY(-5px) rotate(90deg);
-      opacity: 0.6;
-    }
-    50% {
-      transform: translateX(-5px) translateY(-10px) rotate(180deg);
-      opacity: 0.4;
-    }
-    75% {
-      transform: translateX(-10px) translateY(5px) rotate(270deg);
-      opacity: 0.7;
-    }
-  }
-
-  // 下部ラインの流れるアニメーション
-  @keyframes eventLineFlow {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  }
-
-  @include mq("sm") {
-    padding: 60px 0;
-  }
-
-  // ホバー時のインタラクション
-  &:hover {
-    &::before {
-      animation-duration: 6s; // パーティクルアニメーションを高速化
-    }
-
-    &::after {
-      animation-duration: 1.5s; // ラインアニメーションを高速化
-    }
-  }
-}
-
-.event-inner {
 }
 
 .event-title {
-  margin-bottom: 20px;
-  font-size: 4rem;
-  font-family: $font-condiment;
-  letter-spacing: 8px;
   text-align: center;
-  color: $trai-color-cyan;
+  margin-bottom: 80px;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, $trai-color-cyan, $trai-color-red);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba($trai-color-cyan, 0.2);
+  position: relative;
+  z-index: 1;
 
-  &::after {
-    position: absolute;
-    background: $trai-color-cyan;
+  &::before {
+    content: "イベント・ニュース";
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.6); // グラデーション解除
+  }
+
+  @include mq("sm") {
+    font-size: 2.2rem;
+    margin-bottom: 50px;
   }
 }
 
 .event-subtitle {
-  text-align: center;
-  font-size: 1rem;
-  color: $font-color;
-  margin-bottom: 40px;
+  display: none; // デコレーション化されたため非表示
 }
 
 .event-container {
   max-width: 1000px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  padding: 0 20px;
 }
 
 .event-item {
   display: flex;
-  border-bottom: 1px solid #fff;
-  padding: 3rem 0;
-  margin: 1rem 0;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 35px 40px;
+  margin-bottom: 25px;
   position: relative;
-  transition: all 0.3s ease-in-out;
-  padding-right: 60px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 
-  &:hover {
-    transform: translateX(10px);
-    border-bottom: 1px solid $trai-color-cyan;
-
-    &::after {
-      transform: translate(-10px, -50%) rotate(360deg);
-    }
+  // 旧After矢印を非表示
+  &::after {
+    display: none;
   }
 
-  &::after {
+  // ホバー時の斜め閃光エフェクト用ライン
+  .event-item-glint {
     position: absolute;
-    font-family: "FontAwesome";
-    transition: all 0.3s ease-in-out;
-    content: "\f061";
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: $trai-color-cyan;
-    font-size: 32px;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.12),
+      transparent
+    );
+    transform: skewX(-25deg);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  // ホバーアクション
+  &:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba($trai-color-cyan, 0.35);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 15px rgba($trai-color-cyan, 0.15);
+
+    // グリント閃光を走らせる
+    .event-item-glint {
+      left: 200%;
+      transition: all 0.9s ease;
+    }
+
+    // 矢印ボタンのアクション
+    .event-item-arrow {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+
+      .arrow-text {
+        transform: translateX(4px);
+      }
+    }
   }
 
   @include mq("sm") {
     flex-direction: column;
-    padding-right: 50px;
+    align-items: flex-start;
+    padding: 30px 25px;
   }
 }
+
+// 矢印ボタン（丸ボタン：Contactと同デザイン）
+.event-item-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.3rem;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin-left: 20px;
+  flex-shrink: 0;
+
+  .arrow-text {
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  @include mq("sm") {
+    align-self: flex-end;
+    margin-top: 15px;
+    margin-left: 0;
+  }
+}
+
 .event-date {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  color: $trai-color-cyan;
+  color: rgba(255, 255, 255, 0.95);
   min-width: 120px;
   width: 140px;
   flex-shrink: 0;
+  text-align: left;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
 
   @include mq("sm") {
     width: 100%;
-    margin-right: 0;
-    margin-bottom: 2rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
   }
 
   span {
-    margin-top: 16px;
+    margin-top: 10px;
     display: block;
+    font-size: 1.3rem;
+    color: $trai-color-cyan;
+    text-shadow: 0 0 10px rgba($trai-color-cyan, 0.2);
 
     @include mq("sm") {
       display: inline-block;
       margin-top: 0;
-      margin-left: 8px;
+      margin-left: 10px;
     }
   }
 }
+
 .event-wrapper {
   flex: 1;
   text-align: left;
-  padding-left: 30px;
+  padding-left: 40px;
+  box-sizing: border-box;
 
   @include mq("sm") {
     padding-left: 0;
@@ -695,9 +727,6 @@
 
 .interview-content h3 {
   font-size: 1.5rem;
-  &::before {
-    // background: $trai-color-cyan;
-  }
   &::after {
     content: "インタビュー";
   }
@@ -1401,6 +1430,7 @@
         flex-grow: 1;
         display: -webkit-box;
         -webkit-line-clamp: 3;
+        line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
@@ -1501,6 +1531,8 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   margin-top: 60px;
+  position: relative;
+  z-index: 1;
 
   @include mq("sm") {
     grid-template-columns: 1fr;
@@ -1523,153 +1555,204 @@
 
 .interview-archive-item {
   .interview-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    background: rgba(18, 18, 28, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 20px;
     overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 40px 4px;
-    border-left: 1px solid $trai-color-purple;
-    border-top: 1px solid $trai-color-purple;
-    border-right: 1px solid $trai-color-red;
-    border-bottom: 1px solid $trai-color-red;
-    animation: interview-neon-glow 2.5s ease-in-out infinite alternate;
+    text-decoration: none;
+    color: #fff;
+    box-sizing: border-box;
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.45),
+      0 0 0 1px rgba($trai-color-purple, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    padding: 0;
+    height: 100%;
 
-    @keyframes interview-neon-glow {
-      0% {
-        box-shadow: 0 0 5px rgba($trai-color-purple, 0.3),
-          0 0 10px rgba($trai-color-purple, 0.3),
-          0 0 15px rgba($trai-color-purple, 0.3);
-        border-left-color: rgba($trai-color-purple, 0.7);
-        border-top-color: rgba($trai-color-purple, 0.7);
-      }
-      100% {
-        box-shadow: 0 0 10px rgba($trai-color-purple, 0.8),
-          0 0 20px rgba($trai-color-purple, 0.8),
-          0 0 30px rgba($trai-color-purple, 0.6),
-          0 0 40px rgba($trai-color-purple, 0.4);
-        border-left-color: $trai-color-purple;
-        border-top-color: $trai-color-purple;
-      }
+    // 旧After矢印を非表示
+    &::after {
+      display: none;
     }
 
+    // ホバー時の斜め閃光エフェクト用ライン
+    .interview-card-glint {
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transform: skewX(-25deg);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    // ホバーアクション
     &:hover {
       transform: translateY(-10px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2),
-        0 0 20px rgba($trai-color-purple, 0.9),
-        0 0 40px rgba($trai-color-purple, 0.7),
-        0 0 60px rgba($trai-color-purple, 0.5);
-      border-color: $trai-color-purple;
-      animation: interview-neon-pulse 0.5s ease-in-out infinite alternate;
-    }
+      background: rgba(25, 20, 45, 0.75);
+      border-color: rgba($trai-color-purple, 0.5);
+      box-shadow:
+        0 24px 48px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba($trai-color-purple, 0.2),
+        0 0 40px rgba($trai-color-purple, 0.08);
 
-    @keyframes interview-neon-pulse {
-      0% {
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2),
-          0 0 20px rgba($trai-color-purple, 0.9),
-          0 0 40px rgba($trai-color-purple, 0.7);
+      // グリント閃光を走らせる
+      .interview-card-glint {
+        left: 200%;
+        transition: all 0.9s ease;
       }
-      100% {
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2),
-          0 0 30px rgba($trai-color-purple, 1),
-          0 0 60px rgba($trai-color-purple, 0.9),
-          0 0 90px rgba($trai-color-purple, 0.7);
+
+      // サムネイル画像の拡大
+      .interview-thumbnail img {
+        transform: scale(1.07);
+      }
+
+      // 矢印ボタンのアクション
+      .interview-card-arrow {
+        background: $trai-color-purple;
+        color: #fff;
+        border-color: $trai-color-purple;
+        box-shadow:
+          0 6px 20px rgba($trai-color-purple, 0.45),
+          0 0 15px rgba($trai-color-purple, 0.3);
+        transform: scale(1.1);
+
+        .arrow-text {
+          transform: translateX(3px);
+        }
       }
     }
 
     .interview-thumbnail {
-      height: 150px;
+      height: 200px;
       overflow: hidden;
       position: relative;
+      flex-shrink: 0;
+
+      // CSSデフォルトプレースホルダー（画像がない場合）
+      &:not(:has(img)),
+      &.no-image {
+        background: linear-gradient(
+          135deg,
+          rgba($trai-color-purple, 0.3) 0%,
+          rgba(10, 10, 20, 0.9) 50%,
+          rgba($trai-color-cyan, 0.2) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::after {
+          content: "INTERVIEW";
+          font-size: 1.2rem;
+          letter-spacing: 6px;
+          color: rgba(255, 255, 255, 0.25);
+          font-weight: 800;
+        }
+      }
 
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.3s ease;
+        transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        display: block;
       }
 
-      &:hover img {
-        transform: scale(1.05);
+      // 画像下にグラデーションフェードをかける
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: linear-gradient(to bottom, transparent, rgba(18, 18, 28, 0.6));
+        z-index: 1;
+        pointer-events: none;
       }
     }
 
     .interview-content {
-      padding: 20px 10px;
-      background: #292828;
-      margin: 40px 20px 10px;
+      padding: 25px 25px 75px;
+      position: relative;
+      z-index: 1;
+      flex: 1;
 
       .interview-content-title {
         font-size: 1.2rem;
         font-weight: bold;
-
-        a {
-          color: $font-color;
-          text-decoration: none;
-          transition: color 0.3s ease;
-          font-size: 1rem;
-
-          &:hover {
-            color: $trai-color-purple;
-          }
-        }
+        line-height: 1.5;
+        margin-bottom: 14px;
+        color: #fff;
+        transition: color 0.3s ease;
       }
 
       .interview-meta {
-        margin-bottom: 15px;
+        margin-bottom: 12px;
         display: flex;
-        gap: 10px;
+        gap: 8px;
         align-items: center;
         flex-wrap: wrap;
-
-        .interview-date {
-          color: rgba(255, 255, 255, 0.6);
-          font-size: 0.8rem;
-        }
 
         .interview-category {
           display: inline-block;
           background: rgba($trai-color-purple, 0.2);
-          color: $trai-color-purple;
-          padding: 4px 8px;
-          border-radius: 12px;
-          font-size: 0.8rem;
+          color: rgba($trai-color-purple, 0.9);
+          padding: 3px 10px;
+          border-radius: 20px;
+          font-size: 0.75rem;
+          border: 1px solid rgba($trai-color-purple, 0.35);
+          font-weight: 600;
+          letter-spacing: 0.5px;
         }
       }
 
       .interview-excerpt {
-        color: rgba(255, 255, 255, 0.7);
-        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.7;
         font-size: 0.85rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
+    }
 
-      .interview-excerpt a {
-        width: 50%;
-        text-align: center;
-        margin: 10px auto;
-        display: block;
-        background: linear-gradient(
-          135deg,
-          $trai-color-purple,
-          $trai-color-red
-        );
-        color: #fff;
-        padding: 10px;
-        border-radius: 20px;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
+    // 矢印ボタン（丸ボタン）
+    .interview-card-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.1rem;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      position: absolute;
+      bottom: 20px;
+      right: 22px;
+      z-index: 2;
 
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba($trai-color-purple, 0.3);
-          background: linear-gradient(
-            270deg,
-            $trai-color-red,
-            $trai-color-purple
-          );
-        }
+      .arrow-text {
+        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
       }
     }
   }
@@ -1697,15 +1780,13 @@
 .archiver-event-inner {
   max-width: 1200px;
   margin: 0 auto;
-  border-left: 1px solid $trai-color-purple;
-  border-top: 1px solid $trai-color-purple;
-  border-right: 1px solid $trai-color-red;
-  border-bottom: 1px solid $trai-color-red;
-  padding: 80px;
-  box-shadow: 0 4px 40px rgba(97, 97, 97, 1);
+  border: none;
+  padding: 80px 20px;
+  box-shadow: none;
+  background: transparent;
 
   @include mq("sm") {
-    padding: 20px 10px;
+    padding: 40px 10px;
   }
 }
 
@@ -1765,61 +1846,7 @@
   gap: 30px;
 }
 
-.archiver-event-article {
-  transition: all 0.3s ease;
 
-  &:hover {
-    transform: translateX(10px);
-  }
-
-  @include mq("sm") {
-    &:hover {
-      transform: translateX(5px);
-    }
-  }
-}
-
-.archiver-event-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
-.event-item-header {
-  display: flex;
-  gap: 30px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.02);
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: $trai-color-cyan;
-  }
-
-  @include mq("sm") {
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
-  }
-}
-
-.event-item-content {
-  flex: 1;
-}
-
-.archiver-event-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: $font-color;
-
-  @include mq("sm") {
-    font-size: 1rem;
-  }
-}
 
 .single-event-main {
   padding: 120px 0 240px;
@@ -1902,9 +1929,34 @@
 .about-inner-content {
   margin: 120px 0;
   padding: 40px 40px;
-  box-shadow: #fff 0 4px 20px;
-  background: rgba(255, 255, 255, 0.05);
+  position: relative;
+  background: rgba(15, 15, 20, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   border-radius: 12px;
+  z-index: 1;
+
+  // バックライトネオングロー効果
+  &::before {
+    content: "";
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba($trai-color-purple, 0.12) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+    filter: blur(40px);
+    border-radius: 24px;
+    transition: opacity 0.5s ease;
+  }
+
+  &:nth-child(even)::before {
+    background: radial-gradient(circle, rgba($trai-color-cyan, 0.12) 0%, transparent 70%);
+  }
 
   h3 {
     font-size: 1.8rem;
@@ -1924,14 +1976,16 @@
       left: 0;
       z-index: 10;
 
-      animation: shine 2s linear infinite;
+      animation: shine 2.5s linear infinite;
       @keyframes shine {
         0% {
           left: -40px;
           opacity: 0;
         }
-        50% {
-          left: 50%;
+        10% {
+          opacity: 1;
+        }
+        90% {
           opacity: 1;
         }
         100% {
@@ -1945,7 +1999,7 @@
       content: "";
       width: 100%;
       height: 4px;
-      background: $trai-color-cyan;
+      background: rgba($trai-color-cyan, 0.3);
       border-radius: 2px;
       top: 58%;
       left: 0;
@@ -1960,8 +2014,8 @@
 
   p {
     font-size: 1.2rem;
-    line-height: 1.6;
-    color: $font-color;
+    line-height: 1.8;
+    color: rgba($font-color, 0.85);
 
     @include mq("sm") {
       font-size: 1rem;
@@ -1977,6 +2031,7 @@
   color: transparent;
   background: linear-gradient(90deg, $trai-color-cyan, $trai-color-purple);
   background-clip: text;
+  -webkit-background-clip: text;
   position: relative;
   @include mq("sm") {
     font-size: 1.5rem;
@@ -1999,7 +2054,7 @@
     animation: toLeft 50s linear infinite;
     letter-spacing: 40px;
     text-shadow: rgba($trai-color-cyan, 0.5) -4px 4px 10px;
-    text-shadow: rgba($trai-color-red, 0.5) 4 4px 10px;
+    text-shadow: rgba($trai-color-red, 0.5) 4px 4px 10px;
     opacity: 0.5;
     font-family: $font-condiment;
 
@@ -2027,78 +2082,228 @@
 }
 
 .page-id-27 {
-  .contact-liver {
-    padding: 90px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  // フォーム全体のアクリルガラス化
+  .wpcf7 {
+    padding: 60px 50px;
+    background: linear-gradient(135deg, rgba(15, 15, 25, 0.65) 0%, rgba(10, 10, 15, 0.45) 100%); // ダークアクリル
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 28px;
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.5), 
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    max-width: 800px;
+    margin: 80px auto 160px;
+    position: relative;
+    z-index: 1;
 
     @include mq("sm") {
-      padding: 60px 0;
-      width: 95%;
-      justify-content: center;
-    }
-    @include mq("tb") {
-      flex-direction: row;
-      justify-content: space-around;
-    }
-    @include mq("pc") {
-      justify-content: space-between;
+      padding: 40px 20px;
+      margin: 40px auto 80px;
+      width: 92%;
     }
   }
 
-  .contact-liver-card-item {
-    font-size: 1.2rem;
-    // color: $font-color;
+  form {
+    max-width: 100%;
+    margin: 0 auto;
+  }
 
+  label {
+    font-weight: 600;
+    font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+    margin-bottom: 8px;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.95);
+    display: block;
+  }
+
+  // ライバー応募フォームの入力フィールド
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
+  select {
+    width: 100%;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 15px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff;
+    outline: none;
+
+    &:focus {
+      border-color: rgba($trai-color-red, 0.6);
+      box-shadow: 0 0 12px rgba($trai-color-red, 0.3);
+      background: rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  // 送信ボタンのネオン・グリント化 (レッド基調)
+  input[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+    padding: 14px 40px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    width: 250px;
+    text-align: center;
+    margin: 40px auto 20px;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 2px;
+
+    // 斜め閃光用
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.15),
+        transparent
+      );
+      transform: skewX(-25deg);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    &:hover {
+      border-color: rgba($trai-color-red, 0.45);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba($trai-color-red, 0.25);
+      background: rgba($trai-color-red, 0.05);
+
+      &::before {
+        left: 200%;
+        transition: all 0.9s ease;
+      }
+    }
+  }
+
+  // ライバー応募手順のセクション (ブロックエディタの vertical 指定を強制上書き)
+  .contact-liver {
+    padding: 90px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex !important;
+    flex-direction: row !important; // 縦並び指定を上書き
+    flex-wrap: wrap !important;
+    gap: 30px !important;
+    justify-content: center !important;
+
+    @include mq("sm") {
+      padding: 40px 10px;
+      flex-direction: column !important;
+      align-items: center !important;
+    }
+  }
+
+  // 手順カードの各アイテムラッパー (Gutenbergグループ)
+  .contact-liver-card-item {
+    flex: 1;
+    min-width: 240px;
+    max-width: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    // STEP数字 (h3)
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      text-align: center;
+      transition: color 0.4s ease;
+    }
+
+    // 個別テーマカラーの設定（親の card-item の nth-of-type で連動）
     &:nth-of-type(1) {
-      color: yellow;
+      --step-color: #ffeb3b;
+      h3 { color: #ffeb3b; }
     }
     &:nth-of-type(2) {
-      color: $trai-color-purple;
+      --step-color: #{$trai-color-purple};
+      h3 { color: #{$trai-color-purple}; }
     }
     &:nth-of-type(3) {
-      color: $trai-color-cyan;
+      --step-color: #{$trai-color-cyan};
+      h3 { color: #{$trai-color-cyan}; }
     }
     &:nth-of-type(4) {
-      color: $trai-color-red;
+      --step-color: #{$trai-color-red};
+      h3 { color: #{$trai-color-red}; }
+    }
+
+    @include mq("sm") {
+      width: 100%;
+      max-width: 320px;
     }
   }
 
+  // 手順カード (アクリルガラス＆ステップごとのネオングロー)
   .contact-liver-card {
-    width: 275px;
-    height: 150px;
-    border: 1px solid $font-color;
+    width: 100% !important; // 親ラッパー幅に合わせる
+    height: 160px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    // 水玉の用の背景10pxの円が背面に繰り返し
-    background: radial-gradient(
-        circle,
-        rgba(255, 255, 255, 0.5) 10%,
-        transparent 10%
-      ),
-      radial-gradient(circle, rgba(255, 255, 255, 0.5) 10%, transparent 10%);
-    background-position: 0 0, 5px 5px;
-    background-size: 10px 10px;
-    transition: all 0.3s ease;
-    padding: 20px;
-    border-radius: 4px;
+    background: linear-gradient(135deg, rgba(25, 25, 35, 0.65) 0%, rgba(15, 15, 20, 0.45) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 25px;
+    box-sizing: border-box;
     text-align: center;
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.4);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+    margin: 0 !important; // デフォルト段落マージンを消す
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    
+    // 初期状態のネオン影（控えめ）
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+    @include mq("sm") {
+      height: auto;
+      min-height: 130px;
+    }
+
     &:hover {
-      background: radial-gradient(
-          circle,
-          rgba(255, 255, 255, 0.2) 10%,
-          transparent 10%
-        ),
-        radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, transparent 10%);
-      background-position: 0 0, 5px 5px;
-      background-size: 10px 10px;
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.4);
-      transform: translateY(-5px);
+      transform: translateY(-8px);
+      border-color: var(--step-color) !important;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 25px var(--step-color),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      color: var(--step-color) !important;
     }
   }
 }
@@ -2137,5 +2342,357 @@
     color: #000;
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba($font-color, 0.4);
+  }
+}
+
+// インタビュー詳細 (single-interview.php) 用のスタイル
+.single-interview {
+  color: #fff;
+  background: transparent;
+
+  .hedding-area {
+    padding: 120px 20px 40px;
+    position: relative;
+    z-index: 1;
+
+    .page-subtitle {
+      font-family: $font-condiment;
+      font-size: 3rem;
+      letter-spacing: 4px;
+      color: $trai-color-purple;
+      text-shadow: 0 0 15px rgba($trai-color-purple, 0.25);
+    }
+  }
+
+  .main-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  // 背景色とテキストカラーのオーバーライド
+  .liver-profile {
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    padding: 80px 20px;
+    margin-top: 0;
+  }
+
+  // アシンメトリーなサムネイル画像
+  .profile-image-thumbnail {
+    width: 420px;
+    height: 520px;
+    border-radius: 60px 15px 60px 15px; // アシンメトリー角丸
+    border: 1px solid rgba(255, 255, 255, 0.12); // ガラスエッジ
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba($trai-color-purple, 0.12);
+    overflow: hidden;
+    margin: 40px auto;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+    @include mq("sm") {
+      width: 100%;
+      height: 320px;
+    }
+
+    img {
+      border-radius: 0; // 親の角丸に任せる
+      transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    &:hover {
+      transform: translateY(-5px);
+      border-color: rgba($trai-color-purple, 0.45);
+      box-shadow: 
+        0 35px 70px rgba(0, 0, 0, 0.6),
+        0 0 25px rgba($trai-color-purple, 0.25);
+
+      img {
+        transform: scale(1.04);
+      }
+    }
+  }
+
+  // クリエイター情報エリア
+  .features {
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.6) 0%, rgba(15, 15, 20, 0.4) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 40px 50px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    max-width: 800px;
+
+    @include mq("sm") {
+      padding: 30px 20px;
+    }
+
+    .tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+
+      span {
+        display: inline-block;
+        background: rgba($trai-color-purple, 0.15);
+        color: $trai-color-purple;
+        border: 1px solid rgba($trai-color-purple, 0.35);
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-shadow: 0 0 8px rgba($trai-color-purple, 0.2);
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: $trai-color-purple;
+          color: #fff;
+          box-shadow: 0 0 12px rgba($trai-color-purple, 0.4);
+        }
+      }
+    }
+
+    .creator-feature {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .creator-name {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 24px;
+      line-height: 1.3;
+      
+      @include mq("sm") {
+        font-size: 1.8rem;
+      }
+    }
+
+    .live-info {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      p {
+        margin-bottom: 0;
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+
+  // アクションボタン (動画を見る・関連リンク)
+  .liver-actions {
+    display: flex;
+    gap: 20px;
+    margin: 40px auto;
+    max-width: 800px;
+
+    @include mq("sm") {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .btn-tiktok {
+      flex: 1;
+      
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 14px 30px;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+        overflow: hidden;
+
+        // 斜め閃光用
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -150%;
+          width: 60%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.15),
+            transparent
+          );
+          transform: skewX(-25deg);
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        &:hover {
+          border-color: rgba($trai-color-purple, 0.45);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba($trai-color-purple, 0.25);
+          background: rgba($trai-color-purple, 0.05);
+
+          &::before {
+            left: 200%;
+            transition: all 0.9s ease;
+          }
+        }
+      }
+    }
+  }
+
+  // 本文アクリルガラスコンテナ
+  .profile-section.interview-content {
+    background: linear-gradient(135deg, rgba(15, 15, 25, 0.65) 0%, rgba(10, 10, 15, 0.45) 100%); // ダークアクリル
+    border: 1px solid rgba(255, 255, 255, 0.12); // ガラスの屈折エッジ
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 28px;
+    padding: 60px;
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.5), 
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    max-width: 900px;
+    margin: 80px auto;
+
+    @include mq("sm") {
+      padding: 40px 20px;
+      margin: 40px auto;
+      width: 95%;
+    }
+
+    h3 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: $trai-color-purple;
+      border-bottom: none;
+      padding-bottom: 24px;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+      position: relative;
+
+      &::after {
+        position: absolute;
+        content: "インタビュー";
+        display: block;
+        bottom: 0;
+        left: 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.5);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+      }
+      
+      // グローライン
+      &::before {
+        content: "" !important;
+        display: block !important;
+        position: absolute;
+        bottom: 12px;
+        left: 0;
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, $trai-color-purple, $trai-color-cyan);
+        border-radius: 2px;
+      }
+    }
+
+    .profile-content {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: rgba(255, 255, 255, 0.85);
+
+      p {
+        margin-bottom: 24px;
+      }
+      
+      h4 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #fff;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        border-left: 3px solid $trai-color-purple;
+        padding-left: 15px;
+      }
+    }
+
+    // まとめセクション
+    .interview-summary {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+      h4 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $trai-color-cyan;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+      }
+
+      .summary-content {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 25px 30px;
+        font-size: 0.95rem;
+        line-height: 1.75;
+        color: rgba(255, 255, 255, 0.75);
+
+        @include mq("sm") {
+          padding: 20px;
+        }
+      }
+    }
+  }
+
+  // 戻るボタン
+  .back-button {
+    text-align: center;
+    margin: 60px auto;
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 36px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        border-color: rgba($trai-color-purple, 0.45);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba($trai-color-purple, 0.2);
+        background: rgba($trai-color-purple, 0.05);
+        color: #fff;
+        transform: translateY(-3px);
+      }
+    }
   }
 }

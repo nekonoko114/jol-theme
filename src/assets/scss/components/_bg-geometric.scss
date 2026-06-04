@@ -1,0 +1,405 @@
+@use "../_modules/color" as *;
+@use "../_modules/mixin" as *;
+
+// 背景幾何学模様SVGデコレーション
+.bg-geometric-decorations {
+  position: absolute; // ページ全体のスクロール量に追随させるため absolute
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background: #000; // ベース背景色（黒）
+
+  // 幾何学模様共通スタイル
+  .geometric-shape {
+    position: absolute;
+    transition: opacity 0.5s ease;
+  }
+
+  // ==========================================
+  // 【固定配置グループ】(position: fixed で画面に常に追従)
+  // ==========================================
+
+  // 1. ドットマトリクス（グリッド）
+  .geo-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.8;
+  }
+
+  // 2. 右上のテックサークル (2連リング)
+  .geo-ring {
+    position: fixed;
+    top: -10vw;
+    right: -10vw;
+    width: 45vw;
+    height: 45vw;
+    min-width: 320px;
+    min-height: 320px;
+    color: rgba($trai-color-cyan, 0.06);
+    animation: rotateClockwise 45s infinite linear;
+    transform-origin: center;
+
+    @include mq("sm") {
+      top: -20vw;
+      right: -20vw;
+      width: 65vw;
+      height: 65vw;
+      color: rgba($trai-color-cyan, 0.04);
+    }
+  }
+
+  .geo-ring-sub {
+    position: fixed;
+    top: -5vw;
+    right: -5vw;
+    width: 35vw;
+    height: 35vw;
+    min-width: 250px;
+    min-height: 250px;
+    color: rgba($trai-color-purple, 0.05);
+    animation: rotateCounterClockwise 30s infinite linear;
+    transform-origin: center;
+
+    @include mq("sm") {
+      top: -10vw;
+      right: -10vw;
+      width: 55vw;
+      height: 55vw;
+    }
+  }
+
+  // 3. 個別十字パーティクル (静的に小さいサイズで画面に散りばめる)
+  .geo-cross {
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.5px;
+    animation: subtleBlink 5s infinite ease-in-out;
+
+    // 各十字の位置調整
+    &.geo-cross-1 {
+      position: fixed;
+      top: 15vh;
+      left: 15vw;
+      color: rgba(255, 255, 255, 0.15);
+      animation-delay: 0s;
+    }
+    &.geo-cross-2 {
+      position: fixed;
+      top: 35vh;
+      right: 20vw;
+      color: rgba($trai-color-cyan, 0.12);
+      animation-delay: 1.5s;
+    }
+    &.geo-cross-3 {
+      top: 110vh;
+      left: 10vw;
+      color: rgba(255, 255, 255, 0.15);
+      animation-delay: 0.5s;
+    }
+    &.geo-cross-4 {
+      top: 150vh;
+      right: 12vw;
+      color: rgba($trai-color-purple, 0.12);
+      animation-delay: 2s;
+    }
+    &.geo-cross-5 {
+      top: 210vh;
+      left: 15vw;
+      color: rgba(255, 255, 255, 0.15);
+      animation-delay: 1s;
+    }
+    &.geo-cross-6 {
+      top: 250vh;
+      right: 8vw;
+      color: rgba($trai-color-cyan, 0.12);
+      animation-delay: 2.5s;
+    }
+    &.geo-cross-7 {
+      top: 300vh;
+      right: 25vw;
+      color: rgba(255, 255, 255, 0.15);
+      animation-delay: 0.2s;
+    }
+    &.geo-cross-8 {
+      top: 330vh;
+      left: 8vw;
+      color: rgba($trai-color-red, 0.12);
+      animation-delay: 1.8s;
+    }
+
+    @include mq("sm") {
+      width: 10px;
+      height: 10px;
+      
+      &.geo-cross-1 { top: 20vh; left: 8vw; }
+      &.geo-cross-2 { top: 40vh; right: 10vw; }
+      &.geo-cross-3 { top: 120vh; left: 6vw; }
+      &.geo-cross-4 { top: 160vh; right: 6vw; }
+      &.geo-cross-5 { top: 220vh; left: 8vw; }
+      &.geo-cross-6 { top: 260vh; right: 6vw; }
+      &.geo-cross-7 { top: 290vh; right: 10vw; }
+      &.geo-cross-8 { top: 310vh; left: 6vw; }
+    }
+  }
+
+  // ==========================================
+  // 【スクロール配置グループ】(ページをスクロールするにつれて背景から現れる)
+  // ==========================================
+
+  // 4. 左上のヘキサゴン (ファーストビュー周辺)
+  .geo-hexagon {
+    top: 10vh;
+    left: 5vw;
+    width: 18vw;
+    height: 18vw;
+    min-width: 150px;
+    min-height: 150px;
+    color: rgba($trai-color-purple, 0.05);
+    animation: floatVertical 14s infinite ease-in-out alternate;
+
+    @include mq("sm") {
+      top: 15vh;
+      left: -5vw;
+      width: 35vw;
+      height: 35vw;
+    }
+  }
+
+  // 5. 左下のポリゴン (スライダー上部付近)
+  .geo-polygon {
+    top: 80vh;
+    left: -5vw;
+    width: 28vw;
+    height: 28vw;
+    min-width: 200px;
+    min-height: 200px;
+    color: rgba($trai-color-red, 0.04);
+    animation: floatAndRotate 35s infinite ease-in-out alternate;
+    transform-origin: center;
+
+    @include mq("sm") {
+      top: 90vh;
+      left: -10vw;
+      width: 45vw;
+      height: 45vw;
+    }
+  }
+
+  // 6. 左中央の立体軌道円 (スライダー下部〜インフォ付近)
+  .geo-orbit {
+    top: 170vh;
+    left: 6vw;
+    width: 22vw;
+    height: 22vw;
+    min-width: 180px;
+    min-height: 180px;
+    color: rgba($trai-color-cyan, 0.05);
+    animation: floatHorizontal 16s infinite ease-in-out alternate;
+
+    @include mq("sm") {
+      top: 180vh;
+      left: -8vw;
+      width: 40vw;
+      height: 40vw;
+    }
+  }
+
+  // 7. 右中央のテックウェーブ (スライダー〜インタビュー周辺)
+  .geo-wave {
+    top: 140vh;
+    right: 4vw;
+    width: 25vw;
+    height: 10vw;
+    min-width: 220px;
+    color: rgba($trai-color-cyan, 0.04);
+    animation: floatVertical 10s infinite ease-in-out alternate;
+
+    @include mq("sm") {
+      top: 150vh;
+      right: -8vw;
+      width: 45vw;
+      height: 18vw;
+    }
+  }
+
+  .geo-wave-sub {
+    top: 145vh;
+    right: 8vw;
+    width: 25vw;
+    height: 10vw;
+    min-width: 220px;
+    color: rgba($trai-color-purple, 0.035);
+    animation: floatVertical 12s infinite ease-in-out alternate-reverse;
+
+    @include mq("sm") {
+      top: 152vh;
+      right: -2vw;
+      width: 45vw;
+      height: 18vw;
+    }
+  }
+
+  // 8. 左右のテックバーコード (ページの各セクション区切り)
+  .geo-barcode-left {
+    top: 100vh;
+    left: 1vw;
+    width: 2vw;
+    height: 15vw;
+    min-height: 180px;
+    color: rgba($trai-color-cyan, 0.05);
+    opacity: 0.6;
+
+    @include mq("sm") {
+      display: none; // モバイルでは非表示
+    }
+  }
+
+  .geo-barcode-right {
+    top: 220vh;
+    right: 1vw;
+    width: 2vw;
+    height: 15vw;
+    min-height: 180px;
+    color: rgba($trai-color-red, 0.04);
+    opacity: 0.6;
+
+    @include mq("sm") {
+      display: none;
+    }
+  }
+
+  // 9. 右下の3Dワイヤーキューブ (インタビュー〜コンタクト周辺)
+  .geo-cube {
+    top: 240vh;
+    right: 6vw;
+    width: 15vw;
+    height: 15vw;
+    min-width: 140px;
+    min-height: 140px;
+    color: rgba($trai-color-red, 0.045);
+    animation: floatAndRotateCube 25s infinite linear;
+    transform-origin: center;
+
+    @include mq("sm") {
+      top: 260vh;
+      right: -5vw;
+      width: 30vw;
+      height: 30vw;
+    }
+  }
+
+  // 10. 下部のポリゴン (最下部コンタクト周辺)
+  .geo-polygon-sub {
+    top: 310vh;
+    left: 8vw;
+    width: 20vw;
+    height: 20vw;
+    min-width: 160px;
+    min-height: 160px;
+    color: rgba($trai-color-purple, 0.04);
+    animation: floatHorizontal 18s infinite ease-in-out alternate-reverse;
+    transform-origin: center;
+
+    @include mq("sm") {
+      top: 320vh;
+      left: -10vw;
+      width: 40vw;
+      height: 40vw;
+    }
+  }
+}
+
+// ==========================================
+// アニメーションキーフレーム
+// ==========================================
+
+// 時計回りゆっくり自転
+@keyframes rotateClockwise {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// 反時計回りゆっくり自転
+@keyframes rotateCounterClockwise {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+// 浮遊しながらゆっくり回転（ポリゴン用）
+@keyframes floatAndRotate {
+  0% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-25px) rotate(-90deg) scale(1.05);
+  }
+  100% {
+    transform: translateY(0px) rotate(-180deg) scale(1);
+  }
+}
+
+// 3D立方体用の回転＆浮遊
+@keyframes floatAndRotateCube {
+  0% {
+    transform: translateY(0px) rotate(0deg) rotateX(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(180deg) rotateX(15deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(360deg) rotateX(0deg);
+  }
+}
+
+// 上下浮遊
+@keyframes floatVertical {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+// 左右・斜め浮遊
+@keyframes floatHorizontal {
+  0% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) translateX(15px) rotate(10deg);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+}
+
+// かすかな点滅（クロス用）
+@keyframes subtleBlink {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

@@ -19,8 +19,8 @@
         right: 40px;
         z-index: 9999;
         padding: 1.1rem 2.2rem;
-        background: rgba(18, 18, 18, 0.8);
-        border: 1px solid rgba(207, 169, 140, 0.3);
+        background: rgba(18, 18, 28, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 40px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         -webkit-backdrop-filter: blur(10px);
@@ -30,7 +30,7 @@
 
         .btn-icon {
             font-size: 1.2rem;
-            color: #cfa98c;
+            color: $trai-color-cyan;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -48,9 +48,9 @@
 
         &:hover {
             transform: translateY(-6px);
-            border-color: #cfa98c;
-            background: rgba(24, 24, 24, 0.95);
-            box-shadow: 0 15px 35px rgba(207, 169, 140, 0.25), 0 5px 15px rgba(0, 0, 0, 0.4);
+            border-color: $trai-color-cyan;
+            background: rgba(25, 20, 45, 0.85);
+            box-shadow: 0 15px 35px rgba($trai-color-cyan, 0.25), 0 5px 15px rgba(0, 0, 0, 0.4);
 
             .btn-icon {
                 transform: scale(1.15) rotate(15deg);

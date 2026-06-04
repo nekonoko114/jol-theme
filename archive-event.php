@@ -66,27 +66,34 @@
                     <div class="event-category-list">
                         <?php while ($event_query->have_posts()) : $event_query->the_post(); ?>
                             <article class="archiver-event-article">
-                                <a href="<?php the_permalink(); ?>" class="archiver-event-link">
-                                    <div class="event-item-header">
-                                        <p class="event-date">
-                                            <?php echo get_the_date('Y年'); ?>
-                                            <span><?php echo get_the_date('n月j日'); ?></span>
+                                <a href="<?php the_permalink(); ?>" class="event-item">
+                                    <!-- ホバー時の閃光エフェクト用ライン -->
+                                    <span class="event-item-glint"></span>
+
+                                    <p class="event-date">
+                                        <?php echo get_the_date('Y年'); ?>
+                                        <span><?php echo get_the_date('n月j日'); ?></span>
+                                    </p>
+                                    
+                                    <div class="event-wrapper">
+                                        <h3 class="event-name"><?php the_title(); ?></h3>
+                                        <p class="event-description">
+                                            <?php 
+                                            $excerpt = get_the_excerpt();
+                                            $excerpt = strip_tags($excerpt);
+                                            $excerpt = mb_substr($excerpt, 0, 100);
+                                            if (mb_strlen(get_the_excerpt()) > 100) {
+                                                $excerpt .= '...';
+                                            }
+                                            echo esc_html($excerpt);
+                                            ?>
                                         </p>
-                                        <div class="event-item-content">
-                                            <h3 class="archiver-event-title"><?php the_title(); ?></h3>
-                                            <p class="archiver-event-excerpt">
-                                                <?php 
-                                                $excerpt = get_the_excerpt();
-                                                $excerpt = strip_tags($excerpt);
-                                                $excerpt = mb_substr($excerpt, 0, 80);
-                                                if (mb_strlen(get_the_excerpt()) > 80) {
-                                                    $excerpt .= '...';
-                                                }
-                                                echo esc_html($excerpt);
-                                                ?>
-                                            </p>
-                                        </div>
                                     </div>
+                                    
+                                    <!-- 丸型矢印ボタン -->
+                                    <span class="event-item-arrow">
+                                        <span class="arrow-text">→</span>
+                                    </span>
                                 </a>
                             </article>
                         <?php endwhile; ?>
@@ -123,27 +130,34 @@
                 <div class="event-category-list">
                     <?php while ($uncategorized_query->have_posts()) : $uncategorized_query->the_post(); ?>
                         <article class="archiver-event-article">
-                            <a href="<?php the_permalink(); ?>" class="archiver-event-link">
-                                <div class="event-item-header">
-                                    <p class="event-date">
-                                        <?php echo get_the_date('Y年'); ?>
-                                        <span><?php echo get_the_date('n月j日'); ?></span>
+                            <a href="<?php the_permalink(); ?>" class="event-item">
+                                <!-- ホバー時の閃光エフェクト用ライン -->
+                                <span class="event-item-glint"></span>
+
+                                <p class="event-date">
+                                    <?php echo get_the_date('Y年'); ?>
+                                    <span><?php echo get_the_date('n月j日'); ?></span>
+                                </p>
+                                
+                                <div class="event-wrapper">
+                                    <h3 class="event-name"><?php the_title(); ?></h3>
+                                    <p class="event-description">
+                                        <?php 
+                                        $excerpt = get_the_excerpt();
+                                        $excerpt = strip_tags($excerpt);
+                                        $excerpt = mb_substr($excerpt, 0, 100);
+                                        if (mb_strlen(get_the_excerpt()) > 100) {
+                                            $excerpt .= '...';
+                                        }
+                                        echo esc_html($excerpt);
+                                        ?>
                                     </p>
-                                    <div class="event-item-content">
-                                        <h3 class="archiver-event-title"><?php the_title(); ?></h3>
-                                        <p class="archiver-event-excerpt">
-                                            <?php 
-                                            $excerpt = get_the_excerpt();
-                                            $excerpt = strip_tags($excerpt);
-                                            $excerpt = mb_substr($excerpt, 0, 80);
-                                            if (mb_strlen(get_the_excerpt()) > 80) {
-                                                $excerpt .= '...';
-                                            }
-                                            echo esc_html($excerpt);
-                                            ?>
-                                        </p>
-                                    </div>
                                 </div>
+                                
+                                <!-- 丸型矢印ボタン -->
+                                <span class="event-item-arrow">
+                                    <span class="arrow-text">→</span>
+                                </span>
                             </a>
                         </article>
                     <?php endwhile; ?>

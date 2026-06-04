@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "swiper-studio": {
+      "type": "http",
+      "url": "https://studio.swiperjs.com/mcp"
+    }
+  }
+}

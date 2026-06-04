@@ -19,27 +19,22 @@
             <div class="interview-archive-container">
                 <?php while (have_posts()) : the_post(); ?>
                     <article class="interview-archive-item">
-                        <div class="interview-card">
+                        <a href="<?php the_permalink(); ?>" class="interview-card">
+                            <!-- ホバー時の閃光エフェクト用ライン -->
+                            <span class="interview-card-glint"></span>
+
                             <?php if (has_post_thumbnail()) : ?>
                                 <div class="interview-thumbnail">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <?php the_post_thumbnail('medium'); ?>
-                                    </a>
+                                    <?php the_post_thumbnail('medium'); ?>
                                 </div>
                             <?php else : ?>
-                                <div class="interview-thumbnail">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/interview-default.jpg" alt="<?php the_title(); ?>のインタビュー画像">
-                                    </a>
-                                </div>
+                                <div class="interview-thumbnail no-image"></div>
                             <?php endif; ?>
 
                             <div class="interview-content">
-                                <h2 class="interview-content-title">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <?php the_title(); ?>
-                                    </a>
-                                </h2>
+                                <h3 class="interview-content-title">
+                                    <?php the_title(); ?>
+                                </h3>
 
                                 <div class="interview-meta">
                                     <?php
@@ -53,10 +48,23 @@
                                 </div>
 
                                 <div class="interview-excerpt">
-                                    <?php echo get_the_excerpt(); ?>
+                                    <?php 
+                                    $excerpt = get_the_excerpt();
+                                    $excerpt = strip_tags($excerpt);
+                                    $excerpt = mb_substr($excerpt, 0, 80);
+                                    if (mb_strlen(get_the_excerpt()) > 80) {
+                                        $excerpt .= '...';
+                                    }
+                                    echo esc_html($excerpt);
+                                    ?>
                                 </div>
                             </div>
-                        </div>
+
+                            <!-- 丸型矢印ボタン -->
+                            <span class="interview-card-arrow">
+                                <span class="arrow-text">→</span>
+                            </span>
+                        </a>
                     </article>
                 <?php endwhile; ?>
             </div>

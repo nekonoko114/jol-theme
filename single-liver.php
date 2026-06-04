@@ -72,7 +72,7 @@
                         <?php endif; ?>
                         
                         <?php 
-                        $categories = get_the_terms($post->ID, 'liver_category');
+                        $categories = get_the_terms(get_the_ID(), 'liver_category');
                         if ($categories && !is_wp_error($categories)) : ?>
                             <li><span class="data-label">CATEGORY</span> 
                                 <span class="data-val">

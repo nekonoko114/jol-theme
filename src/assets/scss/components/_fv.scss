@@ -1,16 +1,30 @@
-// components/_fv.scss
+@use "sass:color";
+@use "../_modules/fonts" as *;
+@use "../_modules/color" as *;
+@use "../_modules/mixin" as *;
 
 .fv {
   position: relative;
   width: 100%;
-  height: 100vh; // 画面の高さいっぱいに広げる
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  overflow: hidden; // はみ出した要素を隠す
-  background-color: #000; // JSが読み込まれるまでの背景色
-  z-index: 999;
+  overflow: hidden;
+  background-color: #000;
+  z-index: 10;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.5) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
 }
 
 // パーティクルを描画するCanvasのスタイル
@@ -20,56 +34,296 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1; // コンテンツより背面
+  z-index: 0;
 }
 
-// キャッチコピーなどのコンテンツ
+// キャッチコピーなどのコンテンツを包む超透過グラスモルフィズムパネル
 .fv-content {
   position: relative;
-  z-index: 2; // パーティクルより前面
+  z-index: 2;
   color: #eaeaea;
-  padding: 20px;
-  text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 20px rgba(138, 43, 226, 0.3);
+  padding: 70px 90px;
+  background: rgba(15, 15, 20, 0.35); // 透明度と暗さを最適化して高級感アップ
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 32px;
+  max-width: 840px;
+  width: 90%;
+  box-sizing: border-box;
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.5), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  animation: fv-panel-fade-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(40px);
+
+  // パネル背面を照らすネオンバックライト（Glow効果）
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1; // ガラスパネル背景の奥に配置
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  
+  &::before {
+    background: $trai-color-cyan;
+    top: -80px;
+    left: -80px;
+  }
+  
+  &::after {
+    background: $trai-color-purple;
+    bottom: -80px;
+    right: -80px;
+  }
 
   h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    letter-spacing: 0.1em;
-    background: linear-gradient(45deg, #00ffff, #ffffff, #8a2be2);
+    font-size: 3.4rem;
+    font-weight: 300; // キャッチコピー前半を細くしてスタイリッシュに
+    margin-bottom: 25px;
+    letter-spacing: 0.12em;
+    line-height: 1.5;
+    background: linear-gradient(135deg, $trai-color-cyan, #ffffff, $trai-color-purple);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: fv-text-glow 4s ease-in-out infinite alternate;
+    animation: fv-text-glow 6s ease-in-out infinite alternate;
+    text-align: center;
+
+    // キャッチコピー後半（span）を極太にして緩急を演出
+    span {
+      font-weight: 800;
+      display: inline-block;
+      text-shadow: 0 0 30px rgba($trai-color-purple, 0.3);
+    }
   }
 
   p {
-    font-size: 1.2rem;
-    letter-spacing: 0.05em;
+    font-size: 1.25rem;
+    letter-spacing: 0.12em;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 45px;
+    font-weight: 300;
+    text-align: center;
+  }
+}
+
+// CTAアクションエリア
+.fv-actions {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  
+  @include mq("sm") {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+}
+
+// CTAボタンの基本スタイル（Glassmorphism + Neon Outline）
+.fv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 36px;
+  border-radius: 30px;
+  font-size: 0.98rem; // わずかに小さくしてスマートに
+  font-weight: 600;
+  letter-spacing: 1.5px; // 文字間隔を広げてスタイリッシュに
+  text-decoration: none;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+  box-sizing: border-box;
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+  min-width: 230px;
+
+  // 斜め閃光エフェクト用ライン
+  .fv-btn-glint {
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.15),
+      transparent
+    );
+    transform: skewX(-25deg);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .fv-btn-arrow {
+    margin-left: 10px;
+    font-size: 1.1rem;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  // ホバーアクション共通
+  &:hover {
+    transform: translateY(-4px);
+
+    .fv-btn-glint {
+      left: 200%;
+      transition: all 0.9s ease;
+    }
+
+    .fv-btn-arrow {
+      transform: translateX(4px);
+    }
+  }
+}
+
+// 1. 所属ライバーを見る (Cyanテーマ)
+.fv-btn-livers {
+  border: 1px solid rgba($trai-color-cyan, 0.25); // 常時うっすら発光
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 
+              0 0 10px rgba($trai-color-cyan, 0.08);
+
+  &:hover {
+    background: rgba($trai-color-cyan, 0.08);
+    border-color: $trai-color-cyan;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 
+                0 0 25px rgba($trai-color-cyan, 0.5);
+    color: #fff;
+  }
+}
+
+// 2. 事務所に応募する (Magentaテーマ)
+.fv-btn-contact {
+  border: 1px solid rgba($trai-color-red, 0.2); // 常時うっすら発光
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 
+              0 0 10px rgba($trai-color-red, 0.05);
+
+  &:hover {
+    background: rgba($trai-color-red, 0.08);
+    border-color: $trai-color-red;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 
+                0 0 25px rgba($trai-color-red, 0.4);
+    color: #fff;
+  }
+}
+
+// スクロールインジケーター
+.fv-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  pointer-events: none;
+  animation: fv-scroll-fade-in 1.5s ease-out 1.4s forwards;
+  opacity: 0;
+
+  .fv-scroll-text {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 5px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .fv-scroll-line {
+    position: relative;
+    width: 2px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: linear-gradient(to bottom, rgba($trai-color-cyan, 0), $trai-color-cyan, rgba($trai-color-cyan, 0));
+      animation: fv-scroll-dot 2.2s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+    }
+  }
+}
+
+// キーフレームアニメーション
+@keyframes fv-panel-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fv-scroll-fade-in {
+  to {
+    opacity: 1;
   }
 }
 
 @keyframes fv-text-glow {
-  from {
-    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #8a2be2;
+  0% {
+    text-shadow: 0 0 20px rgba($trai-color-cyan, 0.15), 0 0 35px rgba($trai-color-purple, 0.1);
   }
-  to {
-    text-shadow: 0 0 20px #00ffff, 0 0 30px #8a2be2, 0 0 40px #8a2be2;
+  100% {
+    text-shadow: 0 0 30px rgba($trai-color-cyan, 0.3), 0 0 50px rgba($trai-color-purple, 0.25);
+  }
+}
+
+@keyframes fv-scroll-dot {
+  0% {
+    transform: translateY(-20px);
+  }
+  80%, 100% {
+    transform: translateY(60px);
   }
 }
 
 // レスポンシブ対応
 @media (max-width: 768px) {
   .fv-content {
+    padding: 50px 30px;
+    width: 92%;
+
     h1 {
-      font-size: 2rem;
+      font-size: 2.1rem;
+      margin-bottom: 20px;
 
       span {
         display: block;
       }
     }
+
     p {
-      font-size: 1rem;
+      font-size: 0.95rem;
+      margin-bottom: 35px;
+    }
+  }
+
+  .fv-btn {
+    min-width: 100%;
+    padding: 14px 24px;
+    font-size: 0.95rem;
+  }
+  
+  .fv-scroll {
+    bottom: 25px;
+    
+    .fv-scroll-line {
+      height: 45px;
     }
   }
 }

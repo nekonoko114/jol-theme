@@ -7,9 +7,8 @@ class LiverSlider {
     this.swiperInstance = null;
     this.element = null;
     this.config = {
-      // 縦長カードの横スクロール設定
-      slidesPerView: 3,
-      spaceBetween: 40,
+      // 縦長カードの横スクロール設定 (Coverflowエフェクト)
+      slidesPerView: "auto",
       centeredSlides: true,
       freeMode: false,
 
@@ -27,15 +26,10 @@ class LiverSlider {
         },
       },
 
-      // 独自のナビゲーション
-      navigation: {
-        nextEl: ".liver-slider .liver-button-next",
-        prevEl: ".liver-slider .liver-button-prev",
-      },
 
       // 自動再生（独自設定）
       autoplay: {
-        delay: 5000,
+        delay: 4000,
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
         reverseDirection: false,
@@ -43,52 +37,28 @@ class LiverSlider {
 
       // ループ設定
       loop: true,
-      loopAdditionalSlides: 1,
+      loopAdditionalSlides: 2, 
 
-      // エフェクト
-      effect: "slide",
+      // エフェクト: Coverflow (Movies Carousel Sliderスタイル)
+      effect: "coverflow",
+      coverflowEffect: {
+        rotate: 0, // 回転なし
+        stretch: 0, // 間隔
+        depth: 150, // 奥に下がる深さ
+        modifier: 1.5, // 奥行きの強調度
+        slideShadows: true, // 左右スライドのシャドウ
+      },
 
       // 速度設定
-      speed: 1200,
+      speed: 800, // スライドのスピード
 
       // タッチ・マウス操作
-      touchRatio: 1,
+      touchRatio: 1.2, 
       touchAngle: 45,
       grabCursor: true,
 
-      // レスポンシブ設定
-      breakpoints: {
-        // モバイル（320px〜）
-        320: {
-          slidesPerView: 1,
-          spaceBetween: 20,
-          centeredSlides: true,
-        },
-        // スマートフォン（480px〜）
-        480: {
-          slidesPerView: 1,
-          spaceBetween: 25,
-          centeredSlides: true,
-        },
-        // タブレット（768px〜）
-        768: {
-          slidesPerView: 2,
-          spaceBetween: 30,
-          centeredSlides: false,
-        },
-        // デスクトップ（1024px〜）
-        1024: {
-          slidesPerView: 3,
-          spaceBetween: 40,
-          centeredSlides: false,
-        },
-        // 大画面（1400px〜）
-        1400: {
-          slidesPerView: 3,
-          spaceBetween: 60,
-          centeredSlides: false,
-        },
-      },
+      // ブレイクポイントは使用せず、CSSの width でコントロールする
+      breakpoints: {},
 
       // イベントリスナー
       on: {

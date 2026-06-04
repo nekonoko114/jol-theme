@@ -24,13 +24,6 @@
   }
 }
 
-// Desktop-only adjustment: limit inner swiper width to leave gutters from .liver-slider padding
-@media (min-width: 769px) {
-  .liver-slider {
-    .liver-swiper {
-    }
-  }
-}
 // 縦長デザインの横スクロールSwiper - 完全独立版
 .liver-slider {
   padding: 20px 40px;
@@ -39,29 +32,6 @@
   max-width: 100%;
   margin: 0 auto;
 
-  // 背景パーティクルエフェクト
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-        circle at 20% 80%,
-        rgba(120, 119, 198, 0.3) 0%,
-        transparent 50%
-      ),
-      radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%),
-      transparent 50%
-        radial-gradient(
-          circle at 40% 40%,
-          rgba(120, 219, 255, 0.2) 0%,
-          transparent 50%
-        );
-    animation: backgroundFloat 6s ease-in-out infinite alternate;
-    pointer-events: none; // クリックイベントを通すように設定
-  }
 
   // Liver Slider専用のSwiperコンテナ
   // Liver Slider専用のSwiperコンテナ
@@ -576,15 +546,7 @@
   }
 }
 
-// 背景アニメーション
-@keyframes backgroundFloat {
-  0% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  100% {
-    transform: translateY(-20px) rotate(2deg);
-  }
-}
+
 
 // レスポンシブ対応
 @media (max-width: 768px) {

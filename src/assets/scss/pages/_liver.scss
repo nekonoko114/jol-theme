@@ -1,3 +1,8 @@
+@use "sass:color";
+@use "../_modules/fonts" as *;
+@use "../_modules/color" as *;
+@use "../_modules/mixin" as *;
+
 /* Custom CSS for Liver Archive and Single */
 
 /* ==============================================================
@@ -7,10 +12,10 @@
 .liver-premium-container {
     display: flex;
     flex-direction: column;
-    gap: 8rem; /* 大きな余白で高級感を演出 */
+    gap: 6rem; /* 少し狭めて間延び感を解消 */
     padding: 6rem 0;
     font-family: 'Outfit', 'Noto Sans JP', sans-serif;
-    overflow: hidden; /* 透かし文字のはみ出しを制御 */
+    overflow: hidden;
 }
 
 .liver-premium-item {
@@ -18,7 +23,6 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    /* ジグザグをやめ、中央揃えをベースにしながら内部でレイアウトする */
 }
 
 /* 巨大な透かし文字（ウォーターマーク） */
@@ -28,9 +32,9 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: 'Playfair Display', serif;
-    font-size: 25rem; /* 画面を覆う巨大なサイズ */
+    font-size: 25rem;
     font-weight: 300;
-    color: rgba(0, 0, 0, 0.02); /* 極めて薄い色で背景に溶け込ませる */
+    color: rgba(255, 255, 255, 0.012); // ダーク背景に合わせて薄い白に変更
     line-height: 1;
     white-space: nowrap;
     z-index: 0;
@@ -40,10 +44,10 @@
 }
 
 .liver-premium-item:hover .liver-bg-watermark {
-    transform: translate(-50%, -52%) scale(1.02); /* ホバー時にわずかに動く視差効果 */
+    transform: translate(-50%, -52%) scale(1.02);
 }
 
-/* メインカードコンテナ */
+/* メインカードコンテナ (Glassmorphism化) */
 .liver-premium-card {
     position: relative;
     z-index: 1;
@@ -53,32 +57,109 @@
     gap: 5rem;
     width: 100%;
     max-width: 1000px;
-    background: transparent;
+    background: linear-gradient(135deg, rgba(15, 15, 25, 0.65) 0%, rgba(10, 10, 15, 0.45) 100%); // ミステリアスなディープアクリル
+    border: 1px solid rgba(255, 255, 255, 0.12); // ガラスの屈折エッジ
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 50px 60px;
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.5), 
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+
+    // バックライトグロー
+    &::before {
+        content: "";
+        position: absolute;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        filter: blur(100px);
+        z-index: -1;
+        opacity: 0.15;
+        pointer-events: none;
+        transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 }
 
-/* 交互のレイアウト（画像を左右に配置するが、より自然に） */
-.liver-premium-item.premium-odd .liver-premium-card {
-    flex-direction: row;
+/* 交互のレイアウト */
+.liver-premium-item.premium-odd {
+    .liver-premium-card {
+        flex-direction: row;
+        border-radius: 65px 20px 65px 20px; // アシンメトリー角丸
+        transform: rotate(-0.8deg); // ミステリアスな傾き
+        
+        &::before {
+            background: $trai-color-cyan;
+            top: -50px;
+            left: -50px;
+        }
+        
+        .liver-image-wrapper {
+            border-radius: 45px 12px 45px 12px; // 画像も連動して非対称に
+        }
+        
+        &:hover {
+            border-color: rgba($trai-color-cyan, 0.45);
+            transform: translateY(-10px) rotate(0deg); // まっすぐ戻りながら浮き上がる
+            box-shadow: 
+                0 35px 70px rgba(0, 0, 0, 0.6), 
+                0 0 30px rgba($trai-color-cyan, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+            &::before {
+                opacity: 0.25;
+                transform: scale(1.1);
+            }
+        }
+    }
 }
 
-.liver-premium-item.premium-even .liver-premium-card {
-    flex-direction: row-reverse;
+.liver-premium-item.premium-even {
+    .liver-premium-card {
+        flex-direction: row-reverse;
+        border-radius: 20px 65px 20px 65px; // アシンメトリー角丸（偶数は逆）
+        transform: rotate(0.8deg); // 逆の傾き
+        
+        &::before {
+            background: $trai-color-purple;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .liver-image-wrapper {
+            border-radius: 12px 45px 12px 45px; // 画像も連動して非対称に
+        }
+        
+        &:hover {
+            border-color: rgba($trai-color-purple, 0.45);
+            transform: translateY(-10px) rotate(0deg); // まっすぐ戻りながら浮き上がる
+            box-shadow: 
+                0 35px 70px rgba(0, 0, 0, 0.6), 
+                0 0 30px rgba($trai-color-purple, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+            &::before {
+                opacity: 0.25;
+                transform: scale(1.1);
+            }
+        }
+    }
 }
 
 /* 画像ラッパー */
 .liver-image-wrapper {
     flex: 1;
-    max-width: 450px;
+    max-width: 420px;
     position: relative;
-    border-radius: 24px;
-    overflow: hidden; /* オーバーレイを角丸に沿わせる */
-    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .liver-premium-item:hover .liver-image-wrapper {
-    transform: translateY(-8px);
-    box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+    transform: scale(1.03);
+    box-shadow: 0 25px 45px rgba(0,0,0,0.5);
 }
 
 .image-link {
@@ -97,56 +178,49 @@
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 画像上のプレミアムなベール（オーバーレイ） */
+/* 画像上のベール */
 .image-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.1), rgba(0,0,0,0));
+    background: linear-gradient(to top, rgba(10, 10, 18, 0.5) 0%, rgba(10, 10, 18, 0) 100%); // ディープブレンド
     opacity: 1;
     transition: opacity 0.6s ease;
     pointer-events: none;
 }
 
 .liver-premium-item:hover .liver-image-wrapper img {
-    transform: scale(1.05); /* ホバーで滑らかにズームイン */
+    transform: scale(1.06);
 }
 
 .liver-premium-item:hover .image-overlay {
-    opacity: 0; /* ホバーでベールがスッと晴れる */
+    opacity: 0.4;
 }
 
 /* テキスト情報ラッパー */
 .liver-info-wrapper {
     flex: 1;
     max-width: 400px;
-    padding: 2rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.liver-premium-item:hover .liver-info-wrapper {
-    transform: translateX(5px); /* ホバー時にテキスト全体がわずかにスライド */
-}
-.liver-premium-item.premium-even:hover .liver-info-wrapper {
-    transform: translateX(-5px);
-}
-
 .liver-number-small {
     font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    color: #cfa98c;
-    margin-bottom: 1rem;
-    letter-spacing: 0.1em;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.4); // 優しい薄白に変更
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.15em;
 }
 
 .liver-name {
-    font-size: 2.8rem;
-    font-weight: 500;
+    font-size: 2.6rem;
+    font-weight: 700;
     margin-bottom: 0.5rem;
     letter-spacing: 0.05em;
     line-height: 1.2;
@@ -154,65 +228,98 @@
 
 .liver-name a {
     text-decoration: none;
-    color: #1a1a1a;
+    color: #fff; // ダーク背景に映える白に変更
     transition: color 0.3s ease;
 }
 
-.liver-premium-item:hover .liver-name a {
-    color: #b58d6f;
+.liver-premium-item.premium-odd:hover .liver-name a {
+    color: $trai-color-cyan;
+    text-shadow: 0 0 10px rgba($trai-color-cyan, 0.3);
+}
+
+.liver-premium-item.premium-even:hover .liver-name a {
+    color: $trai-color-purple;
+    text-shadow: 0 0 10px rgba($trai-color-purple, 0.3);
 }
 
 .liver-id {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 300;
-    color: #8c827a;
-    margin-bottom: 3rem;
+    color: rgba(255, 255, 255, 0.5); // 薄白に変更
+    margin-bottom: 2.5rem;
     letter-spacing: 0.05em;
 }
 
-/* アクションボタン（洗練されたラインボタン） */
+/* アクションボタン (Glassmorphism + 丸角) */
 .btn-premium {
     display: inline-flex;
     align-items: center;
-    gap: 1.5rem;
-    padding: 1rem 0;
-    background: transparent;
-    color: #1a1a1a;
+    justify-content: center;
+    padding: 12px 32px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
     text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
-    letter-spacing: 0.15em;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     position: relative;
-}
+    overflow: hidden;
+    align-self: flex-start;
 
-.btn-premium::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background-color: #b58d6f;
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    // 斜め閃光用
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -150%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.15),
+            transparent
+        );
+        transform: skewX(-25deg);
+        pointer-events: none;
+        z-index: 1;
+    }
 }
 
 .btn-premium .btn-arrow {
     display: inline-flex;
     align-items: center;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-left: 8px;
+    font-size: 0.95rem;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.liver-premium-item.premium-odd:hover .btn-premium {
+    border-color: rgba($trai-color-cyan, 0.4);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba($trai-color-cyan, 0.25);
+    background: rgba($trai-color-cyan, 0.05);
+}
+
+.liver-premium-item.premium-even:hover .btn-premium {
+    border-color: rgba($trai-color-purple, 0.4);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba($trai-color-purple, 0.2);
+    background: rgba($trai-color-purple, 0.05);
 }
 
 .btn-premium:hover {
-    color: #b58d6f;
-}
-
-.btn-premium:hover::after {
-    width: 100%;
-}
-
-.btn-premium:hover .btn-arrow {
-    transform: translateX(8px);
+    &::before {
+        left: 200%;
+        transition: all 0.9s ease;
+    }
+    
+    .btn-arrow {
+        transform: translateX(4px);
+    }
 }
 
 /* SINGLE LIVER - AGENCY THEME */

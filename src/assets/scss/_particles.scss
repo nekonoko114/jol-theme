@@ -9,26 +9,4 @@
   pointer-events: auto; // インタラクション可能
 }
 
-// FVセクションの調整
-.fv {
-  position: relative;
-  min-height: 100vh;
-  overflow: hidden;
 
-  .fv-content {
-    position: relative;
-    z-index: 2; // particleより前面に
-    padding-top: 150px;
-    text-align: center;
-
-    h1 {
-      position: relative;
-      z-index: 3;
-    }
-
-    p {
-      position: relative;
-      z-index: 3;
-    }
-  }
-}

@@ -160,6 +160,13 @@ function jol_create_post_type_ranking()
 add_action('init', 'jol_create_post_type_ranking', 0);
 
 // カスタム投稿タイプの管理画面がクラシックエディターになっているので、Gutenbergエディターに変更
+/**
+ * Gutenbergエディターをカスタム投稿タイプで有効化
+ *
+ * @param bool   $can_edit
+ * @param string $post_type
+ * @return bool
+ */
 function jol_enable_gutenberg_for_custom_post_types($can_edit, $post_type)
 {
   if (in_array($post_type, array('liver', 'interview', 'event', 'ranking'))) {

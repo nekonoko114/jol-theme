@@ -5,6 +5,26 @@
     <div class="fv-content">
         <h1>未来のスターが、<span>ここから生まれる。</span></h1>
         <p>J.O.Lの仲間と共に<br>『人生謳歌』しましょう。</p>
+        
+        <!-- CTAボタン -->
+        <div class="fv-actions">
+            <a href="<?php echo esc_url(home_url('/livers')); ?>" class="fv-btn fv-btn-livers">
+                <span class="fv-btn-glint"></span>
+                所属ライバーを見る
+                <span class="fv-btn-arrow">→</span>
+            </a>
+            <a href="./contact" class="fv-btn fv-btn-contact">
+                <span class="fv-btn-glint"></span>
+                事務所に応募する
+                <span class="fv-btn-arrow">→</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- スクロールインジケーター -->
+    <div class="fv-scroll" aria-hidden="true">
+        <span class="fv-scroll-text">SCROLL</span>
+        <span class="fv-scroll-line"></span>
     </div>
 </div>
 <section class="giver">
@@ -162,47 +182,46 @@
     </div>
 </section>
 
-
-<!-- <?php
-// $inteview_args = array(
-//     'post_type' => 'interview',
-//     'posts_per_page' => -1,
-//     'orderby' => 'rand',
-//     'post_status' => 'publish',
-// );
-$interview_query = new WP_Query($inteview_args);
+<?php
+$interview_args = array(
+    'post_type' => 'interview',
+    'posts_per_page' => 3,
+    'orderby' => 'rand',
+    'post_status' => 'publish',
+);
+$interview_query = new WP_Query($interview_args);
 
 ?>
 <section class="interview">
+    
+    <div class="interview-bg-text" aria-hidden="true">INTERVIEW</div>
+
     <div class="interview-inner inner">
-        <h2 class="interview-title">Interview</h2>
+        <div class="interview-heading">
+            <h2 class="interview-title">Interview</h2>
+            <div class="interview-more"><a href="<?php echo esc_url(get_post_type_archive_link('interview')); ?>">インタビュー一覧へ</a></div>
+        </div>
         <div class="interview-archive-container">
             <?php if ($interview_query->have_posts()) : ?>
                 <?php while ($interview_query->have_posts()) : $interview_query->the_post(); ?>
 
                     <article class="interview-archive-item">
-                        <div class="interview-card">
+                        <a href="<?php the_permalink(); ?>" class="interview-card">
+                            
+                            <span class="interview-card-glint"></span>
 
                             <?php if (has_post_thumbnail()) : ?>
                                 <div class="interview-thumbnail">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <?php the_post_thumbnail('medium'); ?>
-                                    </a>
+                                    <?php the_post_thumbnail('medium'); ?>
                                 </div>
                             <?php else : ?>
-                                <div class="interview-thumbnail">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/interview-default.jpg" alt="<?php the_title(); ?>のインタビュー画像">
-                                    </a>
-                                </div>
+                                <div class="interview-thumbnail no-image"></div>
                             <?php endif; ?>
 
                             <div class="interview-content">
-                                <h2 class="interview-content-title">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <?php the_title(); ?>
-                                    </a>
-                                </h2>
+                                <h3 class="interview-content-title">
+                                    <?php the_title(); ?>
+                                </h3>
 
                                 <div class="interview-meta">
                                     <?php
@@ -216,23 +235,36 @@ $interview_query = new WP_Query($inteview_args);
                                 </div>
 
                                 <div class="interview-excerpt">
-                                    <?php echo get_the_excerpt(); ?>
+                                    <?php 
+                                    $excerpt = get_the_excerpt();
+                                    $excerpt = strip_tags($excerpt);
+                                    $excerpt = mb_substr($excerpt, 0, 80);
+                                    if (mb_strlen(get_the_excerpt()) > 80) {
+                                        $excerpt .= '...';
+                                    }
+                                    echo esc_html($excerpt);
+                                    ?>
                                 </div>
                             </div>
-                        </div>
-                    </article>
 
+                            
+                            <span class="interview-card-arrow">
+                                <span class="arrow-text">→</span>
+                            </span>
+                        </a>
+                    </article>
 
                 <?php endwhile; ?>
                 <?php wp_reset_postdata(); ?>
             <?php else : ?>
                 <div class="no-posts">
                     <p>インタビューが見つかりませんでした。</p>
-
                 </div>
             <?php endif; ?>
         </div>
-</section> -->
+    </div>
+</section>
+
 
 <?php
 $event_args = array(
@@ -251,6 +283,9 @@ if (current_user_can('administrator')) {
 ?>
 
 <section class="event">
+    <!-- 背後の巨大なデコレーション文字 -->
+    <div class="event-bg-text" aria-hidden="true">EVENT</div>
+    
     <div class="event-inner inner">
         <h2 class="event-title">Event</h2>
         <!-- <p class="event-subtitle">イベント</p> -->
@@ -258,6 +293,9 @@ if (current_user_can('administrator')) {
             <div class="event-container">
                 <?php while ($event_query->have_posts()) : $event_query->the_post(); ?>
                     <a class="event-item" href="<?php the_permalink(); ?>">
+                        <!-- ホバー時の閃光エフェクト用ライン -->
+                        <span class="event-item-glint"></span>
+                        
                         <p class="event-date">
                             <?php echo get_the_date('Y年'); ?>
                             <span><?php echo get_the_date('n月j日'); ?></span>
@@ -307,6 +345,11 @@ if (current_user_can('administrator')) {
                                 ?>
                             </p>
                         </div>
+                        
+                        <!-- 丸型矢印ボタン -->
+                        <span class="event-item-arrow">
+                            <span class="arrow-text">→</span>
+                        </span>
                     </a>
                 <?php endwhile; ?>
                 <?php wp_reset_postdata(); ?>
@@ -316,6 +359,7 @@ if (current_user_can('administrator')) {
         <?php endif; ?>
     </div>
 </section>
+
 
 <?php get_template_part('template-parts/content/l-contact'); ?>
 

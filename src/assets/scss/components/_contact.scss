@@ -1,22 +1,99 @@
+@use "sass:color";
 @use "../_modules/fonts" as *;
 @use "../_modules/color" as *;
 @use "../_modules/mixin" as *;
 
 // CONTACTセクション
 .contact {
-  padding: 240px 0;
-  background: #000;
+  padding: 180px 0;
   position: relative;
-  border-top: 1px solid $trai-color-purple;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 
   @include mq("sm") {
-    padding: 60px 0;
+    padding: 100px 0;
   }
 
+  // 背後の巨大デコレーションテキスト
+  .contact-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.015);
+    letter-spacing: 0.15em;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.02);
+  }
+
+  // 背景グロー効果
+  .contact-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.12;
+
+    &-purple {
+      background: $trai-color-purple;
+      top: 10%;
+      left: 10%;
+    }
+
+    &-red {
+      background: $trai-color-red;
+      bottom: 10%;
+      right: 10%;
+    }
+
+    @include mq("sm") {
+      width: 250px;
+      height: 250px;
+      filter: blur(80px);
+    }
+  }
+
+  // インナー
+  .contact-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  // セクションタイトル
   .contact-title {
-    margin-bottom: 2rem;
+    text-align: center;
+    margin-bottom: 80px;
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, $trai-color-cyan, $trai-color-red);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba($trai-color-cyan, 0.2);
+
     &::before {
       content: "お問い合わせ";
+      display: block;
+      font-size: 1rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.6);
+      letter-spacing: 4px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      -webkit-text-fill-color: rgba(255, 255, 255, 0.6); // グラデーション解除用
+    }
+
+    @include mq("sm") {
+      font-size: 2.2rem;
+      margin-bottom: 50px;
     }
   }
 }
@@ -24,187 +101,159 @@
 // カードコンテナ
 .contact-cards {
   display: flex;
-  gap: 120px;
+  gap: 60px;
   max-width: 1000px;
   margin: 0 auto;
   justify-content: center;
-  padding: 60px 0;
-}
+  align-items: flex-start; // アシンメトリーのために上揃えに
+  padding: 20px 0;
 
-// カードスタイル
-.contact-card {
-  flex: 1;
-  max-width: 400px;
-  background: white;
-  border-radius: 20px;
-  padding: 60px 40px;
-  text-align: center;
-  text-decoration: none;
-  color: #333;
-  position: relative;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-
-  .contact-card-arrow {
-    display: inline-block;
-    background: #000;
-    padding: 20px 25px;
-    border-radius: 999px;
-    border: #000 solid 1px;
-
-    @include mq("sm") {
-      padding: 10px 15px;
-    }
-  }
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    .contact-card-arrow {
-      transform: translateX(10px);
-      background: #fff;
-      color: #000;
-    }
-  }
-}
-
-// カードコンテンツ
-.contact-card-content {
-  position: relative;
-  z-index: 2;
-}
-
-.contact-card-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 20px;
-  letter-spacing: 1px;
-}
-
-.contact-card-text {
-  font-size: 1.1rem;
-  color: #666;
-  line-height: 1.7;
-  margin-bottom: 30px;
-}
-
-.contact-card-arrow {
-  display: inline-block;
-  font-size: 1.5rem;
-  color: #999;
-  transition: all 0.3s ease;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-// 代理店募集カードの特別スタイル
-.contact-partner {
-  box-shadow: 0 0 10px 2px $trai-color-purple;
-  animation: border-glow-purple 2s infinite alternate;
-  @keyframes border-glow-purple {
-    0% {
-      box-shadow: 0 0 5px $trai-color-purple, 0 0 10px $trai-color-purple,
-        0 0 15px $trai-color-purple;
-    }
-    100% {
-      box-shadow: 0 0 10px $trai-color-purple, 0 0 20px $trai-color-purple,
-        0 0 30px $trai-color-purple, 0 0 40px $trai-color-purple;
-    }
-  }
-  &:hover {
-    .contact-card-title {
-      color: $trai-color-purple;
-    }
-
-    .contact-card-arrow {
-      color: $trai-color-purple;
-      border: $trai-color-purple solid 1px;
-    }
-  }
-}
-
-// コンタクトカードの特別スタイル
-.contact-contact {
-  box-shadow: 0 0 10px 2px $trai-color-red;
-  animation: border-glow-red 2s infinite alternate;
-  @keyframes border-glow-red {
-    0% {
-      box-shadow: 0 0 10px $trai-color-red, 0 0 20px $trai-color-red,
-        0 0 30px $trai-color-red, 0 0 40px $trai-color-red;
-    }
-    100% {
-      box-shadow: 0 0 5px $trai-color-red, 0 0 10px $trai-color-red,
-        0 0 15px $trai-color-red;
-    }
-  }
-  &:hover {
-    .contact-card-title {
-      color: $trai-color-red;
-    }
-
-    .contact-card-arrow {
-      color: $trai-color-red;
-      border: $trai-color-red solid 1px;
-    }
-  }
-}
-
-// アニメーション定義（最小限）
-
-// レスポンシブ対応
-@media (max-width: 768px) {
-  .contact {
-    padding: 80px 0;
-
-    .contact-title {
-      font-size: 2.5rem;
-      margin-bottom: 15px;
-    }
-
-    .contact-subtitle {
-      font-size: 1rem;
-      margin-bottom: 40px;
-    }
-  }
-
-  .contact-cards {
+  @include mq("sm") {
     flex-direction: column;
+    align-items: center;
     gap: 30px;
     padding: 0 20px;
   }
-
-  .contact-card {
-    padding: 50px 30px;
-
-    .contact-card-title {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-    }
-
-    .contact-card-text {
-      font-size: 1rem;
-      margin-bottom: 25px;
-    }
-  }
 }
 
-@media (max-width: 480px) {
-  .contact {
-    padding: 60px 0;
+// カード基本スタイル (Glassmorphism)
+.contact-card {
+  flex: 1;
+  max-width: 420px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 24px;
+  padding: 60px 40px 50px;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  position: relative;
+  overflow: hidden; // グリント（閃光）をはみ出させない
+  display: block;
+  box-sizing: border-box;
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 
-    .contact-title {
-      font-size: 2rem;
+  // ホバー時の斜め閃光エフェクト用ライン
+  .contact-card-glint {
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.12),
+      transparent
+    );
+    transform: skewX(-25deg);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  // アイコンラッパー
+  .contact-card-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+    svg {
+      width: 36px;
+      height: 36px;
+      transition: all 0.4s ease;
     }
   }
 
-  .contact-cards {
-    gap: 20px;
-    padding: 0 15px;
+  // カードタイトル
+  .contact-card-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
   }
 
-  .contact-card {
-    padding: 40px 25px;
+  // カード説明テキスト
+  .contact-card-text {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.8;
+    margin-bottom: 35px;
+    font-weight: 300;
+  }
+
+  // 矢印ボタン（丸ボタン）
+  .contact-card-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.4rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+    .arrow-text {
+      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+  }
+
+  // ----------------------------------
+  // ホバーアクション共通
+  // ----------------------------------
+  &:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.18);
+
+    // グリント閃光を走らせる
+    .contact-card-glint {
+      left: 200%;
+      transition: all 0.9s ease;
+    }
+
+    // 矢印ボタンのアクション
+    .contact-card-arrow {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+
+      .arrow-text {
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  @include mq("sm") {
+    padding: 50px 30px 40px;
+
+    .contact-card-icon {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 20px;
+
+      svg {
+        width: 30px;
+        height: 30px;
+      }
+    }
 
     .contact-card-title {
       font-size: 1.5rem;
@@ -212,7 +261,65 @@
 
     .contact-card-text {
       font-size: 0.95rem;
-      line-height: 1.6;
+      margin-bottom: 25px;
     }
+  }
+}
+
+// ==========================================
+// 【アシンメトリーと個別発光テーマ】
+// ==========================================
+
+// 1. 代理店募集カード (BtoB)
+.contact-partner {
+  // デスクトップ時のみ位置を基準に
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 
+              0 0 20px rgba($trai-color-purple, 0.15), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  &:hover {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
+                0 0 30px rgba($trai-color-purple, 0.4), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    
+    .contact-card-icon {
+      background: $trai-color-purple;
+      color: #fff;
+      border-color: $trai-color-purple;
+      box-shadow: 0 0 15px rgba($trai-color-purple, 0.4);
+    }
+    
+    .contact-card-title {
+      color: color.mix($trai-color-purple, #fff, 30%);
+    }
+  }
+}
+
+// 2. Contactカード (BtoC) - 右側を下にずらすアシンメトリー
+.contact-contact {
+  margin-top: 60px; // デスクトップ時に縦のズレを作る
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 
+              0 0 20px rgba($trai-color-red, 0.12), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  &:hover {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
+                0 0 30px rgba($trai-color-red, 0.35), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    
+    .contact-card-icon {
+      background: $trai-color-red;
+      color: #fff;
+      border-color: $trai-color-red;
+      box-shadow: 0 0 15px rgba($trai-color-red, 0.4);
+    }
+
+    .contact-card-title {
+      color: color.mix($trai-color-red, #fff, 30%);
+    }
+  }
+
+  @include mq("sm") {
+    margin-top: 0; // スマホでは縦ズレを解除して見やすく
   }
 }

@@ -75,6 +75,11 @@ function jol_add_twitter_embed_script()
 add_action('wp_enqueue_scripts', 'jol_add_twitter_embed_script');
 
 // 管理画面用のスクリプトとスタイル
+/**
+ * 管理画面用のスクリプトとスタイル
+ *
+ * @param string $hook
+ */
 function jol_enqueue_admin_assets($hook)
 {
   // 管理画面でも必要に応じてアセットを読み込み
@@ -88,6 +93,13 @@ function jol_enqueue_admin_assets($hook)
 add_action('admin_enqueue_scripts', 'jol_enqueue_admin_assets');
 
 // DNSプリフェッチとプリロードの追加
+/**
+ * DNSプリフェッチとプリロードの追加
+ *
+ * @param array  $urls
+ * @param string $relation_type
+ * @return array
+ */
 function jol_add_resource_hints($urls, $relation_type)
 {
   if (wp_installing() || is_admin()) {
@@ -135,6 +147,12 @@ function jol_debug_script_loading()
 add_action('wp_enqueue_scripts', 'jol_debug_script_loading', 999);
 
 // アセットのバージョン管理（開発環境用）
+/**
+ * アセットのバージョン管理
+ *
+ * @param string $file_path
+ * @return string|int
+ */
 function jol_get_asset_version($file_path)
 {
   if (WP_DEBUG) {
@@ -144,6 +162,13 @@ function jol_get_asset_version($file_path)
 }
 
 // キャッシュバスティング（開発環境用）
+/**
+ * キャッシュバスティングの追加
+ *
+ * @param string $src
+ * @param string $handle
+ * @return string
+ */
 function jol_add_cache_busting($src, $handle)
 {
   if (WP_DEBUG && !is_admin()) {
