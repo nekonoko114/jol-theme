@@ -6204,6 +6204,21 @@ svg.active .svg-elem-32 {
   font-family: "Outfit", "Noto Sans JP", sans-serif;
 }
 
+.event-rank-col {
+  --rank-theme-color: #d4b295;
+  --rank-theme-border: rgba(212, 178, 149, 0.3);
+}
+
+.diamond-rank-col {
+  --rank-theme-color: #a8b9c4;
+  --rank-theme-border: rgba(168, 185, 196, 0.3);
+}
+
+.delivery-time-rank-col {
+  --rank-theme-color: #bca5b9;
+  --rank-theme-border: rgba(188, 165, 185, 0.3);
+}
+
 /* 3カラムレイアウト */
 
 .ranking-layout-grid {
@@ -6219,7 +6234,7 @@ svg.active .svg-elem-32 {
 .ranking-column-title {
   text-align: center;
   margin-bottom: 4rem;
-  border-bottom: 1px solid rgba(207, 169, 140, 0.3);
+  border-bottom: 1px solid var(--rank-theme-border, rgba(207, 169, 140, 0.3));
   padding-bottom: 1.5rem;
 }
 
@@ -6228,7 +6243,7 @@ svg.active .svg-elem-32 {
   font-family: "Playfair Display", serif;
   font-size: 2.2rem;
   font-weight: 300;
-  color: #cfa98c;
+  color: var(--rank-theme-color, #cfa98c);
   letter-spacing: 0.1em;
   line-height: 1.2;
 }
@@ -6271,11 +6286,11 @@ svg.active .svg-elem-32 {
 
 .ranking-list-item:hover .liver-avatar-wrap {
   transform: scale(1.05);
-  border-color: #cfa98c;
+  border-color: var(--rank-theme-color, #cfa98c);
 }
 
 .ranking-list-item:hover .creator-name a {
-  color: #cfa98c;
+  color: var(--rank-theme-color, #cfa98c);
 }
 
 /* 順位バッジ */
