@@ -103,9 +103,16 @@ function jol_run_liver_sync() {
         $df_lower = strtolower(trim($display_flag));
         $is_displayed = ($df_lower === 'true' || $df_lower === '1' || $df_lower === 'yes') ? 1 : 0;
 
-        // タイトルで既存の投稿を探す
-        $existing_post = get_page_by_title($liver_name, OBJECT, 'liver');
-        $post_id = $existing_post ? $existing_post->ID : 0;
+        // TikTok ID（メタキー creator_account）で既存の投稿を探す（名前の表記ゆれによる重複防止）
+        $existing_posts = get_posts(array(
+            'post_type'      => 'liver',
+            'meta_key'       => 'creator_account',
+            'meta_value'     => $creator_account,
+            'posts_per_page' => 1,
+            'post_status'    => 'any', // 公開・下書き両方を検索
+            'fields'         => 'ids',
+        ));
+        $post_id = !empty($existing_posts) ? $existing_posts[0] : 0;
 
         // ==========================================
         // FALSEのメンバー：既存なら下書きにして終了、新規なら作らない
