@@ -48,8 +48,8 @@ function jol_run_liver_sync() {
     // 画像ダウンロード等でタイムアウトしないように時間を延長
     set_time_limit(300);
 
-    // スプレッドシートのCSVエクスポートURL
-    $csv_url = 'https://docs.google.com/spreadsheets/d/1XuVwub4c2LNxtK9PFFt36uohbu3d3y2aDWap7oNK4WU/export?format=csv&gid=1856438075';
+    // スプレッドシートのCSVエクスポートURL (※新しいスプレッドシート用のURLに変更)
+    $csv_url = 'https://docs.google.com/spreadsheets/d/1XuVwub4c2LNxtK9PFFt36uohbu3d3y2aDWap7oNK4WU/export?format=csv';
     
     // HTTPリクエストでCSVを取得
     $response = wp_remote_get($csv_url, array('timeout' => 30));
@@ -77,20 +77,27 @@ function jol_run_liver_sync() {
     require_once(ABSPATH . 'wp-admin/includes/image.php');
 
     while (($row = fgetcsv($stream)) !== false) {
-        $liver_name      = isset($row[1]) ? trim($row[1]) : '';
-        $creator_account = isset($row[2]) ? trim($row[2]) : '';
-        $delivery        = isset($row[4]) ? trim($row[4]) : ''; // E列: 参加日/配信開始時期
-        $feature         = isset($row[5]) ? trim($row[5]) : ''; // F列: 配信内容/特徴
-        $drive_url       = isset($row[7]) ? trim($row[7]) : '';
-        $display_flag    = isset($row[8]) ? trim($row[8]) : ''; // I列 (TRUE or FALSE)
+        // 新しいスプレッドシートの列構造に対応
+        $creator_account = isset($row[0]) ? trim($row[0]) : ''; // A列: クリエイターアカウント
+        $liver_name      = isset($row[1]) ? trim($row[1]) : ''; // B列: クリエイター名
+        $tiktok_url_val  = isset($row[2]) ? trim($row[2]) : ''; // C列: アカウントURL
+        $display_flag    = isset($row[3]) ? trim($row[3]) : ''; // D列: 表示フラグ
+        $drive_url       = ''; // 新しいスプレッドシートにGoogle Drive画像URL列は無いため空
 
         if (empty($liver_name) || empty($creator_account)) {
             continue;
         }
 
-        // TikTok URLの生成
-        $formatted_account = strpos($creator_account, '@') === 0 ? $creator_account : '@' . $creator_account;
-        $tiktok_url = 'https://www.tiktok.com/' . $formatted_account;
+        // TikTok URLの判定と補完（C列のデータがあれば優先、無ければアカウント名から自動生成）
+        if (!empty($tiktok_url_val)) {
+            if (!preg_match('/^https?:\/\//', $tiktok_url_val)) {
+                $tiktok_url_val = 'https://www.tiktok.com/@' . ltrim($tiktok_url_val, '/@');
+            }
+            $tiktok_url = $tiktok_url_val;
+        } else {
+            $formatted_account = strpos($creator_account, '@') === 0 ? $creator_account : '@' . $creator_account;
+            $tiktok_url = 'https://www.tiktok.com/' . $formatted_account;
+        }
 
         // 表示フラグの判定（TRUE、1、yesなどに柔軟に対応）
         $df_lower = strtolower(trim($display_flag));
@@ -148,9 +155,9 @@ function jol_run_liver_sync() {
         // ACFの情報を更新
         if (function_exists('update_field')) {
             update_field('creator_account', $creator_account, $post_id);
-            update_field('feature', $feature, $post_id);
-            update_field('delivery', $delivery, $post_id);
             update_field('account_url', $tiktok_url, $post_id);
+            // ※ 特徴(feature)や配信開始時期(delivery)は、スプレッドシート側に存在しないため、
+            // 手動での入力を保護するために同期による上書き（クリア）は行いません。
         }
 
         // アイキャッチ画像の設定
