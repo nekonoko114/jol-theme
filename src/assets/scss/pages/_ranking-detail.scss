@@ -49,6 +49,9 @@
         .title-en {
             color: #d4b295 !important;
         }
+        .title-ja {
+            color: rgba(212, 178, 149, 0.6) !important;
+        }
     }
     .ranking-list-item:hover {
         .liver-avatar-wrap {
@@ -58,6 +61,11 @@
             color: #d4b295 !important;
         }
     }
+    .no-data-msg {
+        color: rgba(212, 178, 149, 0.6) !important;
+        border-color: rgba(212, 178, 149, 0.15) !important;
+        background: rgba(212, 178, 149, 0.02) !important;
+    }
 }
 
 .diamond-rank-col {
@@ -65,6 +73,9 @@
         border-bottom-color: rgba(168, 185, 196, 0.3) !important;
         .title-en {
             color: #a8b9c4 !important;
+        }
+        .title-ja {
+            color: rgba(168, 185, 196, 0.6) !important;
         }
     }
     .ranking-list-item:hover {
@@ -75,6 +86,11 @@
             color: #a8b9c4 !important;
         }
     }
+    .no-data-msg {
+        color: rgba(168, 185, 196, 0.6) !important;
+        border-color: rgba(168, 185, 196, 0.15) !important;
+        background: rgba(168, 185, 196, 0.02) !important;
+    }
 }
 
 .delivery-time-rank-col {
@@ -82,6 +98,9 @@
         border-bottom-color: rgba(188, 165, 185, 0.3) !important;
         .title-en {
             color: #bca5b9 !important;
+        }
+        .title-ja {
+            color: rgba(188, 165, 185, 0.6) !important;
         }
     }
     .ranking-list-item:hover {
@@ -91,6 +110,11 @@
         .creator-name a {
             color: #bca5b9 !important;
         }
+    }
+    .no-data-msg {
+        color: rgba(188, 165, 185, 0.6) !important;
+        border-color: rgba(188, 165, 185, 0.15) !important;
+        background: rgba(188, 165, 185, 0.02) !important;
     }
 }
 

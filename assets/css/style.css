@@ -6250,12 +6250,22 @@ svg.active .svg-elem-32 {
   color: #d4b295 !important;
 }
 
+.event-rank-col .ranking-column-title .title-ja {
+  color: rgba(212, 178, 149, 0.6) !important;
+}
+
 .event-rank-col .ranking-list-item:hover .liver-avatar-wrap {
   border-color: #d4b295 !important;
 }
 
 .event-rank-col .ranking-list-item:hover .creator-name a {
   color: #d4b295 !important;
+}
+
+.event-rank-col .no-data-msg {
+  color: rgba(212, 178, 149, 0.6) !important;
+  border-color: rgba(212, 178, 149, 0.15) !important;
+  background: rgba(212, 178, 149, 0.02) !important;
 }
 
 .diamond-rank-col .ranking-column-title {
@@ -6266,12 +6276,22 @@ svg.active .svg-elem-32 {
   color: #a8b9c4 !important;
 }
 
+.diamond-rank-col .ranking-column-title .title-ja {
+  color: rgba(168, 185, 196, 0.6) !important;
+}
+
 .diamond-rank-col .ranking-list-item:hover .liver-avatar-wrap {
   border-color: #a8b9c4 !important;
 }
 
 .diamond-rank-col .ranking-list-item:hover .creator-name a {
   color: #a8b9c4 !important;
+}
+
+.diamond-rank-col .no-data-msg {
+  color: rgba(168, 185, 196, 0.6) !important;
+  border-color: rgba(168, 185, 196, 0.15) !important;
+  background: rgba(168, 185, 196, 0.02) !important;
 }
 
 .delivery-time-rank-col .ranking-column-title {
@@ -6282,12 +6302,22 @@ svg.active .svg-elem-32 {
   color: #bca5b9 !important;
 }
 
+.delivery-time-rank-col .ranking-column-title .title-ja {
+  color: rgba(188, 165, 185, 0.6) !important;
+}
+
 .delivery-time-rank-col .ranking-list-item:hover .liver-avatar-wrap {
   border-color: #bca5b9 !important;
 }
 
 .delivery-time-rank-col .ranking-list-item:hover .creator-name a {
   color: #bca5b9 !important;
+}
+
+.delivery-time-rank-col .no-data-msg {
+  color: rgba(188, 165, 185, 0.6) !important;
+  border-color: rgba(188, 165, 185, 0.15) !important;
+  background: rgba(188, 165, 185, 0.02) !important;
 }
 
 /* ランキングアイテムリスト */

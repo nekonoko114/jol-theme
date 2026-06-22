@@ -43,6 +43,7 @@
                                 $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;
                                 $liver_post = get_post($liver_id);
                                 if ($liver_post && $liver_post->post_status === 'publish') :
+                                    if ($rank > 5) break;
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
@@ -94,6 +95,7 @@
                                 $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;
                                 $liver_post = get_post($liver_id);
                                 if ($liver_post && $liver_post->post_status === 'publish') :
+                                    if ($rank > 5) break;
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
@@ -145,6 +147,7 @@
                                 $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;
                                 $liver_post = get_post($liver_id);
                                 if ($liver_post && $liver_post->post_status === 'publish') :
+                                    if ($rank > 5) break;
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);

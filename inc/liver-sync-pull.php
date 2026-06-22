@@ -91,7 +91,12 @@ function jol_run_liver_sync() {
         // TikTok URLの判定と補完（C列のデータがあれば優先、無ければアカウント名から自動生成）
         if (!empty($tiktok_url_val)) {
             if (!preg_match('/^https?:\/\//', $tiktok_url_val)) {
-                $tiktok_url_val = 'https://www.tiktok.com/@' . ltrim($tiktok_url_val, '/@');
+                // すでにドメイン名（tiktok.com）が含まれている場合は、単にプロトコルを補完する
+                if (strpos($tiktok_url_val, 'tiktok.com') !== false) {
+                    $tiktok_url_val = 'https://' . ltrim($tiktok_url_val, '/');
+                } else {
+                    $tiktok_url_val = 'https://www.tiktok.com/@' . ltrim($tiktok_url_val, '/@');
+                }
             }
             $tiktok_url = $tiktok_url_val;
         } else {
