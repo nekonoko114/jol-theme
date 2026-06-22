@@ -545,3 +545,265 @@
         font-size: 1.6rem;
     }
 }
+
+/* ==============================================================
+   MAGAZINE STYLE (Liver Single Page)
+   ============================================================== */
+
+.magazine-feature {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    backdrop-filter: blur(5px);
+}
+
+.magazine-title-link {
+    color: inherit;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: #00f2fe; // テーマのアクセントカラー
+        &::after {
+            width: 100%;
+        }
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #00f2fe;
+        transition: width 0.3s ease;
+    }
+}
+
+.magazine-qa-section {
+    margin-top: 6rem;
+    margin-bottom: 5rem;
+    border-top: 1px solid #333;
+    padding-top: 4rem;
+}
+
+.magazine-qa-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.magazine-qa-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.magazine-qa-subtitle {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.9rem;
+    color: #888;
+    letter-spacing: 0.2em;
+}
+
+.magazine-qa-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.qa-accordion {
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    border-left: 2px solid #333;
+    transition: border-color 0.3s ease;
+
+    &:hover {
+        border-color: #00f2fe;
+    }
+
+    &[open] {
+        .qa-icon::before {
+            transform: translate(-50%, -50%) rotate(180deg);
+            opacity: 0;
+        }
+        
+        .qa-a {
+            animation: accordionFadeIn 0.4s ease;
+        }
+    }
+}
+
+.qa-q {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    padding: 2rem 2.5rem;
+    cursor: pointer;
+    list-style: none; /* デフォルトの矢印を消す */
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+
+    &::-webkit-details-marker {
+        display: none;
+    }
+}
+
+.qa-icon {
+    position: absolute;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: #00f2fe;
+        transition: all 0.3s ease;
+    }
+
+    &::before {
+        width: 2px;
+        height: 20px;
+        transform: translate(-50%, -50%);
+    }
+
+    &::after {
+        width: 20px;
+        height: 2px;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.qa-a {
+    font-size: 1.05rem;
+    color: #ccc;
+    line-height: 1.8;
+    padding: 0 2.5rem 2.5rem 2.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+
+    p {
+        margin: 0;
+    }
+}
+
+.qa-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #00f2fe;
+    margin-top: -0.2rem;
+}
+
+@keyframes accordionFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==============================================================
+   MAGAZINE STYLE AWARDS
+   ============================================================== */
+
+.magazine-awards-section {
+    margin-bottom: 5rem;
+    padding-top: 2rem;
+}
+
+.magazine-awards-list {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding-left: 20px;
+
+    /* タイムラインの縦線 */
+    &::before {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: rgba(255, 255, 255, 0.15);
+    }
+}
+
+.award-item {
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform 0.3s ease;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &:hover {
+        transform: translateX(5px);
+
+        &::before {
+            background: #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+            transform: scale(1.2);
+        }
+    }
+
+    /* タイムラインのドット */
+    &::before {
+        content: '';
+        position: absolute;
+        left: -3px;
+        top: 6px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #ccc;
+        transition: all 0.3s ease;
+    }
+}
+
+.award-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: #00f2fe;
+    letter-spacing: 0.1em;
+}
+
+.award-name {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.6;
+}

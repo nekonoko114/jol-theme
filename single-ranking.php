@@ -128,6 +128,57 @@
                         <?php endif; ?>
                     </div>
                 </section>
+
+                <!-- 右カラム: 配信時間ランキング -->
+                <section class="ranking-column-section delivery-time-rank-col">
+                    <h2 class="ranking-column-title">
+                        <span class="title-en">DELIVERY TIME RANKING</span>
+                        <span class="title-ja">配信時間ランキング</span>
+                    </h2>
+                    
+                    <div class="ranking-item-list">
+                        <?php 
+                        $delivery_time_livers = get_field('delivery_time_ranking_livers') ?: get_field('delivery_time_ranking_liver');
+                        if ($delivery_time_livers) : 
+                            $rank = 1;
+                            foreach ($delivery_time_livers as $post_or_id) :
+                                $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;
+                                $liver_post = get_post($liver_id);
+                                if ($liver_post && $liver_post->post_status === 'publish') :
+                                    setup_postdata($GLOBALS['post'] =& $liver_post);
+                                    $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
+                                    $creator_account = get_post_meta($liver_id, 'creator_account', true);
+                                    $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
+                                    $permalink = get_permalink($liver_id);
+                        ?>
+                                    <div class="ranking-list-item">
+                                        <div class="rank-badge-wrap rank-num-<?php echo $rank; ?>">
+                                            <span class="rank-number"><?php echo $rank; ?></span>
+                                        </div>
+                                        <div class="liver-avatar-wrap">
+                                            <a href="<?php echo esc_url($permalink); ?>">
+                                                <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
+                                            </a>
+                                        </div>
+                                        <div class="liver-details">
+                                            <h3 class="creator-name">
+                                                <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
+                                            </h3>
+                                            <?php if ($creator_account) : ?>
+                                                <p class="creator-id">@<?php echo esc_html($creator_account); ?></p>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                        <?php 
+                                    $rank++;
+                                endif;
+                            endforeach;
+                            wp_reset_postdata();
+                        else : ?>
+                            <p class="no-data-msg">ランキングデータが登録されていません。</p>
+                        <?php endif; ?>
+                    </div>
+                </section>
             </div>
 
             <div class="agency-back">

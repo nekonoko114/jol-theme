@@ -15,9 +15,16 @@
         <?php 
         $args = array(
             'post_type' => 'liver',
-            'posts_per_page' => 10,
+            'posts_per_page' => 5,
             'orderby' => 'menu_order',
-            'order' => 'ASC'
+            'order' => 'ASC',
+            'meta_query' => array(
+                array(
+                    'key'     => 'display_flag',
+                    'value'   => '1',
+                    'compare' => '=',
+                )
+            )
         );
         $liver_query = new WP_Query($args);
         $count = 1;

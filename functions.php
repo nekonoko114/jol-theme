@@ -8,6 +8,9 @@
 // テーマ設定（テーマサポート、カスタムヘッダーなど）
 require_once get_template_directory() . '/inc/setup.php';
 
+// ローカル・本番両用（WordPress側から直接Pullするプログラム）
+require_once get_template_directory() . '/inc/liver-sync-pull.php';
+
 // アセット（CSS/JS）の読み込み
 require_once get_template_directory() . '/inc/enqueue.php';
 
