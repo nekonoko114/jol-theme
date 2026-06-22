@@ -168,24 +168,33 @@ function jol_run_liver_sync() {
         }
 
         // アイキャッチ画像の設定
-        if (!has_post_thumbnail($post_id) || get_post_meta($post_id, '_image_sync_error', true)) {
-            if (empty($image_url) && strpos($drive_url, 'drive.google.com') !== false) {
-                if (preg_match('/id=([^&]+)/', $drive_url, $matches) || preg_match('/\/d\/([a-zA-Z0-9_-]+)/', $drive_url, $matches)) {
-                    $image_url = 'https://drive.google.com/uc?export=download&id=' . $matches[1];
-                    $image_source = 'Google Drive';
-                }
-            }
+        if (!empty($image_url)) {
+            // TikTok等の画像URLはクエリパラメータ（署名など）が毎回変わるため、?以降を切り落としたベース部分で変更検知を行う
+            $clean_new_url = strtok($image_url, '?');
+            $clean_old_url = get_post_meta($post_id, '_scraped_image_url', true);
+            $has_thumbnail = has_post_thumbnail($post_id);
 
-            if (!empty($image_url)) {
+            // ①アイキャッチ画像が設定されていない、②画像が変更された、③前回の同期エラー履歴がある場合のみ更新を実行
+            if (!$has_thumbnail || $clean_new_url !== $clean_old_url || get_post_meta($post_id, '_image_sync_error', true)) {
                 $attachment_id = media_sideload_image($image_url, $post_id, $liver_name . 'のプロフィール画像', 'id');
                 if (!is_wp_error($attachment_id)) {
+                    // 古いアイキャッチ画像アタッチメントがあればメディアライブラリから削除（不要な画像の蓄積防止）
+                    $old_thumbnail_id = get_post_thumbnail_id($post_id);
+                    if ($old_thumbnail_id && $old_thumbnail_id != $attachment_id) {
+                        wp_delete_attachment($old_thumbnail_id, true);
+                    }
+                    
                     set_post_thumbnail($post_id, $attachment_id);
+                    update_post_meta($post_id, '_scraped_image_url', $clean_new_url);
                     delete_post_meta($post_id, '_image_sync_error'); // 成功したらエラー履歴を消す
                 } else {
-                    update_post_meta($post_id, '_image_sync_error', $image_source . 'からの画像取得エラー: ' . $attachment_id->get_error_message());
+                    update_post_meta($post_id, '_image_sync_error', '画像の取得に失敗しました: ' . $attachment_id->get_error_message());
                 }
-            } else {
-                update_post_meta($post_id, '_image_sync_error', 'TikTokとGoogle Driveの両方で画像のURLが見つかりませんでした。');
+            }
+        } else {
+            // 画像URLが取得できなかった場合、まだアイキャッチが無いときだけエラー履歴を記録
+            if (!has_post_thumbnail($post_id)) {
+                update_post_meta($post_id, '_image_sync_error', 'TikTokで画像のURLが見つかりませんでした。');
             }
         }
 
