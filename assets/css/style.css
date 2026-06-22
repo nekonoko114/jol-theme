@@ -6204,11 +6204,11 @@ svg.active .svg-elem-32 {
   font-family: "Outfit", "Noto Sans JP", sans-serif;
 }
 
-/* 3カラムレイアウト */
+/* 2カラムレイアウト (案D) */
 
 .ranking-layout-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 3rem;
   margin-top: 4rem;
   margin-bottom: 5rem;
