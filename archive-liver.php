@@ -15,6 +15,7 @@
         <?php 
         $args = array(
             'post_type' => 'liver',
+            'post_status' => 'publish', // 管理者がログインしていても、下書き・非公開を表示させない
             'posts_per_page' => 5,
             'orderby' => 'menu_order',
             'order' => 'ASC',
