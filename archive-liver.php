@@ -13,21 +13,53 @@
 <main class="main-content">
     <div class="inner liver-archive-list">
         <?php 
+        $target_accounts = [
+            'l5332541',          // さくら
+            'mizuki2525214',     // 一条美月
+            't.o.p_u_jin_',      // ユージン
+            'chirin5497',        // Chiho
+            'mrm0115'            // まみ
+        ];
+
         $args = array(
             'post_type' => 'liver',
-            'post_status' => 'publish', // 管理者がログインしていても、下書き・非公開を表示させない
+            'post_status' => 'publish',
             'posts_per_page' => 5,
-            'orderby' => 'menu_order',
-            'order' => 'ASC',
+            'meta_query' => [
+                [
+                    'key' => 'creator_account',
+                    'value' => $target_accounts,
+                    'compare' => 'IN'
+                ]
+            ],
         );
         $liver_query = new WP_Query($args);
+
+        // 指定されたアカウント順に投稿をソートする
+        $sorted_posts = [];
+        if ($liver_query->have_posts()) {
+            $posts_by_account = [];
+            foreach ($liver_query->posts as $p) {
+                $acc = get_post_meta($p->ID, 'creator_account', true);
+                if ($acc) {
+                    $posts_by_account[$acc] = $p;
+                }
+            }
+            foreach ($target_accounts as $acc) {
+                if (isset($posts_by_account[$acc])) {
+                    $sorted_posts[] = $posts_by_account[$acc];
+                }
+            }
+        }
+
         $count = 1;
 
-        if ($liver_query->have_posts()) : ?>
+        if (!empty($sorted_posts)) : ?>
             <div class="liver-premium-container">
-                <?php while ($liver_query->have_posts()) : $liver_query->the_post(); 
+                <?php foreach ($sorted_posts as $post) : 
+                    setup_postdata($post);
                     $layout_class = ($count % 2 === 1) ? 'premium-odd' : 'premium-even';
-                    $creator_account = get_post_meta(get_the_ID(), 'creator_account', true);
+                    $creator_account = get_post_meta($post->ID, 'creator_account', true);
                     $formatted_count = sprintf('%02d', $count);
                 ?>
                     <article class="liver-premium-item <?php echo esc_attr($layout_class); ?>">
@@ -66,7 +98,7 @@
                     </article>
                 <?php 
                     $count++;
-                    endwhile; 
+                    endforeach; 
                 ?>
             </div>
             <?php wp_reset_postdata(); ?>
