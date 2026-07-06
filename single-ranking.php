@@ -42,26 +42,37 @@
                             foreach ($event_livers as $post_or_id) :
                                 $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;
                                 $liver_post = get_post($liver_id);
-                                if ($liver_post && $liver_post->post_status === 'publish') :
+                                if ($liver_post && in_array($liver_post->post_status, array('publish', 'draft'))) :
                                     if ($rank > 5) break;
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
                                     $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
                                     $permalink = get_permalink($liver_id);
+                                    $is_draft = ($liver_post->post_status === 'draft');
                         ?>
                                     <div class="ranking-list-item">
                                         <div class="rank-badge-wrap rank-num-<?php echo $rank; ?>">
                                             <span class="rank-number"><?php echo $rank; ?></span>
                                         </div>
                                         <div class="liver-avatar-wrap">
-                                            <a href="<?php echo esc_url($permalink); ?>">
-                                                <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
-                                            </a>
+                                            <?php if ($is_draft) : ?>
+                                                <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                </div>
+                                            <?php else : ?>
+                                                <a href="<?php echo esc_url($permalink); ?>">
+                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
+                                                </a>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="liver-details">
                                             <h3 class="creator-name">
-                                                <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
+                                                <?php if ($is_draft) : ?>
+                                                    <span><?php echo esc_html($creator_name); ?></span>
+                                                <?php else : ?>
+                                                    <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
+                                                <?php endif; ?>
                                             </h3>
                                             <?php if ($creator_account) : ?>
                                                 <p class="creator-id">@<?php echo esc_html($creator_account); ?></p>
@@ -94,26 +105,37 @@
                             foreach ($diamond_livers as $post_or_id) :
                                 $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;
                                 $liver_post = get_post($liver_id);
-                                if ($liver_post && $liver_post->post_status === 'publish') :
+                                if ($liver_post && in_array($liver_post->post_status, array('publish', 'draft'))) :
                                     if ($rank > 5) break;
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
                                     $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
                                     $permalink = get_permalink($liver_id);
+                                    $is_draft = ($liver_post->post_status === 'draft');
                         ?>
                                     <div class="ranking-list-item">
                                         <div class="rank-badge-wrap rank-num-<?php echo $rank; ?>">
                                             <span class="rank-number"><?php echo $rank; ?></span>
                                         </div>
                                         <div class="liver-avatar-wrap">
-                                            <a href="<?php echo esc_url($permalink); ?>">
-                                                <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
-                                            </a>
+                                            <?php if ($is_draft) : ?>
+                                                <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                </div>
+                                            <?php else : ?>
+                                                <a href="<?php echo esc_url($permalink); ?>">
+                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
+                                                </a>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="liver-details">
                                             <h3 class="creator-name">
-                                                <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
+                                                <?php if ($is_draft) : ?>
+                                                    <span><?php echo esc_html($creator_name); ?></span>
+                                                <?php else : ?>
+                                                    <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
+                                                <?php endif; ?>
                                             </h3>
                                             <?php if ($creator_account) : ?>
                                                 <p class="creator-id">@<?php echo esc_html($creator_account); ?></p>
@@ -146,26 +168,37 @@
                             foreach ($delivery_time_livers as $post_or_id) :
                                 $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;
                                 $liver_post = get_post($liver_id);
-                                if ($liver_post && $liver_post->post_status === 'publish') :
+                                if ($liver_post && in_array($liver_post->post_status, array('publish', 'draft'))) :
                                     if ($rank > 5) break;
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
                                     $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
                                     $permalink = get_permalink($liver_id);
+                                    $is_draft = ($liver_post->post_status === 'draft');
                         ?>
                                     <div class="ranking-list-item">
                                         <div class="rank-badge-wrap rank-num-<?php echo $rank; ?>">
                                             <span class="rank-number"><?php echo $rank; ?></span>
                                         </div>
                                         <div class="liver-avatar-wrap">
-                                            <a href="<?php echo esc_url($permalink); ?>">
-                                                <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
-                                            </a>
+                                            <?php if ($is_draft) : ?>
+                                                <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                </div>
+                                            <?php else : ?>
+                                                <a href="<?php echo esc_url($permalink); ?>">
+                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
+                                                </a>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="liver-details">
                                             <h3 class="creator-name">
-                                                <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
+                                                <?php if ($is_draft) : ?>
+                                                    <span><?php echo esc_html($creator_name); ?></span>
+                                                <?php else : ?>
+                                                    <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
+                                                <?php endif; ?>
                                             </h3>
                                             <?php if ($creator_account) : ?>
                                                 <p class="creator-id">@<?php echo esc_html($creator_account); ?></p>

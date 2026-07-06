@@ -62,32 +62,6 @@ function jol_register_custom_taxonomies()
     'rewrite'           => array('slug' => 'liver-category'),
   ));
 
-  // インタビューカテゴリー
-  register_taxonomy('interview_category', 'interview', array(
-    'labels'            => jol_get_taxonomy_labels('インタビューカテゴリー'),
-    'hierarchical'      => true,
-    'public'            => true,
-    'show_ui'           => true,
-    'show_admin_column' => true,
-    'show_in_nav_menus' => true,
-    'show_tagcloud'     => true,
-    'show_in_rest'      => true,
-    'rewrite'           => array('slug' => 'interview-category'),
-  ));
-
-  // インタビュータグ
-  register_taxonomy('interview_tag', 'interview', array(
-    'labels'            => jol_get_taxonomy_labels('インタビュータグ'),
-    'hierarchical'      => false,
-    'public'            => true,
-    'show_ui'           => true,
-    'show_admin_column' => true,
-    'show_in_nav_menus' => true,
-    'show_tagcloud'     => true,
-    'show_in_rest'      => true,
-    'rewrite'           => array('slug' => 'interview-tag'),
-  ));
-
   // イベントカテゴリー
   register_taxonomy('event_category', 'event', array(
     'labels'            => jol_get_taxonomy_labels('イベントカテゴリー'),

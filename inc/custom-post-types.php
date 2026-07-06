@@ -39,46 +39,6 @@ function jol_create_post_type_liver()
 }
 add_action('init', 'jol_create_post_type_liver', 0);
 
-// カスタム投稿タイプ「インタビュー」
-function jol_create_post_type_interview()
-{
-  register_post_type(
-    'interview',
-    array(
-      'labels' => array(
-        'name'                  => 'インタビュー',
-        'singular_name'         => 'インタビュー',
-        'menu_name'             => 'インタビュー',
-        'add_new'               => '新規追加',
-        'add_new_item'          => '新しいインタビューを追加',
-        'edit_item'             => 'インタビューを編集',
-        'new_item'              => '新しいインタビュー',
-        'view_item'             => 'インタビューを表示',
-        'search_items'          => 'インタビューを検索',
-        'not_found'             => 'インタビューが見つかりません',
-        'not_found_in_trash'    => 'ゴミ箱にインタビューはありません',
-      ),
-      'public'              => true,
-      'has_archive'         => true,
-      'publicly_queryable'  => true,
-      'show_ui'             => true,
-      'show_in_menu'        => true,
-      'show_in_nav_menus'   => true,
-      'show_in_admin_bar'   => true,
-      'menu_position'       => 6,
-      'menu_icon'           => 'dashicons-format-chat',
-      'capability_type'     => 'post',
-      'hierarchical'        => false,
-      'rewrite'             => array('slug' => 'interviews'),
-      'supports'            => array('title', 'editor', 'thumbnail', 'excerpt'),
-      'taxonomies'          => array('interview_category', 'interview_tag'),
-      'show_in_rest'        => true,
-      'rest_base'           => 'interviews',
-    )
-  );
-}
-add_action('init', 'jol_create_post_type_interview', 0);
-
 // カスタム投稿タイプ「イベント」の作成
 function jol_create_post_type_event()
 {
@@ -169,7 +129,7 @@ add_action('init', 'jol_create_post_type_ranking', 0);
  */
 function jol_enable_gutenberg_for_custom_post_types($can_edit, $post_type)
 {
-  if (in_array($post_type, array('liver', 'interview', 'event', 'ranking'))) {
+  if (in_array($post_type, array('liver', 'event', 'ranking'))) {
     return true;
   }
   return $can_edit;
@@ -180,7 +140,7 @@ add_filter('use_block_editor_for_post_type', 'jol_enable_gutenberg_for_custom_po
 function jol_force_gutenberg_for_custom_post_types()
 {
   add_filter('use_block_editor_for_post', function ($use_block_editor, $post) {
-    if (in_array($post->post_type, array('liver', 'interview', 'event', 'ranking'))) {
+    if (in_array($post->post_type, array('liver', 'event', 'ranking'))) {
       return true;
     }
     return $use_block_editor;
@@ -193,7 +153,6 @@ function jol_ensure_rest_support_for_custom_post_types()
 {
   $cpts = [
     'liver' => 'livers',
-    'interview' => 'interviews',
     'event' => 'events',
     'ranking' => 'rankings'
   ];

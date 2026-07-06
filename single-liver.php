@@ -68,7 +68,7 @@
                 <section class="agency-section profile-section">
                     <h3 class="section-heading">PROFILE</h3>
                     <div class="agency-profile-content">
-                        <?php the_content(); ?>
+                        <?php echo nl2br(esc_html(strip_tags(get_the_content()))); ?>
                     </div>
                 </section>
                 
@@ -102,6 +102,11 @@
                 </section>
             </div>
 
+            <?php 
+            // コンテンツ完成後にここを true に変更すると INTERVIEW と AWARDS が表示されます
+            $show_interview_awards = false; 
+            if ($show_interview_awards) : 
+            ?>
             <!-- 雑誌風 Q&A セクション -->
             <section class="magazine-qa-section">
                 <div class="magazine-qa-header">
@@ -262,7 +267,7 @@
                     <?php endif; ?>
                 </div>
             </section>
-            
+            <?php endif; ?>
             <div class="agency-action">
                 <?php if ($account_url) : ?>
                     <a href="<?php echo esc_url($account_url); ?>" target="_blank" rel="noopener noreferrer" class="btn-agency-tiktok">

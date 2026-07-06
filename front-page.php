@@ -96,11 +96,26 @@
                 <?php
                 // カスタム投稿タイプ「liver」からライバー情報を取得
                 // カスタム投稿タイプ「liver」からライバー情報を取得
+                $target_accounts = [
+                    't.o.p_u_jin_',      // ユージン
+                    'l5332541',          // さくら
+                    'mizuki2525214',     // 一条美月
+                    'chirin5497',        // Chiho
+                    'mrm0115'            // まみ
+                ];
+
                 $liver_args = [
                     'post_type' => 'liver',
                     'post_status' => 'publish',
-                    'posts_per_page' => 12, // 表示する投稿数を調整
-                    'orderby' => 'rand', // ランダムに表示
+                    'posts_per_page' => 5,
+                    'meta_query' => [
+                        [
+                            'key' => 'creator_account',
+                            'value' => $target_accounts,
+                            'compare' => 'IN'
+                        ]
+                    ],
+                    'orderby' => 'rand', // 順番をランダムにシャッフルして表示
                 ];
 
                 // 管理者以外は「creator_name」があるものだけに絞る（通常動作）
@@ -178,89 +193,6 @@
                 ?>
             </div>
             <div class="liver-pagination"></div>
-        </div>
-    </div>
-</section>
-
-<?php
-$interview_args = array(
-    'post_type' => 'interview',
-    'posts_per_page' => 3,
-    'orderby' => 'rand',
-    'post_status' => 'publish',
-);
-$interview_query = new WP_Query($interview_args);
-
-?>
-<section class="interview">
-    
-    <div class="interview-bg-text" aria-hidden="true">INTERVIEW</div>
-
-    <div class="interview-inner inner">
-        <div class="interview-heading">
-            <h2 class="interview-title">Interview</h2>
-            <div class="interview-more"><a href="<?php echo esc_url(get_post_type_archive_link('interview')); ?>">インタビュー一覧へ</a></div>
-        </div>
-        <div class="interview-archive-container">
-            <?php if ($interview_query->have_posts()) : ?>
-                <?php while ($interview_query->have_posts()) : $interview_query->the_post(); ?>
-
-                    <article class="interview-archive-item">
-                        <a href="<?php the_permalink(); ?>" class="interview-card">
-                            
-                            <span class="interview-card-glint"></span>
-
-                            <?php if (has_post_thumbnail()) : ?>
-                                <div class="interview-thumbnail">
-                                    <?php the_post_thumbnail('medium'); ?>
-                                </div>
-                            <?php else : ?>
-                                <div class="interview-thumbnail no-image"></div>
-                            <?php endif; ?>
-
-                            <div class="interview-content">
-                                <h3 class="interview-content-title">
-                                    <?php the_title(); ?>
-                                </h3>
-
-                                <div class="interview-meta">
-                                    <?php
-                                    $terms = get_the_terms($post->ID, 'interview_category');
-                                    if ($terms && !is_wp_error($terms)) :
-                                        foreach ($terms as $term) :
-                                            echo '<span class="interview-category">' . esc_html($term->name) . '</span>';
-                                        endforeach;
-                                    endif;
-                                    ?>
-                                </div>
-
-                                <div class="interview-excerpt">
-                                    <?php 
-                                    $excerpt = get_the_excerpt();
-                                    $excerpt = strip_tags($excerpt);
-                                    $excerpt = mb_substr($excerpt, 0, 80);
-                                    if (mb_strlen(get_the_excerpt()) > 80) {
-                                        $excerpt .= '...';
-                                    }
-                                    echo esc_html($excerpt);
-                                    ?>
-                                </div>
-                            </div>
-
-                            
-                            <span class="interview-card-arrow">
-                                <span class="arrow-text">→</span>
-                            </span>
-                        </a>
-                    </article>
-
-                <?php endwhile; ?>
-                <?php wp_reset_postdata(); ?>
-            <?php else : ?>
-                <div class="no-posts">
-                    <p>インタビューが見つかりませんでした。</p>
-                </div>
-            <?php endif; ?>
         </div>
     </div>
 </section>
