@@ -161,15 +161,7 @@
                                     <p class="liver-account">@<?php echo esc_html($creator_account); ?></p>
                                 <?php endif; ?>
                                 
-                                <?php 
-                                // 管理者用デバッグ表示：メタキー一覧を出力
-                                if (current_user_can('administrator')) {
-                                    $all_metas = get_post_meta(get_the_ID());
-                                    $keys = implode(', ', array_keys($all_metas));
-                                    echo '<div style="font-size:10px; color:red; background:#fff; padding:5px;">Debug Keys: ' . esc_html($keys) . '</div>';
-                                    if (!$creator_name) echo '<div style="font-size:10px; color:blue; background:#fff; padding:5px;">creator_name is MISSING</div>';
-                                }
-                                ?>
+
                             </a>
                         </div>
                 <?php
