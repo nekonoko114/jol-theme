@@ -1,0 +1,26 @@
+name: Deploy to Xserver
+
+on:
+  push:
+    branches:
+      - main # mainブランチにpushされた時に実行
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Deploy via SSH(rsync)
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.XSERVER_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.XSERVER_HOST }}
+          REMOTE_USER: ${{ secrets.XSERVER_USER }}
+          REMOTE_PORT: ${{ secrets.XSERVER_PORT }}
+          TARGET: ${{ secrets.XSERVER_TARGET_PATH }}
+          SOURCE: "./"
+          # 本番環境にアップロード不要なファイル・ディレクトリを除外
+          EXCLUDE: "/node_modules/, /.git/, /.github/, /src/, /gulpfile.js/, /package.json/, /package-lock.json/, /ACF_SETUP_GUIDE.md/"
