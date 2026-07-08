@@ -104,50 +104,58 @@
                     'mrm0115'            // まみ
                 ];
 
-                $liver_args = [
-                    'post_type' => 'liver',
-                    'post_status' => 'publish',
-                    'posts_per_page' => 5,
-                    'meta_query' => [
-                        [
-                            'key' => 'creator_account',
-                            'value' => $target_accounts,
-                            'compare' => 'IN'
-                        ]
-                    ],
-                    'orderby' => 'rand', // 順番をランダムにシャッフルして表示
-                ];
+                // $target_accounts の順番通りに表示するための準備
+                $account_order = array_flip($target_accounts);
 
-                // 管理者以外は「creator_name」があるものだけに絞る（通常動作）
-                // 管理者の場合はデバッグのために全件表示し、後で状態を確認する
-                if (!current_user_can('administrator')) {
-                    $liver_args['meta_query'] = [
+                $liver_args = [
+                    'post_type'      => 'liver',
+                    'post_status'    => 'publish',
+                    'posts_per_page' => count($target_accounts),
+                    'meta_query'     => [
                         [
-                            'key' => 'creator_name',
-                            'compare' => 'EXISTS'
-                        ]
-                    ];
-                }
+                            'key'     => 'creator_account',
+                            'value'   => $target_accounts,
+                            'compare' => 'IN',
+                        ],
+                    ],
+                    'orderby'        => 'meta_value', // meta_value で安定ソート
+                    'meta_key'       => 'creator_account',
+                    'order'          => 'ASC',
+                ];
 
                 $liver_query = new WP_Query($liver_args);
 
                 if ($liver_query->have_posts()) :
-                        while ($liver_query->have_posts()) : $liver_query->the_post();
-                            // カスタムフィールドを取得
-                        $creator_name = get_post_meta(get_the_ID(), 'creator_name', true);
+                    // $target_accounts の順番通りに投稿を並び替える
+                    $posts = $liver_query->posts;
+                    usort($posts, function($a, $b) use ($target_accounts) {
+                        $account_a = get_post_meta($a->ID, 'creator_account', true);
+                        $account_b = get_post_meta($b->ID, 'creator_account', true);
+                        $pos_a = array_search($account_a, $target_accounts);
+                        $pos_b = array_search($account_b, $target_accounts);
+                        // 見つからない場合は末尾に回す
+                        if ($pos_a === false) $pos_a = PHP_INT_MAX;
+                        if ($pos_b === false) $pos_b = PHP_INT_MAX;
+                        return $pos_a - $pos_b;
+                    });
+
+                    foreach ($posts as $post) :
+                        setup_postdata($GLOBALS['post'] = $post);
+                        // カスタムフィールドを取得
+                        $creator_name    = get_post_meta(get_the_ID(), 'creator_name', true);
                         $creator_account = get_post_meta(get_the_ID(), 'creator_account', true);
-                        $account_url = get_post_meta(get_the_ID(), 'account_url', true);
+                        $account_url     = get_post_meta(get_the_ID(), 'account_url', true);
 
-                            // 表示名を決定（カスタムフィールドがない場合はタイトルを使用）
-                            $display_name = $creator_name ? $creator_name : get_the_title();
+                        // 表示名を決定（カスタムフィールドがない場合はタイトルを使用）
+                        $display_name = $creator_name ? $creator_name : get_the_title();
 
-                            // チャンネル情報（TikTokアカウントがある場合）
-                            $channel_info = $creator_account ? 'TikTok' : 'Live Streaming';
+                        // チャンネル情報（TikTokアカウントがある場合）
+                        $channel_info = $creator_account ? 'TikTok' : 'Live Streaming';
 
-                            // アイキャッチ画像があるかチェック
+                        // アイキャッチ画像があるかチェック
                         $thumbnail_url = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'medium') : COMMON_LIVER_THUMBNAIL_URL;
 
-                            // パーマリンクを明示的に取得
+                        // パーマリンクを明示的に取得
                         $post_url = get_permalink(get_the_ID());
                 ?>
                 <div class="swiper-slide">
@@ -165,7 +173,7 @@
                             </a>
                         </div>
                 <?php
-                        endwhile;
+                        endforeach;
                     wp_reset_postdata();
                 else :
                     // ライバー投稿がない場合のフォールバック表示
