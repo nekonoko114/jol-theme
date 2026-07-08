@@ -6195,6 +6195,8 @@ svg.active .svg-elem-32 {
   line-height: 1.6;
 }
 
+/* Responsive adjustments for Liver Premium Archive */
+
 /* ==============================================================
    RANKING DETAIL & ARCHIVE STYLES (Premium Mysterious Theme)
    ============================================================== */
@@ -7434,6 +7436,60 @@ svg.active .svg-elem-32 {
 
   .agency-title {
     font-size: 1.6rem;
+  }
+
+  .liver-premium-container {
+    gap: 3rem;
+    padding: 3rem 0;
+  }
+
+  .liver-bg-watermark {
+    font-size: 10rem;
+  }
+
+  .liver-premium-item.premium-odd .liver-premium-card,
+  .liver-premium-item.premium-even .liver-premium-card {
+    flex-direction: column;
+    padding: 2rem;
+    gap: 2rem;
+    transform: rotate(0deg);
+    /* Remove tilt on mobile */
+    border-radius: 20px;
+    /* Simplify border radius */
+  }
+
+  .liver-premium-item.premium-odd .liver-premium-card .liver-image-wrapper,
+  .liver-premium-item.premium-even .liver-premium-card .liver-image-wrapper {
+    border-radius: 12px;
+  }
+
+  .liver-premium-card::before {
+    width: 200px;
+    height: 200px;
+  }
+
+  .liver-image-wrapper,
+  .liver-info-wrapper {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .liver-image-wrapper img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/4;
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+
+  .liver-info-wrapper {
+    padding: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .liver-name {
+    font-size: 1.8rem;
   }
 
   .ranking-column-title {
