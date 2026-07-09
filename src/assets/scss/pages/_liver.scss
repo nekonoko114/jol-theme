@@ -16,6 +16,11 @@
     padding: 6rem 0;
     font-family: 'Outfit', 'Noto Sans JP', sans-serif;
     overflow: hidden;
+
+    @include mq(sm) {
+        gap: 3rem;
+        padding: 1rem 0 3rem; /* スマホ時は上部の余白を縮小 */
+    }
 }
 
 .liver-premium-item {
@@ -41,6 +46,10 @@
     user-select: none;
     pointer-events: none;
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+
+    @include mq(sm) {
+        font-size: 10rem;
+    }
 }
 
 .liver-premium-item:hover .liver-bg-watermark {
@@ -79,6 +88,11 @@
         opacity: 0.15;
         pointer-events: none;
         transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+
+        @include mq(sm) {
+            width: 200px;
+            height: 200px;
+        }
     }
 }
 
@@ -88,6 +102,14 @@
         flex-direction: row;
         border-radius: 65px 20px 65px 20px; // アシンメトリー角丸
         transform: rotate(-0.8deg); // ミステリアスな傾き
+
+        @include mq(sm) {
+            flex-direction: column;
+            padding: 2rem;
+            gap: 2rem;
+            transform: rotate(0deg);
+            border-radius: 20px;
+        }
         
         &::before {
             background: $trai-color-cyan;
@@ -97,6 +119,10 @@
         
         .liver-image-wrapper {
             border-radius: 45px 12px 45px 12px; // 画像も連動して非対称に
+
+            @include mq(sm) {
+                border-radius: 12px;
+            }
         }
         
         &:hover {
@@ -120,6 +146,14 @@
         flex-direction: row-reverse;
         border-radius: 20px 65px 20px 65px; // アシンメトリー角丸（偶数は逆）
         transform: rotate(0.8deg); // 逆の傾き
+
+        @include mq(sm) {
+            flex-direction: column;
+            padding: 2rem;
+            gap: 2rem;
+            transform: rotate(0deg);
+            border-radius: 20px;
+        }
         
         &::before {
             background: $trai-color-purple;
@@ -129,6 +163,10 @@
 
         .liver-image-wrapper {
             border-radius: 12px 45px 12px 45px; // 画像も連動して非対称に
+
+            @include mq(sm) {
+                border-radius: 12px;
+            }
         }
         
         &:hover {
@@ -155,6 +193,11 @@
     overflow: hidden;
     box-shadow: 0 15px 35px rgba(0,0,0,0.4);
     transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+
+    @include mq(sm) {
+        max-width: 100%;
+        width: 100%;
+    }
 }
 
 .liver-premium-item:hover .liver-image-wrapper {
@@ -176,6 +219,13 @@
     aspect-ratio: 3/4;
     display: block;
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+
+    @include mq(sm) {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 3/4;
+        object-fit: cover;
+    }
 }
 
 /* 画像上のベール */
@@ -208,6 +258,14 @@
     flex-direction: column;
     justify-content: center;
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    @include mq(sm) {
+        max-width: 100%;
+        width: 100%;
+        padding: 0;
+        align-items: center;
+        text-align: center;
+    }
 }
 
 .liver-number-small {
@@ -224,6 +282,10 @@
     margin-bottom: 0.5rem;
     letter-spacing: 0.05em;
     line-height: 1.2;
+
+    @include mq(sm) {
+        font-size: 1.8rem;
+    }
 }
 
 .liver-name a {
@@ -379,6 +441,12 @@
     align-items: center;
     gap: 4rem;
     margin-top: 3rem;
+
+    @include mq(sm) {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
 }
 
 .hero-image {
@@ -412,6 +480,10 @@
     letter-spacing: 0.05em;
     margin-bottom: 0.5rem;
     color: #fff;
+
+    @include mq(sm) {
+        font-size: 1.6rem;
+    }
 }
 
 .agency-id {
@@ -429,6 +501,11 @@
     grid-template-columns: 2fr 1fr;
     gap: 4rem;
     margin-bottom: 5rem;
+
+    @include mq(sm) {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
 }
 
 .section-heading {
@@ -512,7 +589,7 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@include mq(sm) {
     .liver-zigzag-item {
         flex-direction: column !important;
         gap: 1.5rem;
@@ -528,21 +605,6 @@
         top: -1rem;
         left: 0 !important;
         right: auto !important;
-    }
-    
-    .hero-profile-flex {
-        flex-direction: column;
-        text-align: center;
-        gap: 2rem;
-    }
-    
-    .agency-details-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-    }
-    
-    .agency-title {
-        font-size: 1.6rem;
     }
 }
 
@@ -808,56 +870,3 @@
     line-height: 1.6;
 }
 
-/* Responsive adjustments for Liver Premium Archive */
-@media (max-width: 768px) {
-    .liver-premium-container {
-        gap: 3rem;
-        padding: 3rem 0;
-    }
-
-    .liver-bg-watermark {
-        font-size: 10rem;
-    }
-
-    .liver-premium-item.premium-odd .liver-premium-card,
-    .liver-premium-item.premium-even .liver-premium-card {
-        flex-direction: column;
-        padding: 2rem;
-        gap: 2rem;
-        transform: rotate(0deg); /* Remove tilt on mobile */
-        border-radius: 20px; /* Simplify border radius */
-    }
-
-    .liver-premium-item.premium-odd .liver-premium-card .liver-image-wrapper,
-    .liver-premium-item.premium-even .liver-premium-card .liver-image-wrapper {
-         border-radius: 12px;
-    }
-
-    .liver-premium-card::before {
-        width: 200px;
-        height: 200px;
-    }
-
-    .liver-image-wrapper,
-    .liver-info-wrapper {
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .liver-image-wrapper img {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 3/4;
-        object-fit: cover;
-    }
-
-    .liver-info-wrapper {
-        padding: 0;
-        align-items: center;
-        text-align: center;
-    }
-
-    .liver-name {
-        font-size: 1.8rem;
-    }
-}

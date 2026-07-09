@@ -1523,6 +1523,10 @@
 
 .inner.liver-archive-list {
   padding: 120px 20px;
+
+  @include mq("sm") {
+    padding: 40px 10px;
+  }
 }
 
 // インタビューアーカイブページのスタイル（ライバーと同じデザイン）

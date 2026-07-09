@@ -3860,7 +3860,7 @@ body.appear #container {
   width: 100%;
   height: 100vh;
   border-right: rgba(0, 255, 255, 0.5) 1px solid;
-  background: url("../images/logo/jol-logo.png") no-repeat center 5%/200px 200px, #000;
+  background: url("../images/logo/jol-logo.png") no-repeat center 8%/160px 160px, #000;
   transform: translateY(-100%);
   transition: transform 0.3s ease-in-out;
   z-index: 9999;
@@ -3868,26 +3868,48 @@ body.appear #container {
 
 .hamburger-menu .hamburger-nav {
   max-width: 390px;
-  width: 100%;
+  width: 90%;
   position: absolute;
-  top: 50%;
+  top: 58%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
 .hamburger-menu ul {
   list-style: none;
-  padding: 0;
+  padding: 0 20px;
   margin: 0;
-  text-align: center;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .hamburger-menu ul li {
   width: 100%;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-  padding: 14px 0;
-  background: #fff;
+  padding: 0;
+  background: linear-gradient(135deg, rgba(15, 15, 25, 0.65) 0%, rgba(10, 10, 15, 0.45) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 12px;
   position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.hamburger-menu ul li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: skewX(-25deg);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .hamburger-menu ul li::after {
@@ -3899,32 +3921,49 @@ body.appear #container {
   transform: translateY(-50%);
   right: 20px;
   font-weight: 900;
-  font-size: 24px;
-  color: #8A2BE2;
-  transition: all 0.3s ease;
+  font-size: 20px;
+  color: #00FFFF;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  z-index: 2;
 }
 
 .hamburger-menu ul li:hover {
-  background: #999;
+  background: rgba(0, 255, 255, 0.05);
+  border-color: rgba(0, 255, 255, 0.4);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 255, 255, 0.25);
+}
+
+.hamburger-menu ul li:hover::before {
+  left: 200%;
+  transition: all 0.9s ease;
 }
 
 .hamburger-menu ul li:hover::after {
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%) translateX(5px);
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
 }
 
 .hamburger-menu ul li:hover a {
-  color: #00FFFF;
-  transform: translate(-10px, 0);
+  color: #fff;
+  transform: translateX(5px);
 }
 
 .hamburger-menu ul li a {
-  color: #000;
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
-  font-size: 24px;
-  transition: color 0.3s ease;
+  font-size: 1.15rem;
+  font-family: "Outfit", "Noto Sans JP", sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  padding: 20px 25px;
   display: block;
   width: 100%;
-  transition: all 0.3s ease;
+  box-sizing: border-box;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  z-index: 2;
+  text-align: left;
 }
 
 .hamburger-menu.is-active {
@@ -6195,8 +6234,6 @@ svg.active .svg-elem-32 {
   line-height: 1.6;
 }
 
-/* Responsive adjustments for Liver Premium Archive */
-
 /* ==============================================================
    RANKING DETAIL & ARCHIVE STYLES (Premium Mysterious Theme)
    ============================================================== */
@@ -7405,93 +7442,6 @@ svg.active .svg-elem-32 {
     margin-top: 12px;
   }
 
-  .liver-zigzag-item {
-    flex-direction: column !important;
-    gap: 1.5rem;
-    padding: 1.5rem;
-  }
-
-  .liver-image-col,
-  .liver-info-col {
-    max-width: 100%;
-    width: 100%;
-  }
-
-  .liver-number {
-    top: -1rem;
-    left: 0 !important;
-    right: auto !important;
-  }
-
-  .hero-profile-flex {
-    flex-direction: column;
-    text-align: center;
-    gap: 2rem;
-  }
-
-  .agency-details-grid {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-
-  .agency-title {
-    font-size: 1.6rem;
-  }
-
-  .liver-premium-container {
-    gap: 3rem;
-    padding: 3rem 0;
-  }
-
-  .liver-bg-watermark {
-    font-size: 10rem;
-  }
-
-  .liver-premium-item.premium-odd .liver-premium-card,
-  .liver-premium-item.premium-even .liver-premium-card {
-    flex-direction: column;
-    padding: 2rem;
-    gap: 2rem;
-    transform: rotate(0deg);
-    /* Remove tilt on mobile */
-    border-radius: 20px;
-    /* Simplify border radius */
-  }
-
-  .liver-premium-item.premium-odd .liver-premium-card .liver-image-wrapper,
-  .liver-premium-item.premium-even .liver-premium-card .liver-image-wrapper {
-    border-radius: 12px;
-  }
-
-  .liver-premium-card::before {
-    width: 200px;
-    height: 200px;
-  }
-
-  .liver-image-wrapper,
-  .liver-info-wrapper {
-    max-width: 100%;
-    width: 100%;
-  }
-
-  .liver-image-wrapper img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 3/4;
-    -o-object-fit: cover;
-    object-fit: cover;
-  }
-
-  .liver-info-wrapper {
-    padding: 0;
-    align-items: center;
-    text-align: center;
-  }
-
-  .liver-name {
-    font-size: 1.8rem;
-  }
-
   .ranking-column-title {
     margin-bottom: 2.5rem;
     padding-bottom: 1rem;
@@ -7733,6 +7683,10 @@ svg.active .svg-elem-32 {
     gap: 20px;
   }
 
+  .inner.liver-archive-list {
+    padding: 40px 10px;
+  }
+
   .interview-archive-container {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -7972,6 +7926,103 @@ svg.active .svg-elem-32 {
     flex-direction: column;
     gap: 15px;
     align-items: center;
+  }
+
+  .liver-premium-container {
+    gap: 3rem;
+    padding: 1rem 0 3rem;
+    /* スマホ時は上部の余白を縮小 */
+  }
+
+  .liver-bg-watermark {
+    font-size: 10rem;
+  }
+
+  .liver-premium-card::before {
+    width: 200px;
+    height: 200px;
+  }
+
+  .liver-premium-item.premium-odd .liver-premium-card {
+    flex-direction: column;
+    padding: 2rem;
+    gap: 2rem;
+    transform: rotate(0deg);
+    border-radius: 20px;
+  }
+
+  .liver-premium-item.premium-odd .liver-premium-card .liver-image-wrapper {
+    border-radius: 12px;
+  }
+
+  .liver-premium-item.premium-even .liver-premium-card {
+    flex-direction: column;
+    padding: 2rem;
+    gap: 2rem;
+    transform: rotate(0deg);
+    border-radius: 20px;
+  }
+
+  .liver-premium-item.premium-even .liver-premium-card .liver-image-wrapper {
+    border-radius: 12px;
+  }
+
+  .liver-image-wrapper {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .liver-image-wrapper img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/4;
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+
+  .liver-info-wrapper {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .liver-name {
+    font-size: 1.8rem;
+  }
+
+  .hero-profile-flex {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .agency-title {
+    font-size: 1.6rem;
+  }
+
+  .agency-details-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .liver-zigzag-item {
+    flex-direction: column !important;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .liver-image-col,
+  .liver-info-col {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .liver-number {
+    top: -1rem;
+    left: 0 !important;
+    right: auto !important;
   }
 
   .bg-geometric-decorations .geo-ring {
