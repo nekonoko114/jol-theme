@@ -109,17 +109,18 @@ client.on('messageCreate', async (message) => {
 
   // テキストまたは添付画像があるか確認
   const content = message.content.trim();
-  const attachment = message.attachments.find((att) =>
+  const imageAttachments = message.attachments.filter((att) =>
     att.contentType && att.contentType.startsWith('image/')
   );
+  const imageUrls = imageAttachments.map((att) => att.url);
 
-  if (!content && !attachment) {
+  if (!content && imageUrls.length === 0) {
     return;
   }
 
   // テキストがない場合は案内
   if (!content) {
-    await message.reply('画像を受け取りました。イベント告知の文章（LINEオプチャの案内文など）も一緒に送信してください。');
+    await message.reply(`画像（${imageUrls.length}枚）を受け取りました。イベント告知の文章（LINEオプチャの案内文など）も一緒に送信してください。`);
     return;
   }
 
@@ -127,7 +128,6 @@ client.on('messageCreate', async (message) => {
 
   try {
     const parsedData = await processEventWithGemini(content);
-    const imageUrl = attachment ? attachment.url : null;
 
     // 一時IDを生成してデータを保持（30分間有効）
     const eventId = `evt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
@@ -135,7 +135,7 @@ client.on('messageCreate', async (message) => {
       title: parsedData.title,
       category: parsedData.category,
       content_html: parsedData.content_html,
-      imageUrl: imageUrl,
+      imageUrls: imageUrls,
       authorId: message.author.id,
       timestamp: Date.now(),
     });
@@ -152,6 +152,11 @@ client.on('messageCreate', async (message) => {
       'liver-news': 'ライバーニュース (liver-news)',
     };
 
+    // 画像枚数の表記
+    const imageInfoText = imageUrls.length > 0
+      ? `${imageUrls.length}枚（1枚目を一覧アイキャッチ、全画像をページ上部ギャラリーに設定）`
+      : 'なし';
+
     // プレビュー用Embedを作成
     const previewEmbed = new EmbedBuilder()
       .setColor(0x5865F2)
@@ -159,11 +164,11 @@ client.on('messageCreate', async (message) => {
       .setDescription(parsedData.summary || '（要約なし）')
       .addFields(
         { name: 'カテゴリー', value: categoryLabels[parsedData.category] || parsedData.category, inline: true },
-        { name: 'アイキャッチ画像', value: imageUrl ? '添付画像あり' : 'なし', inline: true }
+        { name: '添付画像', value: imageInfoText, inline: true }
       );
 
-    if (imageUrl) {
-      previewEmbed.setImage(imageUrl);
+    if (imageUrls.length > 0) {
+      previewEmbed.setImage(imageUrls[0]); // 1枚目をメインプレビューとして表示
     }
 
     previewEmbed.setFooter({
@@ -238,14 +243,14 @@ client.on('interactionCreate', async (interaction) => {
         content: eventData.content_html,
         category: eventData.category,
         status: status,
-        image_url: eventData.imageUrl,
+        image_urls: eventData.imageUrls,
       },
       {
         headers: {
           'Content-Type': 'application/json',
           'X-JOL-API-KEY': WP_EVENT_API_KEY,
         },
-        timeout: 60000, // 画像ダウンロードを考慮して60秒
+        timeout: 90000, // 複数画像ダウンロードを考慮して90秒
       }
     );
 
@@ -254,6 +259,7 @@ client.on('interactionCreate', async (interaction) => {
 
     const result = response.data;
     const postUrl = result.url || WP_EVENT_API_URL.replace('/wp-json/jol/v1/event', '');
+    const imgCount = result.image_count !== undefined ? result.image_count : (eventData.imageUrls ? eventData.imageUrls.length : 0);
 
     const resultEmbed = new EmbedBuilder()
       .setColor(status === 'publish' ? 0x57F287 : 0xFEE75C)
@@ -261,7 +267,7 @@ client.on('interactionCreate', async (interaction) => {
       .addFields(
         { name: 'タイトル', value: result.title || eventData.title },
         { name: 'ステータス', value: statusLabel, inline: true },
-        { name: 'アイキャッチ画像', value: result.image_attached ? '登録完了' : 'なし', inline: true },
+        { name: '登録画像', value: `${imgCount}枚（上部ギャラリー＆アイキャッチ）`, inline: true },
         { name: '記事リンク', value: `[記事を表示する](${postUrl})` }
       );
 

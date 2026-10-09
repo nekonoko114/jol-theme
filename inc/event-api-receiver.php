@@ -51,11 +51,26 @@ function jol_handle_create_event_api($request) {
         $params = $request->get_params();
     }
 
-    $title     = !empty($params['title']) ? sanitize_text_field($params['title']) : '';
-    $content   = !empty($params['content']) ? wp_kses_post($params['content']) : '';
-    $category  = !empty($params['category']) ? sanitize_text_field($params['category']) : 'event-news';
-    $status    = !empty($params['status']) && in_array($params['status'], array('publish', 'draft'), true) ? $params['status'] : 'publish';
-    $image_url = !empty($params['image_url']) ? esc_url_raw($params['image_url']) : '';
+    $title      = !empty($params['title']) ? sanitize_text_field($params['title']) : '';
+    $content    = !empty($params['content']) ? wp_kses_post($params['content']) : '';
+    $category   = !empty($params['category']) ? sanitize_text_field($params['category']) : 'event-news';
+    $status     = !empty($params['status']) && in_array($params['status'], array('publish', 'draft'), true) ? $params['status'] : 'publish';
+    
+    // 画像URL群の取得（配列または単一URLに対応）
+    $image_urls = array();
+    if (!empty($params['image_urls']) && is_array($params['image_urls'])) {
+        foreach ($params['image_urls'] as $url) {
+            $cleaned = esc_url_raw($url);
+            if (!empty($cleaned)) {
+                $image_urls[] = $cleaned;
+            }
+        }
+    } elseif (!empty($params['image_url'])) {
+        $cleaned = esc_url_raw($params['image_url']);
+        if (!empty($cleaned)) {
+            $image_urls[] = $cleaned;
+        }
+    }
 
     if (empty($title)) {
         return new WP_Error('missing_title', 'タイトルは必須です。', array('status' => 400));
@@ -82,15 +97,24 @@ function jol_handle_create_event_api($request) {
     }
     wp_set_object_terms($post_id, $category, 'event_category');
 
-    // 3. アイキャッチ画像のダウンロード＆登録
-    $image_attached = false;
-    if (!empty($image_url)) {
-        $attachment_id = media_sideload_image($image_url, $post_id, $title, 'id');
-        if (!is_wp_error($attachment_id)) {
-            set_post_thumbnail($post_id, $attachment_id);
-            $image_attached = true;
-        } else {
-            error_log('JOL Event API Image Download Error: ' . $attachment_id->get_error_message());
+    // 3. 画像群のダウンロード＆ギャラリー登録
+    $gallery_attachment_ids = array();
+    if (!empty($image_urls)) {
+        foreach ($image_urls as $index => $img_url) {
+            $desc = $title . ' - 画像 ' . ($index + 1);
+            $attachment_id = media_sideload_image($img_url, $post_id, $desc, 'id');
+            if (!is_wp_error($attachment_id)) {
+                $gallery_attachment_ids[] = $attachment_id;
+            } else {
+                error_log('JOL Event API Image Download Error (' . $img_url . '): ' . $attachment_id->get_error_message());
+            }
+        }
+
+        // 1枚目を一覧用のアイキャッチ画像に設定
+        if (!empty($gallery_attachment_ids)) {
+            set_post_thumbnail($post_id, $gallery_attachment_ids[0]);
+            // 全画像のアタッチメントIDをカスタムフィールドに保存
+            update_post_meta($post_id, '_event_gallery_image_ids', $gallery_attachment_ids);
         }
     }
 
@@ -103,6 +127,7 @@ function jol_handle_create_event_api($request) {
         'status'         => $status,
         'category'       => $category,
         'url'            => $permalink,
-        'image_attached' => $image_attached,
+        'image_count'    => count($gallery_attachment_ids),
+        'image_attached' => !empty($gallery_attachment_ids),
     ));
 }
