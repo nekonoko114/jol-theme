@@ -36,8 +36,12 @@
                     
                     <div class="ranking-item-list">
                         <?php 
-                        $event_livers = get_field('event_ranking_livers');
-                        if ($event_livers) : 
+                        $event_livers = get_field('event_ranking_livers') ?: get_post_meta(get_the_ID(), 'event_ranking_livers', true);
+                        if (is_string($event_livers)) {
+                            $event_livers = maybe_unserialize($event_livers);
+                        }
+                        if ($event_livers && is_array($event_livers)) : 
+
                             $rank = 1;
                             foreach ($event_livers as $post_or_id) :
                                 $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;
@@ -166,8 +170,11 @@
                     
                     <div class="ranking-item-list">
                         <?php 
-                        $diamond_livers = get_field('diamond_ranking_livers');
-                        if ($diamond_livers) : 
+                        $diamond_livers = get_field('diamond_ranking_livers') ?: get_post_meta(get_the_ID(), 'diamond_ranking_livers', true);
+                        if (is_string($diamond_livers)) {
+                            $diamond_livers = maybe_unserialize($diamond_livers);
+                        }
+                        if ($diamond_livers && is_array($diamond_livers)) : 
                             $rank = 1;
                             foreach ($diamond_livers as $post_or_id) :
                                 $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;
@@ -229,8 +236,11 @@
                     
                     <div class="ranking-item-list">
                         <?php 
-                        $delivery_time_livers = get_field('delivery_time_ranking_livers') ?: get_field('delivery_time_ranking_liver');
-                        if ($delivery_time_livers) : 
+                        $delivery_time_livers = get_field('delivery_time_ranking_livers') ?: get_field('delivery_time_ranking_liver') ?: get_post_meta(get_the_ID(), 'delivery_time_ranking_livers', true);
+                        if (is_string($delivery_time_livers)) {
+                            $delivery_time_livers = maybe_unserialize($delivery_time_livers);
+                        }
+                        if ($delivery_time_livers && is_array($delivery_time_livers)) : 
                             $rank = 1;
                             foreach ($delivery_time_livers as $post_or_id) :
                                 $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;

@@ -185,13 +185,25 @@ add_action('acf/init', function () {
 
 // REST APIで直接更新可能にするためのフィールド登録
 add_action('rest_api_init', function () {
-  register_rest_field('ranking', 'rookie_ranking_livers', array(
-    'get_callback' => function ($post) {
-      return get_post_meta($post['id'], 'rookie_ranking_livers', true);
-    },
-    'update_callback' => function ($value, $post) {
-      return update_post_meta($post->ID, 'rookie_ranking_livers', $value);
-    },
-    'schema' => null,
-  ));
+  $ranking_fields = array(
+    'event_ranking_livers',
+    'diamond_ranking_livers',
+    'delivery_time_ranking_livers',
+    'rookie_ranking_livers'
+  );
+  foreach ($ranking_fields as $field_name) {
+    register_rest_field('ranking', $field_name, array(
+      'get_callback' => function ($post) use ($field_name) {
+        return get_post_meta($post['id'], $field_name, true);
+      },
+      'update_callback' => function ($value, $post) use ($field_name) {
+        if (function_exists('update_field')) {
+          update_field($field_name, $value, $post->ID);
+        }
+        return update_post_meta($post->ID, $field_name, $value);
+      },
+      'schema' => null,
+    ));
+  }
 });
+
