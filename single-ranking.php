@@ -45,7 +45,7 @@
                                 if ($liver_post && in_array($liver_post->post_status, array('publish', 'draft'))) :
                                     if ($rank > 5) break;
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
-                                    $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
+                                    $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
                                     $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
                                     $permalink = get_permalink($liver_id);
@@ -113,7 +113,7 @@
                             if ($liver_post && in_array($liver_post->post_status, array('publish', 'draft'))) :
                                 if ($rank > 5) break;
                                 setup_postdata($GLOBALS['post'] =& $liver_post);
-                                $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
+                                $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                 $creator_account = get_post_meta($liver_id, 'creator_account', true);
                                 $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
                                 $permalink = get_permalink($liver_id);
@@ -175,7 +175,7 @@
                                 if ($liver_post && in_array($liver_post->post_status, array('publish', 'draft'))) :
                                     if ($rank > 5) break;
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
-                                    $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
+                                    $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
                                     $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
                                     $permalink = get_permalink($liver_id);
@@ -238,7 +238,7 @@
                                 if ($liver_post && in_array($liver_post->post_status, array('publish', 'draft'))) :
                                     if ($rank > 5) break;
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
-                                    $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
+                                    $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
                                     $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
                                     $permalink = get_permalink($liver_id);
