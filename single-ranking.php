@@ -90,6 +90,70 @@
                     </div>
                 </section>
 
+                <!-- 新人王ランキング（登録がある場合のみ、または4カラム時表示） -->
+                <?php 
+                $rookie_livers = get_field('rookie_ranking_livers');
+                if ($rookie_livers) : 
+                ?>
+                <section class="ranking-column-section rookie-rank-col">
+                    <h2 class="ranking-column-title">
+                        <span class="title-en">ROOKIE RANKING</span>
+                        <span class="title-ja">J.O.L 新人王</span>
+                    </h2>
+                    
+                    <div class="ranking-item-list">
+                        <?php 
+                        $rank = 1;
+                        foreach ($rookie_livers as $post_or_id) :
+                            $liver_id = is_object($post_or_id) ? $post_or_id->ID : $post_or_id;
+                            $liver_post = get_post($liver_id);
+                            if ($liver_post && in_array($liver_post->post_status, array('publish', 'draft'))) :
+                                if ($rank > 5) break;
+                                setup_postdata($GLOBALS['post'] =& $liver_post);
+                                $creator_name = get_post_meta($liver_id, 'creator_name', true) ?: $liver_post->post_title;
+                                $creator_account = get_post_meta($liver_id, 'creator_account', true);
+                                $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
+                                $permalink = get_permalink($liver_id);
+                                $is_draft = ($liver_post->post_status === 'draft');
+                        ?>
+                                <div class="ranking-list-item">
+                                    <div class="rank-badge-wrap rank-num-<?php echo $rank; ?>">
+                                        <span class="rank-number"><?php echo $rank; ?></span>
+                                    </div>
+                                    <div class="liver-avatar-wrap">
+                                        <?php if ($is_draft) : ?>
+                                            <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                            </div>
+                                        <?php else : ?>
+                                            <a href="<?php echo esc_url($permalink); ?>">
+                                                <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="liver-details">
+                                        <h3 class="creator-name">
+                                            <?php if ($is_draft) : ?>
+                                                <span><?php echo esc_html($creator_name); ?></span>
+                                            <?php else : ?>
+                                                <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
+                                            <?php endif; ?>
+                                        </h3>
+                                        <?php if ($creator_account) : ?>
+                                            <p class="creator-id">@<?php echo esc_html($creator_account); ?></p>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                        <?php 
+                                $rank++;
+                            endif;
+                        endforeach;
+                        wp_reset_postdata();
+                        ?>
+                    </div>
+                </section>
+                <?php endif; ?>
+
                 <!-- 右カラム: ダイヤモンドランキング -->
                 <section class="ranking-column-section diamond-rank-col">
                     <h2 class="ranking-column-title">

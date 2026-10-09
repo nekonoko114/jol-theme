@@ -6359,6 +6359,32 @@ svg.active .svg-elem-32 {
   background: rgba(188, 165, 185, 0.02) !important;
 }
 
+.rookie-rank-col .ranking-column-title {
+  border-bottom-color: rgba(226, 191, 138, 0.3) !important;
+}
+
+.rookie-rank-col .ranking-column-title .title-en {
+  color: #e2bf8a !important;
+}
+
+.rookie-rank-col .ranking-column-title .title-ja {
+  color: rgba(226, 191, 138, 0.6) !important;
+}
+
+.rookie-rank-col .ranking-list-item:hover .liver-avatar-wrap {
+  border-color: #e2bf8a !important;
+}
+
+.rookie-rank-col .ranking-list-item:hover .creator-name a {
+  color: #e2bf8a !important;
+}
+
+.rookie-rank-col .no-data-msg {
+  color: rgba(226, 191, 138, 0.6) !important;
+  border-color: rgba(226, 191, 138, 0.15) !important;
+  background: rgba(226, 191, 138, 0.02) !important;
+}
+
 /* ランキングアイテムリスト */
 
 .ranking-item-list {

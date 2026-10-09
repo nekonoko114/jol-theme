@@ -118,6 +118,31 @@
     }
 }
 
+.rookie-rank-col {
+    .ranking-column-title {
+        border-bottom-color: rgba(226, 191, 138, 0.3) !important;
+        .title-en {
+            color: #e2bf8a !important;
+        }
+        .title-ja {
+            color: rgba(226, 191, 138, 0.6) !important;
+        }
+    }
+    .ranking-list-item:hover {
+        .liver-avatar-wrap {
+            border-color: #e2bf8a !important;
+        }
+        .creator-name a {
+            color: #e2bf8a !important;
+        }
+    }
+    .no-data-msg {
+        color: rgba(226, 191, 138, 0.6) !important;
+        border-color: rgba(226, 191, 138, 0.15) !important;
+        background: rgba(226, 191, 138, 0.02) !important;
+    }
+}
+
 /* ランキングアイテムリスト */
 .ranking-item-list {
     display: flex;
