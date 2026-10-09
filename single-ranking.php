@@ -92,8 +92,11 @@
 
                 <!-- 新人王ランキング（登録がある場合のみ、または4カラム時表示） -->
                 <?php 
-                $rookie_livers = get_field('rookie_ranking_livers');
-                if ($rookie_livers) : 
+                $rookie_livers = get_field('rookie_ranking_livers') ?: get_post_meta(get_the_ID(), 'rookie_ranking_livers', true);
+                if (is_string($rookie_livers)) {
+                    $rookie_livers = maybe_unserialize($rookie_livers);
+                }
+                if ($rookie_livers && is_array($rookie_livers)) : 
                 ?>
                 <section class="ranking-column-section rookie-rank-col">
                     <h2 class="ranking-column-title">
