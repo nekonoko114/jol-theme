@@ -27,3 +27,8 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Local sync scripts & scratch
+scratch_*
+sync_*.py
+.env*
