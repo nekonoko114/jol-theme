@@ -94,7 +94,7 @@ function jol_ajax_get_ranking_data()
         'delivery' => $delivery,
         'delivery_time' => $delivery_time,
         'account_url' => $account_url,
-        'avatar' => get_the_post_thumbnail_url(get_the_ID(), 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg',
+        'avatar' => get_the_post_thumbnail_url(get_the_ID(), 'thumbnail') ?: get_template_directory_uri() . '/assets/images/default-avatar.png',
         'url' => get_permalink()
       ];
 

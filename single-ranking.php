@@ -51,7 +51,7 @@
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
-                                    $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
+                                    $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/assets/images/default-avatar.png';
                                     $permalink = get_permalink($liver_id);
                                     $is_draft = ($liver_post->post_status === 'draft');
                         ?>
@@ -119,7 +119,7 @@
                                 setup_postdata($GLOBALS['post'] =& $liver_post);
                                 $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                 $creator_account = get_post_meta($liver_id, 'creator_account', true);
-                                $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
+                                $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/assets/images/default-avatar.png';
                                 $permalink = get_permalink($liver_id);
                                 $is_draft = ($liver_post->post_status === 'draft');
                         ?>
@@ -184,7 +184,7 @@
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
-                                    $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
+                                    $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/assets/images/default-avatar.png';
                                     $permalink = get_permalink($liver_id);
                                     $is_draft = ($liver_post->post_status === 'draft');
                         ?>
@@ -250,7 +250,7 @@
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
-                                    $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
+                                    $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/assets/images/default-avatar.png';
                                     $permalink = get_permalink($liver_id);
                                     $is_draft = ($liver_post->post_status === 'draft');
                         ?>

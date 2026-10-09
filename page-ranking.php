@@ -49,7 +49,7 @@ get_header(); ?>
                                 $avatar_url = get_the_post_thumbnail_url(get_the_ID(), 'thumbnail');
 
                                 if (!$avatar_url) {
-                                    $avatar_url = get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
+                                    $avatar_url = get_template_directory_uri() . '/assets/images/default-avatar.png';
                                 }
                         ?>
                                 <div class="podium-rank rank-<?php echo $rank; ?>" data-rank="<?php echo $rank; ?>">
@@ -137,7 +137,7 @@ get_header(); ?>
                                 $avatar_url = get_the_post_thumbnail_url(get_the_ID(), 'thumbnail');
 
                                 if (!$avatar_url) {
-                                    $avatar_url = get_template_directory_uri() . '/src/assets/images/24401878_s.jpg';
+                                    $avatar_url = get_template_directory_uri() . '/assets/images/default-avatar.png';
                                 }
 
                                 get_template_part('template-parts/ranking/ranking-card', null, array(
