@@ -166,3 +166,32 @@ function jol_ensure_rest_support_for_custom_post_types()
   }
 }
 add_action('init', 'jol_ensure_rest_support_for_custom_post_types', 20);
+
+// 新人王ランキングのフィールドをACFおよびREST APIに登録
+add_action('acf/init', function () {
+  if (function_exists('acf_add_local_field')) {
+    acf_add_local_field(array(
+      'key'           => 'field_rookie_ranking_livers',
+      'label'         => 'J.O.L 新人王ランキングのライバー',
+      'name'          => 'rookie_ranking_livers',
+      'type'          => 'relationship',
+      'parent'        => 'group_6a20c2db7de16',
+      'post_type'     => array('liver'),
+      'return_format' => 'object',
+      'show_in_rest'  => 1,
+    ));
+  }
+});
+
+// REST APIで直接更新可能にするためのフィールド登録
+add_action('rest_api_init', function () {
+  register_rest_field('ranking', 'rookie_ranking_livers', array(
+    'get_callback' => function ($post) {
+      return get_post_meta($post['id'], 'rookie_ranking_livers', true);
+    },
+    'update_callback' => function ($value, $post) {
+      return update_post_meta($post->ID, 'rookie_ranking_livers', $value);
+    },
+    'schema' => null,
+  ));
+});
