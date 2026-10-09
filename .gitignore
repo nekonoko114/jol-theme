@@ -32,3 +32,4 @@ yarn-error.log*
 scratch_*
 sync_*.py
 .env*
+!.env.example
