@@ -6525,6 +6525,54 @@ svg.active .svg-elem-32 {
   overflow-wrap: break-word;
 }
 
+.liver-details .creator-id a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.liver-details .creator-id a:hover {
+  color: #e0e0e0;
+  text-decoration: underline;
+}
+
+/* TikTokリンクボタン */
+
+.tiktok-link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #c0c0c0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+  margin-left: auto;
+  text-decoration: none;
+}
+
+.tiktok-link-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.tiktok-link-btn:hover {
+  background: rgba(254, 44, 85, 0.15);
+  border-color: rgba(254, 44, 85, 0.6);
+  color: #ff0050;
+  box-shadow: 0 0 14px rgba(254, 44, 85, 0.35);
+  transform: translateY(-2px) scale(1.08);
+}
+
+.tiktok-link-btn:hover svg {
+  transform: scale(1.15);
+}
+
 /* エラー/データなしメッセージ */
 
 .no-data-msg {
@@ -7499,6 +7547,16 @@ svg.active .svg-elem-32 {
   .liver-details .creator-name {
     font-size: 1.2rem;
     /* フォントサイズ調整 */
+  }
+
+  .tiktok-link-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .tiktok-link-btn svg {
+    width: 14px;
+    height: 14px;
   }
 
   .ranking-archive-grid {

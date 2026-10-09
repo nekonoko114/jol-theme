@@ -51,6 +51,10 @@
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
+                                    $tiktok_url = get_post_meta($liver_id, 'account_url', true);
+                                    if (!$tiktok_url && $creator_account) {
+                                        $tiktok_url = 'https://www.tiktok.com/@' . ltrim($creator_account, '@');
+                                    }
                                     $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/assets/images/default-avatar.png';
                                     $permalink = get_permalink($liver_id);
                                     $is_draft = ($liver_post->post_status === 'draft');
@@ -61,9 +65,15 @@
                                         </div>
                                         <div class="liver-avatar-wrap">
                                             <?php if ($is_draft) : ?>
-                                                <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
-                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
+                                                <?php if ($tiktok_url) : ?>
+                                                    <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                        <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    </a>
+                                                <?php else : ?>
+                                                    <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                        <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    </div>
+                                                <?php endif; ?>
                                             <?php else : ?>
                                                 <a href="<?php echo esc_url($permalink); ?>">
                                                     <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
@@ -73,15 +83,32 @@
                                         <div class="liver-details">
                                             <h3 class="creator-name">
                                                 <?php if ($is_draft) : ?>
-                                                    <span><?php echo esc_html($creator_name); ?></span>
+                                                    <?php if ($tiktok_url) : ?>
+                                                        <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($creator_name); ?></a>
+                                                    <?php else : ?>
+                                                        <span><?php echo esc_html($creator_name); ?></span>
+                                                    <?php endif; ?>
                                                 <?php else : ?>
                                                     <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
                                                 <?php endif; ?>
                                             </h3>
                                             <?php if ($creator_account) : ?>
-                                                <p class="creator-id">@<?php echo esc_html($creator_account); ?></p>
+                                                <p class="creator-id">
+                                                    <?php if ($tiktok_url) : ?>
+                                                        <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer">@<?php echo esc_html($creator_account); ?></a>
+                                                    <?php else : ?>
+                                                        @<?php echo esc_html($creator_account); ?>
+                                                    <?php endif; ?>
+                                                </p>
                                             <?php endif; ?>
                                         </div>
+                                        <?php if ($tiktok_url) : ?>
+                                            <a href="<?php echo esc_url($tiktok_url); ?>" class="tiktok-link-btn" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr($creator_name); ?>のTikTokプロフィール">
+                                                <svg class="tiktok-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/>
+                                                </svg>
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
                         <?php 
                                     $rank++;
@@ -119,6 +146,10 @@
                                 setup_postdata($GLOBALS['post'] =& $liver_post);
                                 $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                 $creator_account = get_post_meta($liver_id, 'creator_account', true);
+                                $tiktok_url = get_post_meta($liver_id, 'account_url', true);
+                                if (!$tiktok_url && $creator_account) {
+                                    $tiktok_url = 'https://www.tiktok.com/@' . ltrim($creator_account, '@');
+                                }
                                 $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/assets/images/default-avatar.png';
                                 $permalink = get_permalink($liver_id);
                                 $is_draft = ($liver_post->post_status === 'draft');
@@ -129,9 +160,15 @@
                                     </div>
                                     <div class="liver-avatar-wrap">
                                         <?php if ($is_draft) : ?>
-                                            <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
-                                                <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
-                                            </div>
+                                            <?php if ($tiktok_url) : ?>
+                                                <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                </a>
+                                            <?php else : ?>
+                                                <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                </div>
+                                            <?php endif; ?>
                                         <?php else : ?>
                                             <a href="<?php echo esc_url($permalink); ?>">
                                                 <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
@@ -141,15 +178,32 @@
                                     <div class="liver-details">
                                         <h3 class="creator-name">
                                             <?php if ($is_draft) : ?>
-                                                <span><?php echo esc_html($creator_name); ?></span>
+                                                <?php if ($tiktok_url) : ?>
+                                                    <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($creator_name); ?></a>
+                                                <?php else : ?>
+                                                    <span><?php echo esc_html($creator_name); ?></span>
+                                                <?php endif; ?>
                                             <?php else : ?>
                                                 <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
                                             <?php endif; ?>
                                         </h3>
                                         <?php if ($creator_account) : ?>
-                                            <p class="creator-id">@<?php echo esc_html($creator_account); ?></p>
+                                            <p class="creator-id">
+                                                <?php if ($tiktok_url) : ?>
+                                                    <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer">@<?php echo esc_html($creator_account); ?></a>
+                                                <?php else : ?>
+                                                    @<?php echo esc_html($creator_account); ?>
+                                                <?php endif; ?>
+                                            </p>
                                         <?php endif; ?>
                                     </div>
+                                    <?php if ($tiktok_url) : ?>
+                                        <a href="<?php echo esc_url($tiktok_url); ?>" class="tiktok-link-btn" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr($creator_name); ?>のTikTokプロフィール">
+                                            <svg class="tiktok-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/>
+                                            </svg>
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                         <?php 
                                 $rank++;
@@ -184,6 +238,10 @@
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
+                                    $tiktok_url = get_post_meta($liver_id, 'account_url', true);
+                                    if (!$tiktok_url && $creator_account) {
+                                        $tiktok_url = 'https://www.tiktok.com/@' . ltrim($creator_account, '@');
+                                    }
                                     $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/assets/images/default-avatar.png';
                                     $permalink = get_permalink($liver_id);
                                     $is_draft = ($liver_post->post_status === 'draft');
@@ -194,9 +252,15 @@
                                         </div>
                                         <div class="liver-avatar-wrap">
                                             <?php if ($is_draft) : ?>
-                                                <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
-                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
+                                                <?php if ($tiktok_url) : ?>
+                                                    <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                        <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    </a>
+                                                <?php else : ?>
+                                                    <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                        <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    </div>
+                                                <?php endif; ?>
                                             <?php else : ?>
                                                 <a href="<?php echo esc_url($permalink); ?>">
                                                     <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
@@ -206,15 +270,32 @@
                                         <div class="liver-details">
                                             <h3 class="creator-name">
                                                 <?php if ($is_draft) : ?>
-                                                    <span><?php echo esc_html($creator_name); ?></span>
+                                                    <?php if ($tiktok_url) : ?>
+                                                        <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($creator_name); ?></a>
+                                                    <?php else : ?>
+                                                        <span><?php echo esc_html($creator_name); ?></span>
+                                                    <?php endif; ?>
                                                 <?php else : ?>
                                                     <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
                                                 <?php endif; ?>
                                             </h3>
                                             <?php if ($creator_account) : ?>
-                                                <p class="creator-id">@<?php echo esc_html($creator_account); ?></p>
+                                                <p class="creator-id">
+                                                    <?php if ($tiktok_url) : ?>
+                                                        <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer">@<?php echo esc_html($creator_account); ?></a>
+                                                    <?php else : ?>
+                                                        @<?php echo esc_html($creator_account); ?>
+                                                    <?php endif; ?>
+                                                </p>
                                             <?php endif; ?>
                                         </div>
+                                        <?php if ($tiktok_url) : ?>
+                                            <a href="<?php echo esc_url($tiktok_url); ?>" class="tiktok-link-btn" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr($creator_name); ?>のTikTokプロフィール">
+                                                <svg class="tiktok-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/>
+                                                </svg>
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
                         <?php 
                                     $rank++;
@@ -250,6 +331,10 @@
                                     setup_postdata($GLOBALS['post'] =& $liver_post);
                                     $creator_name = $liver_post->post_title ?: get_post_meta($liver_id, 'creator_name', true);
                                     $creator_account = get_post_meta($liver_id, 'creator_account', true);
+                                    $tiktok_url = get_post_meta($liver_id, 'account_url', true);
+                                    if (!$tiktok_url && $creator_account) {
+                                        $tiktok_url = 'https://www.tiktok.com/@' . ltrim($creator_account, '@');
+                                    }
                                     $avatar_url = get_the_post_thumbnail_url($liver_id, 'thumbnail') ?: get_template_directory_uri() . '/assets/images/default-avatar.png';
                                     $permalink = get_permalink($liver_id);
                                     $is_draft = ($liver_post->post_status === 'draft');
@@ -260,9 +345,15 @@
                                         </div>
                                         <div class="liver-avatar-wrap">
                                             <?php if ($is_draft) : ?>
-                                                <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
-                                                    <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
-                                                </div>
+                                                <?php if ($tiktok_url) : ?>
+                                                    <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                        <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    </a>
+                                                <?php else : ?>
+                                                    <div class="draft-avatar-placeholder" style="border-radius: 50%; overflow: hidden; display: block; aspect-ratio: 1/1;">
+                                                        <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                    </div>
+                                                <?php endif; ?>
                                             <?php else : ?>
                                                 <a href="<?php echo esc_url($permalink); ?>">
                                                     <img src="<?php echo esc_url($avatar_url); ?>" alt="<?php echo esc_attr($creator_name); ?>">
@@ -272,15 +363,32 @@
                                         <div class="liver-details">
                                             <h3 class="creator-name">
                                                 <?php if ($is_draft) : ?>
-                                                    <span><?php echo esc_html($creator_name); ?></span>
+                                                    <?php if ($tiktok_url) : ?>
+                                                        <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($creator_name); ?></a>
+                                                    <?php else : ?>
+                                                        <span><?php echo esc_html($creator_name); ?></span>
+                                                    <?php endif; ?>
                                                 <?php else : ?>
                                                     <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($creator_name); ?></a>
                                                 <?php endif; ?>
                                             </h3>
                                             <?php if ($creator_account) : ?>
-                                                <p class="creator-id">@<?php echo esc_html($creator_account); ?></p>
+                                                <p class="creator-id">
+                                                    <?php if ($tiktok_url) : ?>
+                                                        <a href="<?php echo esc_url($tiktok_url); ?>" target="_blank" rel="noopener noreferrer">@<?php echo esc_html($creator_account); ?></a>
+                                                    <?php else : ?>
+                                                        @<?php echo esc_html($creator_account); ?>
+                                                    <?php endif; ?>
+                                                </p>
                                             <?php endif; ?>
                                         </div>
+                                        <?php if ($tiktok_url) : ?>
+                                            <a href="<?php echo esc_url($tiktok_url); ?>" class="tiktok-link-btn" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr($creator_name); ?>のTikTokプロフィール">
+                                                <svg class="tiktok-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/>
+                                                </svg>
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
                         <?php 
                                     $rank++;
