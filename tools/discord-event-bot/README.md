@@ -33,7 +33,7 @@ GEMINI_API_KEY=ここにGeminiのAPIキーを貼り付け
 DISCORD_CHANNEL_ID=（任意: 監視したいチャンネルのID。空欄でも動作します）
 
 # WordPressの接続先
-WP_EVENT_API_URL=https://liver-jol.com/wp-json/jol/v1/event
+WP_EVENT_API_URL=https://jol.genesis-llc.co.jp/wp-json/jol/v1/event
 WP_EVENT_API_KEY=jol_event_secret_token_2026
 ```
 
