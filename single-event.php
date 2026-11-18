@@ -67,5 +67,6 @@ $cat_name = (!empty($terms) && !is_wp_error($terms)) ? $terms[0]->name : 'イベ
     </div>
 </main>
 
+<?php get_template_part('template-parts/content/l-explore'); ?>
 <?php get_template_part('template-parts/content/l-contact'); ?>
 <?php get_footer(); ?>

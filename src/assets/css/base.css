@@ -1983,23 +1983,22 @@ a {
 }
 
 .page-id-27 .wpcf7 {
-  padding: 60px 50px;
-  background: linear-gradient(135deg, rgba(15, 15, 25, 0.65) 0%, rgba(10, 10, 15, 0.45) 100%);
+  display: none;
+  padding: 40px;
+  background: #111113;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
   border-radius: 8px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  max-width: 800px;
-  margin: 80px auto 160px;
+  box-shadow: none;
+  max-width: 760px;
+  margin: 48px auto 0;
   position: relative;
   z-index: 1;
 }
 @media screen and (max-width: 767px) {
   .page-id-27 .wpcf7 {
-    padding: 40px 20px;
-    margin: 40px auto 80px;
-    width: 92%;
+    padding: 24px;
+    margin: 32px auto 0;
+    width: 100%;
   }
 }
 .page-id-27 form {
@@ -2008,10 +2007,10 @@ a {
 }
 .page-id-27 label {
   font-weight: 600;
-  font-family: "Outfit", "Noto Sans JP", sans-serif;
+  font-family: "Noto Sans JP", "Outfit", sans-serif;
   margin-bottom: 8px;
-  font-size: 1.05rem;
-  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.9rem;
+  color: #EAEAEA;
   display: block;
 }
 .page-id-27 input[type=text],
@@ -2020,12 +2019,12 @@ a {
 .page-id-27 textarea,
 .page-id-27 select {
   width: 100%;
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 12px 16px;
-  font-size: 15px;
+  font-size: 0.95rem;
   box-sizing: border-box;
   margin-bottom: 20px;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.03);
   color: #fff;
@@ -2036,154 +2035,99 @@ a {
 .page-id-27 input[type=tel]:focus,
 .page-id-27 textarea:focus,
 .page-id-27 select:focus {
-  border-color: rgba(255, 0, 0, 0.6);
-  box-shadow: 0 0 12px rgba(255, 0, 0, 0.3);
-  background: rgba(255, 255, 255, 0.06);
+  border-color: #00FFFF;
+  box-shadow: 0 0 0 1px rgba(0, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
 }
 .page-id-27 input[type=submit] {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  color: #fff;
-  padding: 14px 40px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  width: 250px;
-  text-align: center;
-  margin: 40px auto 20px;
   display: block;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  position: relative;
-  overflow: hidden;
-  letter-spacing: 2px;
-}
-.page-id-27 input[type=submit]::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-  transform: skewX(-25deg);
-  pointer-events: none;
-  z-index: 1;
+  width: 100%;
+  max-width: 280px;
+  margin: 32px auto 8px;
+  padding: 14px 32px;
+  border: 1px solid rgba(0, 255, 255, 0.45);
+  border-radius: 4px;
+  background: rgba(0, 255, 255, 0.08);
+  color: #00FFFF;
+  font-family: "Outfit", "Noto Sans JP", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .page-id-27 input[type=submit]:hover {
-  border-color: rgba(255, 0, 0, 0.45);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 0, 0, 0.25);
-  background: rgba(255, 0, 0, 0.05);
-}
-.page-id-27 input[type=submit]:hover::before {
-  left: 200%;
-  transition: all 0.9s ease;
+  background: #00FFFF;
+  color: #000000;
+  border-color: #00FFFF;
+  transform: translateY(-2px);
 }
 .page-id-27 .contact-liver {
-  padding: 90px 20px;
-  max-width: 1200px;
+  padding: 0 0 48px;
+  max-width: 1400px;
   margin: 0 auto;
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: wrap !important;
-  gap: 30px !important;
-  justify-content: center !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 24px !important;
 }
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1023px) {
   .page-id-27 .contact-liver {
-    padding: 40px 10px;
-    flex-direction: column !important;
-    align-items: center !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media screen and (max-width: 639px) {
+  .page-id-27 .contact-liver {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
   }
 }
 .page-id-27 .contact-liver-card-item {
-  flex: 1;
-  min-width: 240px;
-  max-width: 270px;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 .page-id-27 .contact-liver-card-item h3 {
-  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 2px;
-  margin-bottom: 12px;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
   text-transform: uppercase;
-  text-align: center;
-  transition: color 0.4s ease;
-}
-.page-id-27 .contact-liver-card-item:nth-of-type(1) {
-  --step-color: #ffeb3b;
-}
-.page-id-27 .contact-liver-card-item:nth-of-type(1) h3 {
-  color: #ffeb3b;
-}
-.page-id-27 .contact-liver-card-item:nth-of-type(2) {
-  --step-color: #8A2BE2;
-}
-.page-id-27 .contact-liver-card-item:nth-of-type(2) h3 {
-  color: #8A2BE2;
-}
-.page-id-27 .contact-liver-card-item:nth-of-type(3) {
-  --step-color: #00FFFF;
-}
-.page-id-27 .contact-liver-card-item:nth-of-type(3) h3 {
+  text-align: left;
   color: #00FFFF;
-}
-.page-id-27 .contact-liver-card-item:nth-of-type(4) {
-  --step-color: #FF0000;
-}
-.page-id-27 .contact-liver-card-item:nth-of-type(4) h3 {
-  color: #FF0000;
-}
-@media screen and (max-width: 767px) {
-  .page-id-27 .contact-liver-card-item {
-    width: 100%;
-    max-width: 320px;
-  }
 }
 .page-id-27 .contact-liver-card {
   width: 100% !important;
-  height: 160px;
+  height: 100%;
+  min-height: 128px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, rgba(25, 25, 35, 0.65) 0%, rgba(15, 15, 20, 0.45) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  align-items: flex-start;
+  background: #111113;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 8px;
-  padding: 25px;
+  padding: 24px;
   box-sizing: border-box;
-  text-align: center;
-  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-  position: relative;
-  overflow: hidden;
+  text-align: left;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   margin: 0 !important;
-  color: #fff;
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  color: #EAEAEA;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   line-height: 1.6;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-@media screen and (max-width: 767px) {
-  .page-id-27 .contact-liver-card {
-    height: auto;
-    min-height: 130px;
-  }
+  box-shadow: none;
 }
 .page-id-27 .contact-liver-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--step-color) !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px var(--step-color), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  color: var(--step-color) !important;
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 255, 0.55) !important;
+  box-shadow: none;
+  color: #FFFFFF !important;
 }
 
 .error404 h1 {

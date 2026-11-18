@@ -78,5 +78,6 @@
     </main>
 </div>
 
+<?php get_template_part('template-parts/content/l-explore'); ?>
 <?php get_template_part('template-parts/content/l-contact'); ?>
 <?php get_footer(); ?>
