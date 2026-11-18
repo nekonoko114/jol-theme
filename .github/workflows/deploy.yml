@@ -25,4 +25,4 @@ jobs:
           # 本番サーバー上の除外対象・削除同期
           ARGS: "-rlgoDzvc -i --delete"
           # 本番環境にアップロード不要なファイル・ディレクトリを除外
-          EXCLUDE: "/node_modules/, /.git/, /.github/, /src/, /tools/, /gulpfile.js/, /package.json/, /package-lock.json/, /ACF_SETUP_GUIDE.md/, /Jules.MD/, /.vscode/, /README.md/"
+          EXCLUDE: "/node_modules/, /.git/, /.github/, /src/, /tools/, /scripts/, /vite.config.js/, /package.json/, /package-lock.json/, /ACF_SETUP_GUIDE.md/, /DESIGN.md/, /.vscode/, /README.md/"

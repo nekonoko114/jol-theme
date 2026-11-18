@@ -1,4 +1,4 @@
-class LoadingAnimation {
+export class LoadingAnimation {
   constructor(options = {}) {
     this.config = {
       splashSelector: "#splash",

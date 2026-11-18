@@ -2,8 +2,8 @@
 // CSSとJSの読み込み
 function jol_enqueue_theme_assets()
 {
-  // CSS Reset
-  wp_enqueue_style('modern-css-reset', 'https://unpkg.com/modern-css-reset/dist/reset.min.css', array(), null);
+  // CSS Reset（バージョン固定）
+  wp_enqueue_style('modern-css-reset', 'https://unpkg.com/modern-css-reset@1.4.0/dist/reset.min.css', array(), '1.4.0');
 
   // Google Fonts
   wp_enqueue_style('google-fonts-base', 'https://fonts.googleapis.com/css2?family=Condiment&family=M+PLUS+Rounded+1c&display=swap', array(), null);
@@ -12,21 +12,21 @@ function jol_enqueue_theme_assets()
   // Font Awesome
   wp_enqueue_style('font-awesome', 'https://use.fontawesome.com/releases/v6.2.0/css/all.css', array(), '6.2.0');
 
-  // Swiper CSS
-  wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0');
+  // Swiper CSS（パッチバージョンまで固定）
+  wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11.2.6/swiper-bundle.min.css', array(), '11.2.6');
 
-  // メインスタイルシート
-  wp_enqueue_style('theme-style', get_template_directory_uri() . '/assets/css/style.css', array('modern-css-reset'), filemtime(get_template_directory() . '/assets/css/style.css'));
+  // メインスタイルシート（Tailwind CSS v4 + ネイティブCSS統合ビルド）
+  $tailwind_css_path = get_template_directory() . '/assets/css/tailwind.css';
+  if (file_exists($tailwind_css_path)) {
+    wp_enqueue_style('theme-style', get_template_directory_uri() . '/assets/css/tailwind.css', array('modern-css-reset'), filemtime($tailwind_css_path));
+  }
 
-  // jQuery設定（headセクションで読み込み）
+  // jQuery設定（WordPress標準のjQueryを使用）
   if (!is_admin()) {
-    // WordPress標準のjQueryを削除してCDNのjQueryを使用
-    wp_deregister_script('jquery');
-    // jQueryをheadで読み込む（第5引数をfalseにする）
-    wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.6.0.min.js', array(), '3.6.0', false);
+    wp_enqueue_script('jquery');
 
-    // jQueryの$エイリアスを確保
-    wp_add_inline_script('jquery', 'window.jQuery = window.$ = jQuery;');
+    // WordPress標準jQueryはnoConflictモードのため、既存スクリプト互換用に$エイリアスを確保
+    wp_add_inline_script('jquery-core', 'window.jQuery = window.$ = jQuery;');
   }
 
   // particles.js (FVパーティクル用 - トップページのみ)
@@ -39,24 +39,20 @@ function jol_enqueue_theme_assets()
     wp_enqueue_script('particles-config', get_template_directory_uri() . '/assets/js/particles-config.js', array('particles-js'), $version, true);
   }
 
-  // Swiper JavaScript
-  wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array('jquery'), '11.0.0', true);
-
-  // モジュール化されたJavaScript
-  wp_enqueue_script('loading-animation', get_template_directory_uri() . '/assets/js/modules/loadingAnimation.js', array('jquery'), filemtime(get_template_directory() . '/assets/js/modules/loadingAnimation.js'), true);
-  wp_enqueue_script('main-swiper', get_template_directory_uri() . '/assets/js/modules/mainSwiper.js', array('swiper-js'), time(), true);
-  wp_enqueue_script('liver-slider', get_template_directory_uri() . '/assets/js/modules/liverSlider.js', array('swiper-js'), time(), true);
-  
-  // hamburger.jsの読み込み
-  wp_enqueue_script('hamburger', get_template_directory_uri() . '/assets/js/modules/hamburger.js', array('jquery'), filemtime(get_template_directory() . '/assets/js/modules/hamburger.js'), true);
+  // Swiper JavaScript（パッチバージョンまで固定）
+  wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11.2.6/swiper-bundle.min.js', array('jquery'), '11.2.6', true);
 
   // ランキングページ用スクリプト
   if (is_page_template('page-ranking.php')) {
-    wp_enqueue_script('ranking-manager', get_template_directory_uri() . '/assets/js/ranking.js', array('jquery'), filemtime(get_template_directory() . '/assets/js/ranking.js'), true);
+    $ranking_js_path = get_template_directory() . '/assets/js/ranking.js';
+    $ranking_js_ver  = file_exists($ranking_js_path) ? filemtime($ranking_js_path) : '1.0.0';
+    wp_enqueue_script('ranking-manager', get_template_directory_uri() . '/assets/js/ranking.js', array('jquery'), $ranking_js_ver, true);
   }
 
-  // メインアプリケーション（最後に読み込む）
-  wp_enqueue_script('theme-app', get_template_directory_uri() . '/assets/js/app.js', array('loading-animation', 'main-swiper', 'liver-slider'), time(), true);
+  // メインアプリケーション（Viteで各モジュールを統合バンドル済み）
+  $app_js_path = get_template_directory() . '/assets/js/app.js';
+  $app_js_ver  = file_exists($app_js_path) ? filemtime($app_js_path) : '1.0.0';
+  wp_enqueue_script('theme-app', get_template_directory_uri() . '/assets/js/app.js', array('jquery', 'swiper-js'), $app_js_ver, true);
 
   // WordPress標準のcomment-replyスクリプト（コメント機能を使用する場合）
   if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -108,7 +104,6 @@ function jol_add_resource_hints($urls, $relation_type)
 
   switch ($relation_type) {
     case 'dns-prefetch':
-      $urls[] = '//code.jquery.com';
       $urls[] = '//cdn.jsdelivr.net';
       $urls[] = '//use.fontawesome.com';
       $urls[] = '//unpkg.com';
@@ -122,11 +117,11 @@ function jol_add_resource_hints($urls, $relation_type)
 }
 add_filter('wp_resource_hints', 'jol_add_resource_hints', 10, 2);
 
-// jQueryの読み込み順序を確保
+// jQueryの読み込み順序を確保（WordPress標準jQueryを使用）
 function jol_ensure_jquery_loaded()
 {
   if (!is_admin() && !wp_script_is('jquery', 'done') && !wp_script_is('jquery', 'enqueued')) {
-    wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.6.0.min.js', array(), '3.6.0', false);
+    wp_enqueue_script('jquery');
   }
 }
 add_action('wp_enqueue_scripts', 'jol_ensure_jquery_loaded', 5);

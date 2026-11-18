@@ -1,0 +1,463 @@
+/* SINGLE LIVER - AGENCY THEME */
+.mysterious-theme {
+  background-color: #121212;
+  color: #f5f5f5;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.mysterious-theme .hedding-area,
+.mysterious-theme .page-subtitle,
+.mysterious-theme .page-title {
+  display: none;
+}
+
+.agency-hero {
+  position: relative;
+  padding-top: 100px;
+  padding-bottom: 80px;
+  overflow: hidden;
+  border-bottom: 1px solid #333;
+}
+
+.agency-hero .hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.2;
+}
+
+.agency-hero .hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(20px) grayscale(50%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.agency-breadcrumbs {
+  color: #888;
+}
+
+.agency-breadcrumbs a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.hero-profile-flex {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  margin-top: 3rem;
+}
+
+@media screen and (max-width: 767px) {
+  .hero-profile-flex {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+}
+
+.hero-image {
+  width: 300px;
+  height: 400px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.agency-subtitle {
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.agency-title {
+  font-size: 4rem;
+  font-weight: 200;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+@media screen and (max-width: 767px) {
+  .agency-title {
+    font-size: 1.6rem;
+  }
+}
+
+.agency-id {
+  font-size: 1.5rem;
+  color: #aaa;
+  letter-spacing: 0.1em;
+}
+
+.agency-main {
+  padding: 5rem 0;
+}
+
+.agency-details-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+  margin-bottom: 5rem;
+}
+
+.agency-section.profile-section {
+  margin: 0;
+  max-width: none;
+  width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+  .agency-details-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.section-heading {
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
+  color: #666;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.agency-profile-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #ccc;
+}
+
+.agency-data-list {
+  list-style: none;
+  padding: 0;
+}
+
+.agency-data-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid #222;
+}
+
+.data-label {
+  color: #777;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+}
+
+.data-val {
+  color: #eee;
+  font-weight: 500;
+}
+
+.agency-action {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4rem;
+}
+
+.btn-agency-tiktok {
+  display: inline-block;
+  padding: 1.2rem 4rem;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  text-transform: uppercase;
+}
+
+.btn-agency-tiktok:hover {
+  background: #00f2fe;
+  color: #000;
+  border-color: #00f2fe;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+}
+
+.agency-back {
+  text-align: center;
+}
+
+.btn-agency-back {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  transition: color 0.3s;
+}
+
+.btn-agency-back:hover {
+  color: #fff;
+}
+
+/* ==============================================================
+   MAGAZINE STYLE (Liver Single Page)
+   ============================================================== */
+.magazine-feature {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  backdrop-filter: blur(5px);
+}
+
+.magazine-title-link {
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+.magazine-title-link:hover {
+  color: #00f2fe;
+}
+.magazine-title-link:hover::after {
+  width: 100%;
+}
+.magazine-title-link::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #00f2fe;
+  transition: width 0.3s ease;
+}
+
+.magazine-qa-section {
+  margin-top: 6rem;
+  margin-bottom: 5rem;
+  border-top: 1px solid #333;
+  padding-top: 4rem;
+}
+
+.magazine-qa-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.magazine-qa-title {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.magazine-qa-subtitle {
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 0.9rem;
+  color: #888;
+  letter-spacing: 0.2em;
+}
+
+.magazine-qa-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.qa-accordion {
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  border-left: 2px solid #333;
+  transition: border-color 0.3s ease;
+}
+.qa-accordion:hover {
+  border-color: #00f2fe;
+}
+.qa-accordion[open] .qa-icon::before {
+  transform: translate(-50%, -50%) rotate(180deg);
+  opacity: 0;
+}
+.qa-accordion[open] .qa-a {
+  animation: accordionFadeIn 0.4s ease;
+}
+
+.qa-q {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 2rem 2.5rem;
+  cursor: pointer;
+  list-style: none; /* デフォルトの矢印を消す */
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+}
+.qa-q::-webkit-details-marker {
+  display: none;
+}
+
+.qa-icon {
+  position: absolute;
+  right: 2.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+.qa-icon::before, .qa-icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: #00f2fe;
+  transition: all 0.3s ease;
+}
+.qa-icon::before {
+  width: 2px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+}
+.qa-icon::after {
+  width: 20px;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+
+.qa-a {
+  font-size: 1.05rem;
+  color: #ccc;
+  line-height: 1.8;
+  padding: 0 2.5rem 2.5rem 2.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.qa-a p {
+  margin: 0;
+}
+
+.qa-mark {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #00f2fe;
+  margin-top: -0.2rem;
+}
+
+@keyframes accordionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ==============================================================
+   MAGAZINE STYLE AWARDS
+   ============================================================== */
+.magazine-awards-section {
+  margin-bottom: 5rem;
+  padding-top: 2rem;
+}
+
+.magazine-awards-list {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  padding-left: 20px;
+  /* タイムラインの縦線 */
+}
+.magazine-awards-list::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.award-item {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.3s ease;
+}
+.award-item:last-child {
+  margin-bottom: 0;
+}
+.award-item:hover {
+  transform: translateX(5px);
+}
+.award-item:hover::before {
+  background: #00f2fe;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+  transform: scale(1.2);
+}
+.award-item {
+  /* タイムラインのドット */
+}
+.award-item::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ccc;
+  transition: all 0.3s ease;
+}
+
+.award-date {
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  color: #00f2fe;
+  letter-spacing: 0.1em;
+}
+
+.award-name {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.6;
+}

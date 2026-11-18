@@ -235,12 +235,51 @@ class RankingManager {
   }
 
   /**
+   * HTMLエスケープ処理（XSS対策）
+   */
+  escapeHtml(str) {
+    if (str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  /**
+   * URLの安全性検証（http/https またはルート相対パスのみ許可）
+   */
+  sanitizeUrl(url) {
+    if (!url || typeof url !== "string") return "#";
+    const trimmed = url.trim();
+    if (trimmed.startsWith("/")) {
+      return this.escapeHtml(trimmed);
+    }
+    try {
+      const parsed = new URL(trimmed, window.location.origin);
+      if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+        return this.escapeHtml(parsed.href);
+      }
+    } catch (e) {
+      // 無効なURL
+    }
+    return "#";
+  }
+
+  /**
    * 表彰台要素を作成
    */
   createPodiumRank(liver, rank) {
+    const safeRank = Number(rank) || 0;
+    const safeName = this.escapeHtml(liver.name);
+    const safeAvatar = this.sanitizeUrl(liver.avatar);
+    const safeUrl = this.sanitizeUrl(liver.url);
+    const safeGiftCount = (Number(liver.gift_count) || 0).toLocaleString();
+
     const podiumDiv = document.createElement("div");
-    podiumDiv.className = `podium-rank rank-${rank}`;
-    podiumDiv.dataset.rank = rank;
+    podiumDiv.className = `podium-rank rank-${safeRank}`;
+    podiumDiv.dataset.rank = safeRank;
 
     const trendIcon = this.getTrendIcon(liver.trend);
 
@@ -251,26 +290,26 @@ class RankingManager {
       3: "/wp-content/themes/jol-themes/assets/images/ranking/clown-brons.webp",
     };
 
-    const rankDisplay = podiumImgMap[rank]
-      ? `<div class="rank-badge"><img src="${podiumImgMap[rank]}" alt="rank-${rank}" class="rank-icon"></div>`
-      : `<div class="rank-badge">${rank}</div>`;
+    const rankDisplay = podiumImgMap[safeRank]
+      ? `<div class="rank-badge"><img src="${podiumImgMap[safeRank]}" alt="rank-${safeRank}" class="rank-icon"></div>`
+      : `<div class="rank-badge">${safeRank}</div>`;
 
     podiumDiv.innerHTML = `
       ${rankDisplay}
       <div class="liver-avatar">
-        <img src="${liver.avatar}" alt="${liver.name}">
+        <img src="${safeAvatar}" alt="${safeName}">
       </div>
       <div class="liver-info">
-        <h3 class="liver-name">${liver.name}</h3>
-        <div class="gift-count">${liver.gift_count.toLocaleString()} ギフト</div>
+        <h3 class="liver-name">${safeName}</h3>
+        <div class="gift-count">${safeGiftCount} ギフト</div>
         <div class="gift-trend">${trendIcon}</div>
       </div>
     `;
 
     // クリックイベント
     podiumDiv.addEventListener("click", () => {
-      if (liver.url) {
-        window.open(liver.url, "_blank");
+      if (safeUrl && safeUrl !== "#") {
+        window.open(safeUrl, "_blank", "noopener,noreferrer");
       }
     });
 
@@ -281,14 +320,20 @@ class RankingManager {
    * ランキングカード要素を作成
    */
   createRankingCard(liver) {
+    const safeRank = Number(liver.rank) || 0;
+    const safeName = this.escapeHtml(liver.name);
+    const safeAvatar = this.sanitizeUrl(liver.avatar);
+    const safeUrl = this.sanitizeUrl(liver.url);
+    const safeGiftCount = (Number(liver.gift_count) || 0).toLocaleString();
+
     const cardDiv = document.createElement("div");
     cardDiv.className = "ranking-card";
-    cardDiv.dataset.rank = liver.rank;
+    cardDiv.dataset.rank = safeRank;
 
     // ランク別クラスの追加
-    if (liver.rank <= 3) {
-      cardDiv.classList.add(`rank-top-${liver.rank}`);
-    } else if (liver.rank <= 10) {
+    if (safeRank <= 3) {
+      cardDiv.classList.add(`rank-top-${safeRank}`);
+    } else if (safeRank <= 10) {
       cardDiv.classList.add("rank-top-ten");
     }
 
@@ -301,11 +346,11 @@ class RankingManager {
       3: "/wp-content/themes/jol-themes/assets/images/ranking/clown-brons.webp",
     };
 
-    const rankInner = assetImgMap[liver.rank]
+    const rankInner = assetImgMap[safeRank]
       ? `<div class="rank-badge"><img src="${
-          assetImgMap[liver.rank]
-        }" alt="rank-${liver.rank}" class="rank-icon"></div>`
-      : `<div class="rank-badge"><span class="rank-number">${liver.rank}</span></div>`;
+          assetImgMap[safeRank]
+        }" alt="rank-${safeRank}" class="rank-icon"></div>`
+      : `<div class="rank-badge"><span class="rank-number">${safeRank}</span></div>`;
 
     cardDiv.innerHTML = `
             <div class="ranking-card-inner">
@@ -313,9 +358,9 @@ class RankingManager {
                 
                 <div class="liver-info">
                     <div class="liver-avatar">
-                        <img src="${liver.avatar}" alt="${liver.name}">
+                        <img src="${safeAvatar}" alt="${safeName}">
                         ${
-                          liver.rank <= 3
+                          safeRank <= 3
                             ? '<div class="crown-overlay"></div>'
                             : ""
                         }
@@ -323,15 +368,13 @@ class RankingManager {
                     
                     <div class="liver-details">
                         <h3 class="liver-name">
-                            <a href="${liver.url}" target="_blank">${
-      liver.name
-    }</a>
+                            <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeName}</a>
                         </h3>
                         
                         <div class="gift-info">
                             <div class="gift-count">
                                 <i class="fas fa-gift"></i>
-                                <span class="count-number">${liver.gift_count.toLocaleString()}</span>
+                                <span class="count-number">${safeGiftCount}</span>
                                 <span class="count-label">ギフト</span>
                             </div>
                             
@@ -343,9 +386,7 @@ class RankingManager {
                 </div>
                 
                 <div class="card-actions">
-                    <a href="${
-                      liver.url
-                    }" class="btn-view-profile" target="_blank">
+                    <a href="${safeUrl}" class="btn-view-profile" target="_blank" rel="noopener noreferrer">
                         <i class="fas fa-user"></i>
                         プロフィール
                     </a>
@@ -552,7 +593,7 @@ class RankingManager {
       loader.innerHTML = `
                 <div class="loader-content">
                     <div class="loader-spinner"></div>
-                    <p>${message}</p>
+                    <p>${this.escapeHtml(message)}</p>
                 </div>
             `;
       loader.style.cssText = `
@@ -604,18 +645,19 @@ class RankingManager {
    * 通知表示
    */
   showNotification(message, type = "info") {
+    const safeType = ["success", "error", "info"].includes(type) ? type : "info";
     const notification = document.createElement("div");
-    notification.className = `ranking-notification ${type}`;
+    notification.className = `ranking-notification ${safeType}`;
     notification.innerHTML = `
             <div class="notification-content">
                 <i class="fas fa-${
-                  type === "success"
+                  safeType === "success"
                     ? "check-circle"
-                    : type === "error"
+                    : safeType === "error"
                     ? "exclamation-circle"
                     : "info-circle"
                 }"></i>
-                <span>${message}</span>
+                <span>${this.escapeHtml(message)}</span>
             </div>
         `;
 

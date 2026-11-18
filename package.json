@@ -1,37 +1,19 @@
 {
   "type": "module",
-  "name": "wp-gulp-init",
-  "version": "1.0.0",
-  "main": "gulpfile.js",
+  "name": "jol-themes",
+  "version": "2.0.0",
+  "private": true,
+  "description": "JOL WordPress Theme with Vite & Tailwind CSS v4 workflow",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite build --watch --mode development",
+    "build": "vite build --mode production && npm run images",
+    "images": "node scripts/optimize-images.mjs"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
     "autoprefixer": "^10.4.20",
-    "browser-sync": "^3.0.3",
-    "cssnano": "^7.0.6",
-    "gulp": "^5.0.0",
-    "gulp-avif": "^1.1.1",
-    "gulp-cached": "^1.1.1",
-    "gulp-execa": "^8.0.0",
-    "gulp-fluent-ffmpeg": "^2.0.0",
-    "gulp-group-css-media-queries": "^1.2.2",
-    "gulp-imagemin": "^7.1.0",
-    "gulp-newer": "^1.4.0",
-    "gulp-postcss": "^10.0.0",
-    "gulp-sass": "^6.0.0",
-    "gulp-sharp-responsive": "^0.4.1",
-    "gulp-shell": "^0.8.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "gulp-uglify": "^3.0.2",
-    "gulp-webp": "^5.0.0",
-    "imagemin-avif": "^0.1.6",
-    "imagemin-webp": "^8.0.0",
-    "path": "^0.12.7",
-    "sass": "^1.83.4"
+    "sharp": "^0.33.5",
+    "tailwindcss": "^4.0.0",
+    "vite": "^6.2.0"
   }
 }

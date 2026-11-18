@@ -5,45 +5,60 @@
         <p class="page-subtitle">RANKING ARCHIVES</p>
         <h1 class="page-title">過去のランキング</h1>
         <div class="breadcrumbs agency-breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
-            <?php if (function_exists('bcn_display')) {
-                bcn_display();
-            } ?>
+            <?php if (function_exists('jol_breadcrumbs')) { jol_breadcrumbs(); } ?>
         </div>
     </div>
 
-    <main class="agency-main inner">
+    <main class="inner pt-12 md:pt-20 pb-24 md:pb-32">
         <?php if (have_posts()) : ?>
-            <div class="ranking-archive-grid">
-                <?php while (have_posts()) : the_post(); ?>
-                    <article class="ranking-archive-card">
-                        <a href="<?php the_permalink(); ?>" class="ranking-card-link">
-                            <div class="ranking-card-image-wrap">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-8 mb-16">
+                <?php
+                $card_index = 1;
+                while (have_posts()) : the_post();
+                    $index_label = sprintf('%02d', $card_index);
+                ?>
+                    <article class="group relative rounded-lg overflow-hidden bg-jol-surface/90 border border-white/10 transition-all duration-300 ease-editorial hover:-translate-y-1.5 hover:border-jol-cyan/60 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6),0_0_24px_rgba(0,255,255,0.12)]">
+                        <a href="<?php the_permalink(); ?>" class="flex flex-col h-full no-underline text-inherit">
+                            <div class="relative aspect-[16/10] overflow-hidden bg-black border-b border-white/10">
                                 <?php if (has_post_thumbnail()) : ?>
-                                    <?php the_post_thumbnail('large'); ?>
+                                    <?php the_post_thumbnail('large', array('class' => 'w-full h-full object-cover transition-transform duration-500 ease-editorial group-hover:scale-105')); ?>
                                 <?php else : ?>
-                                    <!-- デフォルトのトロフィーSVGアイコンを表示 -->
-                                    <div class="default-ranking-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="trophy-svg">
-                                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-                                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-                                            <path d="M4 22h16" />
-                                            <path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34" />
-                                            <path d="M12 2a6 6 0 0 1 6 6v3a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8a6 6 0 0 1 6-6Z" />
-                                        </svg>
+                                    <!-- デフォルトのトロフィーカバー画像を表示 -->
+                                    <div class="relative w-full h-full">
+                                        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/ranking/archive-trophy-cover.webp'); ?>"
+                                            alt="<?php echo esc_attr(get_the_title()); ?>"
+                                            class="w-full h-full object-cover brightness-110 transition-all duration-500 ease-editorial group-hover:scale-105 group-hover:brightness-125">
+                                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent"></div>
+                                        <div class="pointer-events-none absolute inset-x-0 bottom-0 p-4 flex items-end justify-between">
+                                            <span class="font-display text-3xl font-bold tracking-tight text-white/30 group-hover:text-jol-cyan/60 transition-colors duration-300 leading-none"><?php echo esc_html($index_label); ?></span>
+                                            <span class="font-mono text-xs text-white/60"><?php echo get_the_date('Y.m'); ?></span>
+                                        </div>
                                     </div>
                                 <?php endif; ?>
-                                <div class="ranking-card-overlay">
-                                    <span class="btn-detail-view">VIEW DETAIL</span>
-                                </div>
                             </div>
-                            <div class="ranking-card-content">
-                                <span class="ranking-card-tag">ARCHIVE</span>
-                                <h2 class="ranking-card-title"><?php the_title(); ?></h2>
-                                <p class="ranking-card-date"><?php echo get_the_date('Y.m.d'); ?></p>
+
+                            <div class="flex flex-col flex-1 justify-between p-6">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-3">
+                                        <span class="inline-block px-2 py-0.5 text-[0.7rem] font-mono tracking-[0.08em] uppercase rounded border border-jol-cyan/40 bg-jol-cyan/10 text-jol-cyan">ARCHIVE</span>
+                                        <time class="font-mono text-xs text-jol-muted" datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo get_the_date('Y.m.d'); ?></time>
+                                    </div>
+                                    <h2 class="text-lg md:text-xl font-bold text-jol-text leading-snug tracking-tight mb-4 transition-colors duration-200 group-hover:text-jol-cyan">
+                                        <?php the_title(); ?>
+                                    </h2>
+                                </div>
+
+                                <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono tracking-[0.08em] uppercase text-white/60 transition-colors duration-200 group-hover:text-jol-cyan">
+                                    <span>VIEW RANKING</span>
+                                    <span class="transition-transform duration-300 ease-editorial group-hover:translate-x-1">→</span>
+                                </div>
                             </div>
                         </a>
                     </article>
-                <?php endwhile; ?>
+                <?php
+                    $card_index++;
+                endwhile;
+                ?>
             </div>
 
             <!-- ページネーション -->
@@ -56,7 +71,7 @@
                 ?>
             </div>
         <?php else : ?>
-            <div class="no-posts">
+            <div class="rounded-lg border border-dashed border-white/15 p-12 text-center text-jol-muted">
                 <p>過去のランキングデータがまだ登録されていません。</p>
             </div>
         <?php endif; ?>

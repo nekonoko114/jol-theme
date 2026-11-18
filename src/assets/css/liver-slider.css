@@ -1,0 +1,31 @@
+/* Expo Slider 風 LiverSlider 補助スタイル */
+.liver-swiper .swiper-slide {
+  transition-property: transform, filter, opacity, border-color;
+}
+
+.liver-swiper .swiper-slide-active {
+  border-color: rgba(0, 255, 255, 0.55);
+}
+
+.liver-swiper .expo-slide-img,
+.liver-swiper .expo-slide-content {
+  transition-property: transform, opacity;
+}
+
+.liver-swiper .liver-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.liver-swiper .liver-pagination-bullet.liver-bullet-active {
+  width: 24px;
+  background: #00ffff;
+}
+
+.liver-swiper .liver-pagination-bullet:hover {
+  background: rgba(255, 255, 255, 0.6);
+}

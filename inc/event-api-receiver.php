@@ -9,10 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// 認証用APIキー（wp-config.phpで JOL_EVENT_API_KEY が定義されていればそれを優先、なければ規定キー）
-if (!defined('JOL_EVENT_API_KEY')) {
-    define('JOL_EVENT_API_KEY', 'jol_event_secret_token_2026');
-}
+// ※ 認証用APIキーは wp-config.php で define('JOL_EVENT_API_KEY', '...'); として定義してください。
 
 add_action('rest_api_init', function () {
     register_rest_route('jol/v1', '/event', array(
@@ -23,20 +20,54 @@ add_action('rest_api_init', function () {
 });
 
 /**
- * APIキーの認証
+ * APIキーの認証（ヘッダーのみ許可・未設定時はフェイルクローズ）
  */
 function jol_verify_event_api_permission($request) {
-    $api_key = $request->get_header('x-jol-api-key');
-    if (empty($api_key)) {
-        $api_key = $request->get_param('api_key');
+    if (!defined('JOL_EVENT_API_KEY') || !is_string(JOL_EVENT_API_KEY) || trim(JOL_EVENT_API_KEY) === '') {
+        return new WP_Error(
+            'rest_configuration_error',
+            'サーバー側でAPIキー（JOL_EVENT_API_KEY）が設定されていません。',
+            array('status' => 500)
+        );
     }
 
-    if (empty($api_key) || !hash_equals(JOL_EVENT_API_KEY, trim((string) $api_key))) {
+    $api_key = $request->get_header('x-jol-api-key');
+
+    if (empty($api_key) || !hash_equals(trim(JOL_EVENT_API_KEY), trim((string) $api_key))) {
         return new WP_Error(
             'rest_forbidden',
-            '認証に失敗しました。正しいAPIキーを指定してください。',
+            '認証に失敗しました。正しいAPIキーを x-jol-api-key ヘッダーに指定してください。',
             array('status' => 401)
         );
+    }
+
+    return true;
+}
+
+/**
+ * 画像URLの安全性検証（SSRF対策：HTTPS限定・許可ドメイン確認・プライベートIP遮断）
+ *
+ * @param string $img_url 検証対象の画像URL
+ * @return true|WP_Error
+ */
+function jol_validate_event_image_url($img_url) {
+    $parsed = wp_parse_url($img_url);
+    if (empty($parsed['scheme']) || strtolower($parsed['scheme']) !== 'https' || empty($parsed['host'])) {
+        return new WP_Error('invalid_image_url', '画像URLは有効なHTTPS URLである必要があります。');
+    }
+
+    $host = strtolower($parsed['host']);
+    $allowed_hosts = apply_filters('jol_allowed_event_image_hosts', array(
+        'cdn.discordapp.com',
+        'media.discordapp.net',
+    ));
+
+    if (!in_array($host, $allowed_hosts, true)) {
+        return new WP_Error('disallowed_image_host', '許可されていない画像配信元ホストです: ' . $host);
+    }
+
+    if (!wp_http_validate_url($img_url)) {
+        return new WP_Error('unsafe_image_url', '安全性検証に失敗したURLです。');
     }
 
     return true;
@@ -51,6 +82,11 @@ function jol_verify_event_api_permission($request) {
  * @return int|WP_Error   アタッチメントID または WP_Error
  */
 function jol_sideload_event_image($img_url, $post_id, $desc = '') {
+    $validation = jol_validate_event_image_url($img_url);
+    if (is_wp_error($validation)) {
+        return $validation;
+    }
+
     $tmp_file = download_url($img_url, 60);
     if (is_wp_error($tmp_file)) {
         return $tmp_file;

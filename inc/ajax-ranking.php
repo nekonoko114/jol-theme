@@ -15,8 +15,8 @@ function jol_get_liver_ranking($period = 'total', $limit = 10, $offset = 0)
   ];
 
   $field_name = $field_name_map[$period] ?? 'gift';
-  $limit_clause = $limit > 0 ? "LIMIT {$limit}" : '';
-  $offset_clause = $offset > 0 ? "OFFSET {$offset}" : '';
+  $safe_limit = min(max(intval($limit), 1), 100);
+  $safe_offset = max(intval($offset), 0);
 
   // サブクエリでライバーIDをギフト数順に取得
   $subquery = $wpdb->prepare("
@@ -28,8 +28,8 @@ function jol_get_liver_ranking($period = 'total', $limit = 10, $offset = 0)
     AND pm.meta_key = %s
     AND pm.meta_value != ''
     ORDER BY CAST(pm.meta_value AS SIGNED) DESC
-    {$limit_clause} {$offset_clause}
-  ", $field_name);
+    LIMIT %d OFFSET %d
+  ", $field_name, $safe_limit, $safe_offset);
 
   $liver_ids = $wpdb->get_col($subquery);
 
@@ -53,8 +53,8 @@ function jol_get_liver_ranking($period = 'total', $limit = 10, $offset = 0)
 function jol_ajax_get_ranking_data()
 {
   $period = sanitize_text_field($_POST['period'] ?? 'total');
-  $limit = intval($_POST['limit'] ?? 10);
-  $offset = intval($_POST['offset'] ?? 0);
+  $limit = min(max(intval($_POST['limit'] ?? 10), 1), 100);
+  $offset = max(intval($_POST['offset'] ?? 0), 0);
 
   $ranking = jol_get_liver_ranking($period, $limit, $offset);
 
@@ -65,10 +65,10 @@ function jol_ajax_get_ranking_data()
     while ($ranking->have_posts()) {
       $ranking->the_post();
 
-      // ACFフィールドから値を取得（フォールバック対応）
+      // ACFフィールドから値を取得（フォールバック対応・投稿タイトル最優先）
       if (function_exists('get_field')) {
         $gift_count = get_field('gift') ?: 0;
-        $creator_name = get_field('creator_name') ?: get_the_title();
+        $creator_name = get_the_title() ?: get_field('creator_name');
         $creator_account = get_field('creator_account') ?: '';
         $feature = get_field('feature') ?: '';
         $delivery = get_field('delivery') ?: '';
@@ -77,7 +77,7 @@ function jol_ajax_get_ranking_data()
       } else {
         // WordPressの標準メタフィールドを使用
         $gift_count = get_post_meta(get_the_ID(), 'gift', true) ?: 0;
-        $creator_name = get_post_meta(get_the_ID(), 'creator_name', true) ?: get_the_title();
+        $creator_name = get_the_title() ?: get_post_meta(get_the_ID(), 'creator_name', true);
         $creator_account = get_post_meta(get_the_ID(), 'creator_account', true) ?: '';
         $feature = get_post_meta(get_the_ID(), 'feature', true) ?: '';
         $delivery = get_post_meta(get_the_ID(), 'delivery', true) ?: '';
@@ -159,13 +159,17 @@ function jol_get_top_liver_name()
   ");
 
   if ($top_liver_id) {
-    // クリエイター名を優先表示、なければタイトル
+    // 最新の投稿タイトルを優先表示、なければカスタムフィールド
+    $post_title = get_the_title($top_liver_id);
+    if ($post_title) {
+      return $post_title;
+    }
     if (function_exists('get_field')) {
       $creator_name = get_field('creator_name', $top_liver_id);
     } else {
       $creator_name = get_post_meta($top_liver_id, 'creator_name', true);
     }
-    return $creator_name ?: get_the_title($top_liver_id);
+    return $creator_name ?: 'データなし';
   }
 
   return 'データなし';

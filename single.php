@@ -6,9 +6,7 @@
         <h1><?php the_field('page_title'); ?></h1>
         <p>
         <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
-            <?php if (function_exists('bcn_display')) {
-                bcn_display();
-            } ?>
+            <?php if (function_exists('jol_breadcrumbs')) { jol_breadcrumbs(); } ?>
         </div>
         </p>
     <?php } ?>

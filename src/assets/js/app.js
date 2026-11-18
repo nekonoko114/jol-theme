@@ -1,3 +1,8 @@
+import { LoadingAnimation } from "./modules/loadingAnimation.js";
+import { MainSwiper } from "./modules/mainSwiper.js";
+import { LiverSlider } from "./modules/liverSlider.js";
+import { initHamburger } from "./modules/hamburger.js";
+
 /**
  * メインアプリケーション初期化モジュール
  * 全てのモジュールを統括し、適切な順序で初期化を行う
@@ -12,9 +17,9 @@ class App {
 
     this.isInitialized = false;
     this.config = {
-      enableLogging: true,
+      enableLogging: false,
       autoInit: true,
-    }
+    };
   }
 
   /**
@@ -25,10 +30,14 @@ class App {
       this.log("アプリケーションは既に初期化されています");
       return;
     }
-    // DOM読み込み完了を待つ
-    document.addEventListener("DOMContentLoaded", () => {
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => {
+        this.initializeModules();
+      });
+    } else {
       this.initializeModules();
-    });
+    }
 
     this.isInitialized = true;
   }
@@ -38,6 +47,9 @@ class App {
    */
   async initializeModules() {
     try {
+      // 0. ハンバーガーメニューの初期化
+      initHamburger();
+
       // 1. ローディングアニメーションの初期化（最初に実行）
       await this.initLoadingAnimation();
 
@@ -209,23 +221,15 @@ class App {
   //   this.log("アプリケーションの破棄完了");
   // }
 
-  // /**
-  //  * ログ出力
-  //  */
-  // log(message) {
-  //   if (this.config.enableLogging) {
-  //     console.log(`[App] ${message}`);
-  //   }
-  // }
+  /**
+   * ログ出力
+   */
+  log(message) {
+    if (this.config.enableLogging) {
+      console.log(`[App] ${message}`);
+    }
+  }
 }
-
-/**
- * 
-    hamburger.jsの読み込み
- * 
- * */
-// Hamburger.js is already loaded by functions.php
-
 
 // グローバルアプリケーションインスタンス
 window.app = new App();

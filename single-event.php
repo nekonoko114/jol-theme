@@ -14,9 +14,7 @@ $cat_name = (!empty($terms) && !is_wp_error($terms)) ? $terms[0]->name : 'イベ
         <span class="post-date"><?php echo esc_html(get_the_date('Y年n月j日', $post_id)); ?></span>
     </div>
     <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
-        <?php if (function_exists('bcn_display')) {
-            bcn_display();
-        } ?>
+        <?php if (function_exists('jol_breadcrumbs')) { jol_breadcrumbs(); } ?>
     </div>
 </div>
 

@@ -80,3 +80,56 @@ function jol_header_style()
 
 // 共通ライバーサムネイル画像のURLを定義
 define('COMMON_LIVER_THUMBNAIL_URL', get_template_directory_uri() . '/assets/images/liver-thumbnail/liver-thumbnail-01.webp');
+
+/**
+ * パンくずリストの出力（Breadcrumb NavXT 優先・未導入時は標準フォールバック）
+ */
+function jol_breadcrumbs()
+{
+  if (function_exists('bcn_display')) {
+    bcn_display();
+    return;
+  }
+
+  if (is_front_page()) {
+    return;
+  }
+
+  $items = array();
+  $items[] = '<a href="' . esc_url(home_url('/')) . '">HOME</a>';
+
+  if (is_post_type_archive()) {
+    $post_type_obj = get_queried_object();
+    if ($post_type_obj && !empty($post_type_obj->labels->name)) {
+      $items[] = '<span class="current-item">' . esc_html($post_type_obj->labels->name) . '</span>';
+    }
+  } elseif (is_singular()) {
+    $post_type = get_post_type();
+    if ($post_type && $post_type !== 'post' && $post_type !== 'page') {
+      $post_type_obj = get_post_type_object($post_type);
+      $archive_link = get_post_type_archive_link($post_type);
+      if ($post_type_obj && $archive_link) {
+        $items[] = '<a href="' . esc_url($archive_link) . '">' . esc_html($post_type_obj->labels->name) . '</a>';
+      }
+    } elseif ($post_type === 'post') {
+      $categories = get_the_category();
+      if (!empty($categories)) {
+        $items[] = '<a href="' . esc_url(get_category_link($categories[0]->term_id)) . '">' . esc_html($categories[0]->name) . '</a>';
+      }
+    }
+    $items[] = '<span class="current-item">' . esc_html(get_the_title()) . '</span>';
+  } elseif (is_tax() || is_category() || is_tag()) {
+    $term = get_queried_object();
+    if ($term && !empty($term->name)) {
+      $items[] = '<span class="current-item">' . esc_html($term->name) . '</span>';
+    }
+  } elseif (is_archive()) {
+    $items[] = '<span class="current-item">' . esc_html(get_the_archive_title()) . '</span>';
+  } elseif (is_search()) {
+    $items[] = '<span class="current-item">検索結果: ' . esc_html(get_search_query()) . '</span>';
+  } elseif (is_404()) {
+    $items[] = '<span class="current-item">404 Not Found</span>';
+  }
+
+  echo implode('<span class="breadcrumb-sep" aria-hidden="true">/</span>', $items);
+}

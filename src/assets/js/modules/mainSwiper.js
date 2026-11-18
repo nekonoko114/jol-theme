@@ -2,7 +2,7 @@
  * メインSwiperモジュール
  * 基本的なスライダー機能を管理
  */
-class MainSwiper {
+export class MainSwiper {
   constructor() {
     this.swiperInstance = null;
     this.config = {

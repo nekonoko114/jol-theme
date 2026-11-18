@@ -13,7 +13,7 @@
             </div>
             <div class="hero-content inner">
                 <div class="breadcrumbs agency-breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
-                    <?php if (function_exists('bcn_display')) bcn_display(); ?>
+                    <?php if (function_exists('jol_breadcrumbs')) { jol_breadcrumbs(); } ?>
                 </div>
                 
                 <div class="hero-profile-flex">

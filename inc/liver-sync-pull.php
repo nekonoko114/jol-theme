@@ -146,6 +146,7 @@ function jol_run_liver_sync() {
         if ($post_id) {
             $post_data = array(
                 'ID'           => $post_id,
+                'post_title'   => $liver_name,
                 'post_status'  => 'publish',
                 'post_content' => $bio, // TikTokから取得したプロフィール文を本文にセット
             );

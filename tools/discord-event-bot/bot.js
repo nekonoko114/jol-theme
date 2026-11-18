@@ -17,11 +17,11 @@ const DISCORD_BOT_TOKEN = (process.env.DISCORD_BOT_TOKEN || '').trim();
 const GEMINI_API_KEY = (process.env.GEMINI_API_KEY || '').trim();
 const DISCORD_CHANNEL_ID = (process.env.DISCORD_CHANNEL_ID || '').trim();
 const WP_EVENT_API_URL = (process.env.WP_EVENT_API_URL || '').trim();
-const WP_EVENT_API_KEY = (process.env.WP_EVENT_API_KEY || 'jol_event_secret_token_2026').trim();
+const WP_EVENT_API_KEY = (process.env.WP_EVENT_API_KEY || '').trim();
 
-if (!DISCORD_BOT_TOKEN || !GEMINI_API_KEY || !WP_EVENT_API_URL) {
+if (!DISCORD_BOT_TOKEN || !GEMINI_API_KEY || !WP_EVENT_API_URL || !WP_EVENT_API_KEY) {
   console.error('[設定エラー] .envファイルに必要な情報が不足しています。');
-  console.error('DISCORD_BOT_TOKEN, GEMINI_API_KEY, WP_EVENT_API_URL を確認してください。');
+  console.error('DISCORD_BOT_TOKEN, GEMINI_API_KEY, WP_EVENT_API_URL, WP_EVENT_API_KEY を確認してください。');
   process.exit(1);
 }
 

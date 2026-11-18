@@ -38,9 +38,9 @@ get_header(); ?>
 
                         if ($top_ranking && $top_ranking->have_posts()) :
                             while ($top_ranking->have_posts()) : $top_ranking->the_post();
-                                // WordPressの標準メタフィールドを使用
+                                // WordPressの標準メタフィールドを使用（最新の投稿タイトルを最優先）
                                 $gift_count = get_post_meta(get_the_ID(), 'gift', true) ?: 0;
-                                $creator_name = get_post_meta(get_the_ID(), 'creator_name', true) ?: get_the_title();
+                                $creator_name = get_the_title() ?: get_post_meta(get_the_ID(), 'creator_name', true);
                                 $creator_account = get_post_meta(get_the_ID(), 'creator_account', true) ?: '';
                                 $feature = get_post_meta(get_the_ID(), 'feature', true) ?: '';
                                 $delivery = get_post_meta(get_the_ID(), 'delivery', true) ?: '';
@@ -126,9 +126,9 @@ get_header(); ?>
 
                         if ($general_ranking && $general_ranking->have_posts()) :
                             while ($general_ranking->have_posts()) : $general_ranking->the_post();
-                                // WordPressの標準メタフィールドを使用
+                                // WordPressの標準メタフィールドを使用（最新の投稿タイトルを最優先）
                                 $gift_count = get_post_meta(get_the_ID(), 'gift', true) ?: 0;
-                                $creator_name = get_post_meta(get_the_ID(), 'creator_name', true) ?: get_the_title();
+                                $creator_name = get_the_title() ?: get_post_meta(get_the_ID(), 'creator_name', true);
                                 $creator_account = get_post_meta(get_the_ID(), 'creator_account', true) ?: '';
                                 $feature = get_post_meta(get_the_ID(), 'feature', true) ?: '';
                                 $delivery = get_post_meta(get_the_ID(), 'delivery', true) ?: '';

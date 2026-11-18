@@ -1,0 +1,387 @@
+@charset "UTF-8";
+/* ==============================================================
+   RANKING DETAIL & ARCHIVE STYLES (Premium Mysterious Theme)
+   ============================================================== */
+.single-ranking, .archive-ranking {
+  font-family: "Outfit", "Noto Sans JP", sans-serif;
+}
+
+/* 2カラムレイアウト (案D) */
+.ranking-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 4rem;
+  margin-bottom: 5rem;
+}
+
+/* カラムタイトル（共通定義・フォールバック） */
+.ranking-column-title {
+  text-align: center;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid rgba(207, 169, 140, 0.3);
+  padding-bottom: 1.5rem;
+}
+.ranking-column-title .title-en {
+  display: block;
+  font-family: "Playfair Display", serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: #cfa98c;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+}
+.ranking-column-title .title-ja {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #8c827a;
+  letter-spacing: 0.2em;
+  margin-top: 0.5rem;
+}
+
+.event-rank-col .ranking-column-title {
+  border-bottom-color: rgba(212, 178, 149, 0.3) !important;
+}
+.event-rank-col .ranking-column-title .title-en {
+  color: #d4b295 !important;
+}
+.event-rank-col .ranking-column-title .title-ja {
+  color: rgba(212, 178, 149, 0.6) !important;
+}
+.event-rank-col .ranking-list-item:hover .liver-avatar-wrap {
+  border-color: #d4b295 !important;
+}
+.event-rank-col .ranking-list-item:hover .creator-name a {
+  color: #d4b295 !important;
+}
+.event-rank-col .no-data-msg {
+  color: rgba(212, 178, 149, 0.6) !important;
+  border-color: rgba(212, 178, 149, 0.15) !important;
+  background: rgba(212, 178, 149, 0.02) !important;
+}
+
+.diamond-rank-col .ranking-column-title {
+  border-bottom-color: rgba(168, 185, 196, 0.3) !important;
+}
+.diamond-rank-col .ranking-column-title .title-en {
+  color: #a8b9c4 !important;
+}
+.diamond-rank-col .ranking-column-title .title-ja {
+  color: rgba(168, 185, 196, 0.6) !important;
+}
+.diamond-rank-col .ranking-list-item:hover .liver-avatar-wrap {
+  border-color: #a8b9c4 !important;
+}
+.diamond-rank-col .ranking-list-item:hover .creator-name a {
+  color: #a8b9c4 !important;
+}
+.diamond-rank-col .no-data-msg {
+  color: rgba(168, 185, 196, 0.6) !important;
+  border-color: rgba(168, 185, 196, 0.15) !important;
+  background: rgba(168, 185, 196, 0.02) !important;
+}
+
+.delivery-time-rank-col .ranking-column-title {
+  border-bottom-color: rgba(188, 165, 185, 0.3) !important;
+}
+.delivery-time-rank-col .ranking-column-title .title-en {
+  color: #bca5b9 !important;
+}
+.delivery-time-rank-col .ranking-column-title .title-ja {
+  color: rgba(188, 165, 185, 0.6) !important;
+}
+.delivery-time-rank-col .ranking-list-item:hover .liver-avatar-wrap {
+  border-color: #bca5b9 !important;
+}
+.delivery-time-rank-col .ranking-list-item:hover .creator-name a {
+  color: #bca5b9 !important;
+}
+.delivery-time-rank-col .no-data-msg {
+  color: rgba(188, 165, 185, 0.6) !important;
+  border-color: rgba(188, 165, 185, 0.15) !important;
+  background: rgba(188, 165, 185, 0.02) !important;
+}
+
+.rookie-rank-col .ranking-column-title {
+  border-bottom-color: rgba(226, 191, 138, 0.3) !important;
+}
+.rookie-rank-col .ranking-column-title .title-en {
+  color: #e2bf8a !important;
+}
+.rookie-rank-col .ranking-column-title .title-ja {
+  color: rgba(226, 191, 138, 0.6) !important;
+}
+.rookie-rank-col .ranking-list-item:hover .liver-avatar-wrap {
+  border-color: #e2bf8a !important;
+}
+.rookie-rank-col .ranking-list-item:hover .creator-name a {
+  color: #e2bf8a !important;
+}
+.rookie-rank-col .no-data-msg {
+  color: rgba(226, 191, 138, 0.6) !important;
+  border-color: rgba(226, 191, 138, 0.15) !important;
+  background: rgba(226, 191, 138, 0.02) !important;
+}
+
+/* ランキングアイテムリスト */
+.ranking-item-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 各ランキングアイテム */
+.ranking-list-item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.8rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ranking-list-item:last-child {
+  border-bottom: none;
+}
+.ranking-list-item:hover {
+  background: rgba(255, 255, 255, 0.02);
+  transform: translateX(8px);
+}
+.ranking-list-item:hover .liver-avatar-wrap {
+  transform: scale(1.05);
+  border-color: #cfa98c;
+}
+.ranking-list-item:hover .creator-name a {
+  color: #cfa98c;
+}
+
+/* 順位バッジ */
+.rank-badge-wrap {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-family: "Playfair Display", serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+}
+.rank-badge-wrap .rank-number {
+  display: inline-block;
+  line-height: 1;
+}
+.rank-badge-wrap {
+  /* 1位: ゴールド */
+}
+.rank-badge-wrap.rank-num-1 {
+  background: linear-gradient(135deg, #ffd700, #b8860b);
+  color: #000;
+  border: none;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.35);
+}
+.rank-badge-wrap {
+  /* 2位: シルバー */
+}
+.rank-badge-wrap.rank-num-2 {
+  background: linear-gradient(135deg, #e0e0e0, #7f8c8d);
+  color: #000;
+  border: none;
+  box-shadow: 0 4px 15px rgba(224, 224, 224, 0.25);
+}
+.rank-badge-wrap {
+  /* 3位: ブロンズ */
+}
+.rank-badge-wrap.rank-num-3 {
+  background: linear-gradient(135deg, #cd7f32, #8e5431);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.25);
+}
+
+/* アバター画像 */
+.liver-avatar-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+.liver-avatar-wrap a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.liver-avatar-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ライバー詳細情報 */
+.liver-details {
+  flex: 1;
+  min-width: 0; /* 長いテキストのはみ出しを防止 */
+}
+.liver-details .creator-name {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.05em;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+.liver-details .creator-name a {
+  color: #f5f5f5;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.liver-details .creator-id {
+  font-size: 0.95rem;
+  color: #8c827a;
+  font-family: "Outfit", sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+.liver-details .creator-id a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.liver-details .creator-id a:hover {
+  color: #e0e0e0;
+  text-decoration: underline;
+}
+
+/* TikTokリンクボタン */
+.tiktok-link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #c0c0c0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+  margin-left: auto;
+  text-decoration: none;
+}
+.tiktok-link-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+}
+.tiktok-link-btn:hover {
+  background: rgba(254, 44, 85, 0.15);
+  border-color: rgba(254, 44, 85, 0.6);
+  color: #ff0050;
+  box-shadow: 0 0 14px rgba(254, 44, 85, 0.35);
+  transform: translateY(-2px) scale(1.08);
+}
+.tiktok-link-btn:hover svg {
+  transform: scale(1.15);
+}
+
+/* エラー/データなしメッセージ */
+.no-data-msg {
+  text-align: center;
+  color: #8c827a;
+  padding: 3rem 0;
+  font-size: 1rem;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
+.agency-pagination {
+  margin-top: 4rem;
+  text-align: center;
+}
+.agency-pagination .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.agency-pagination .page-numbers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: #a1a1aa;
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.agency-pagination .page-numbers.current {
+  border-color: #00ffff;
+  color: #00ffff;
+  background: rgba(0, 255, 255, 0.1);
+}
+.agency-pagination .page-numbers:hover:not(.current) {
+  border-color: rgba(0, 255, 255, 0.5);
+  color: #fff;
+}
+
+/* ==============================================================
+   RESPONSIVE DESIGN
+   ============================================================== */
+@media (max-width: 992px) {
+  .ranking-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    margin-top: 3rem;
+  }
+}
+@media (max-width: 768px) {
+  .ranking-column-title {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+  }
+  .ranking-column-title .title-en {
+    font-size: 1.8rem;
+  }
+  .ranking-list-item {
+    padding: 1.2rem 0.5rem;
+    gap: 1rem; /* スマホでは間隔を詰める */
+  }
+  .rank-badge-wrap {
+    width: 36px; /* バッジを小さく */
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  .liver-avatar-wrap {
+    width: 60px; /* アバターを小さく */
+    height: 60px;
+  }
+  .liver-details .creator-name {
+    font-size: 1.2rem; /* フォントサイズ調整 */
+  }
+  .tiktok-link-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .tiktok-link-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+  .ranking-archive-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+  }
+}

@@ -25,7 +25,7 @@
             </div>
             <div class="hero-content inner">
                 <div class="breadcrumbs agency-breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
-                    <?php if (function_exists('bcn_display')) bcn_display(); ?>
+                    <?php if (function_exists('jol_breadcrumbs')) { jol_breadcrumbs(); } ?>
                 </div>
                 
                 <div class="hero-profile-flex">
@@ -99,6 +99,108 @@
                             </li>
                         <?php endif; ?>
                     </ul>
+
+                    <?php
+                    // 過去のランキング（post_type: ranking）から入賞歴を集計
+                    $current_liver_id = get_the_ID();
+                    $ranking_posts = get_posts(array(
+                        'post_type'      => 'ranking',
+                        'post_status'    => 'publish',
+                        'posts_per_page' => -1,
+                        'orderby'        => 'date',
+                        'order'          => 'DESC',
+                    ));
+
+                    $ranking_categories = array(
+                        'event_ranking_livers'         => 'イベントランキング',
+                        'rookie_ranking_livers'        => 'J.O.L 新人王',
+                        'diamond_ranking_livers'       => 'ダイヤモンドランキング',
+                        'delivery_time_ranking_livers' => '配信時間ランキング',
+                    );
+
+                    $award_records = array();
+                    foreach ($ranking_posts as $r_post) {
+                        foreach ($ranking_categories as $meta_key => $cat_label) {
+                            $livers_list = function_exists('get_field')
+                                ? get_field($meta_key, $r_post->ID)
+                                : get_post_meta($r_post->ID, $meta_key, true);
+
+                            if (empty($livers_list) && $meta_key === 'delivery_time_ranking_livers') {
+                                $livers_list = get_post_meta($r_post->ID, 'delivery_time_ranking_liver', true);
+                            }
+                            if (is_string($livers_list)) {
+                                $livers_list = maybe_unserialize($livers_list);
+                            }
+                            if (!is_array($livers_list)) {
+                                continue;
+                            }
+
+                            $rank_pos = 1;
+                            foreach ($livers_list as $item) {
+                                if ($rank_pos > 5) {
+                                    break;
+                                }
+                                $item_id = is_object($item) ? (int) $item->ID : (int) $item;
+                                if ($item_id === (int) $current_liver_id) {
+                                    $award_records[] = array(
+                                        'title'    => get_the_title($r_post->ID),
+                                        'url'      => get_permalink($r_post->ID),
+                                        'date'     => get_the_date('Y.m', $r_post->ID),
+                                        'category' => $cat_label,
+                                        'rank'     => $rank_pos,
+                                    );
+                                    break;
+                                }
+                                $rank_pos++;
+                            }
+                        }
+                    }
+                    ?>
+
+                    <div class="mt-8">
+                        <div class="flex items-center justify-between border-b border-white/15 pb-2 mb-4">
+                            <span class="font-mono text-xs tracking-[0.15em] uppercase text-white/50">RANKING AWARDS</span>
+                            <?php if (!empty($award_records)) : ?>
+                                <span class="font-mono text-xs text-jol-cyan"><?php echo count($award_records); ?>件</span>
+                            <?php endif; ?>
+                        </div>
+
+                        <?php if (!empty($award_records)) : ?>
+                            <ul class="space-y-3 list-none p-0 m-0">
+                                <?php foreach ($award_records as $award) :
+                                    $rank_num = (int) $award['rank'];
+                                    if ($rank_num === 1) {
+                                        $rank_badge_class = 'border-yellow-400/60 bg-yellow-400/15 text-yellow-300';
+                                    } elseif ($rank_num === 2) {
+                                        $rank_badge_class = 'border-slate-300/60 bg-slate-300/15 text-slate-200';
+                                    } elseif ($rank_num === 3) {
+                                        $rank_badge_class = 'border-amber-600/60 bg-amber-600/15 text-amber-400';
+                                    } else {
+                                        $rank_badge_class = 'border-jol-cyan/40 bg-jol-cyan/10 text-jol-cyan';
+                                    }
+                                ?>
+                                    <li>
+                                        <a href="<?php echo esc_url($award['url']); ?>" class="group flex items-center justify-between gap-3 p-3 rounded border border-white/10 bg-white/[0.02] no-underline transition-all duration-200 ease-editorial hover:border-jol-cyan/50 hover:bg-white/[0.05]">
+                                            <div class="min-w-0">
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <span class="font-mono text-[0.7rem] text-white/45"><?php echo esc_html($award['date']); ?></span>
+                                                    <span class="font-mono text-[0.7rem] text-white/70 truncate"><?php echo esc_html($award['category']); ?></span>
+                                                </div>
+                                                <p class="text-sm font-medium text-white group-hover:text-jol-cyan transition-colors duration-200 truncate m-0">
+                                                    <?php echo esc_html($award['title']); ?>
+                                                </p>
+                                            </div>
+                                            <span class="shrink-0 inline-flex items-center justify-center min-w-[44px] px-2 py-1 rounded border font-mono text-xs font-bold <?php echo esc_attr($rank_badge_class); ?>">
+                                                <?php echo esc_html($rank_num); ?>位
+                                            </span>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else : ?>
+                            <p class="text-xs font-mono text-white/40 py-4">まだランキング入賞歴はありません。</p>
+                        <?php endif; ?>
+                    </div>
                 </section>
             </div>
 

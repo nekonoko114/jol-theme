@@ -27,25 +27,6 @@ function jol_check_acf_status()
 }
 add_action('init', 'jol_check_acf_status');
 
-// デバッグ用：カスタム投稿タイプの登録状況を確認
-function jol_debug_cpt_registration()
-{
-  if (current_user_can('manage_options') && isset($_GET['debug_cpt'])) {
-    echo '<pre>';
-    echo "Registered Post Types:\n";
-    print_r(get_post_types(array(), 'objects'));
-    echo "\n\nLiver Post Type:\n";
-    print_r(get_post_type_object('liver'));
-    echo "\n\nInterview Post Type:\n";
-    print_r(get_post_type_object('interview'));
-    echo "\n\nEvent Post Type:\n";
-    print_r(get_post_type_object('event'));
-    echo '</pre>';
-    exit;
-  }
-}
-add_action('init', 'jol_debug_cpt_registration', 99);
-
 // 管理画面の投稿一覧にサムネイルカラムを追加
 
 // ライバー投稿タイプ用

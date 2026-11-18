@@ -4,219 +4,187 @@
     <p class="page-subtitle">EVENT</p>
     <h1 class="page-title">イベント一覧</h1>
     <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
-        <?php if (function_exists('bcn_display')) {
-            bcn_display();
+        <?php if (function_exists('jol_breadcrumbs')) {
+            jol_breadcrumbs();
         } ?>
     </div>
 </div>
 
-<!-- タクソノミーごとに投稿を分けて表示 -->
+<main class="inner pt-12 md:pt-20 pb-24 md:pb-32">
+    <?php
+    $categories = array(
+        array(
+            'slug'         => 'event-news',
+            'en'           => 'EVENT',
+            'name'         => 'イベント',
+            'bar_class'    => 'bg-jol-cyan',
+            'badge_class'  => 'border-jol-cyan/40 bg-jol-cyan/10 text-jol-cyan',
+            'hover_border' => 'hover:border-jol-cyan/60',
+            'hover_text'   => 'group-hover:text-jol-cyan',
+        ),
+        array(
+            'slug'         => 'battle',
+            'en'           => 'BATTLE',
+            'name'         => 'ガチバトル',
+            'bar_class'    => 'bg-jol-red',
+            'badge_class'  => 'border-jol-red/40 bg-jol-red/10 text-red-400',
+            'hover_border' => 'hover:border-jol-red/60',
+            'hover_text'   => 'group-hover:text-red-400',
+        ),
+        array(
+            'slug'         => 'liver-news',
+            'en'           => 'LIVER NEWS',
+            'name'         => 'ライバーニュース',
+            'bar_class'    => 'bg-jol-purple',
+            'badge_class'  => 'border-jol-purple/50 bg-jol-purple/15 text-purple-300',
+            'hover_border' => 'hover:border-jol-purple/60',
+            'hover_text'   => 'group-hover:text-purple-300',
+        ),
+    );
 
-<div class="archiver-event-main">
-    <div class="archiver-event-inner inner">
-        <?php
-        // 各カテゴリーを定義
-        $categories = array(
-            array(
-                'slug' => 'event-news',
-                'name' => 'イベント',
-                'class' => 'category-event'
+    $sections = array();
+    foreach ($categories as $category) {
+        $q = new WP_Query(array(
+            'post_type'      => 'event',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            'tax_query'      => array(
+                array(
+                    'taxonomy' => 'event_category',
+                    'field'    => 'slug',
+                    'terms'    => $category['slug'],
+                ),
             ),
+        ));
+        if ($q->have_posts()) {
+            $sections[] = array('meta' => $category, 'query' => $q);
+        } else {
+            wp_reset_postdata();
+        }
+    }
+
+    // カテゴリー未設定のイベント
+    $uncategorized_q = new WP_Query(array(
+        'post_type'      => 'event',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+        'tax_query'      => array(
             array(
-                'slug' => 'battle',
-                'name' => 'ガチバトル',
-                'class' => 'category-battle'
+                'taxonomy' => 'event_category',
+                'operator' => 'NOT EXISTS',
             ),
-            array(
-                'slug' => 'liver-news',
-                'name' => 'ライバーニュース',
-                'class' => 'category-news'
-            )
+        ),
+    ));
+    if ($uncategorized_q->have_posts()) {
+        $sections[] = array(
+            'meta' => array(
+                'slug'         => 'other',
+                'en'           => 'OTHERS',
+                'name'         => 'その他のイベント',
+                'bar_class'    => 'bg-white/60',
+                'badge_class'  => 'border-white/20 bg-white/5 text-white/80',
+                'hover_border' => 'hover:border-white/40',
+                'hover_text'   => 'group-hover:text-white',
+            ),
+            'query' => $uncategorized_q,
         );
+    } else {
+        wp_reset_postdata();
+    }
 
-        // 各カテゴリーごとにループ
-        foreach ($categories as $category) :
-            // カテゴリーごとのイベント投稿を取得
-            $event_args = array(
-                'post_type' => 'event',
-                'posts_per_page' => -1,
-                'post_status' => 'publish',
-                'orderby' => 'date',
-                'order' => 'DESC',
-                'tax_query' => array(
-                    array(
-                        'taxonomy' => 'event_category',
-                        'field' => 'slug',
-                        'terms' => $category['slug'],
-                    )
-                )
-            );
-            $event_query = new WP_Query($event_args);
+    if (!empty($sections)) :
+    ?>
+        <!-- カテゴリージャンプナビゲーション -->
+        <?php if (count($sections) > 1) : ?>
+            <nav class="flex flex-wrap items-center gap-2 mb-12 md:mb-16 pb-6 border-b border-white/10" aria-label="イベントカテゴリー">
+                <?php foreach ($sections as $sec) : ?>
+                    <a href="#event-cat-<?php echo esc_attr($sec['meta']['slug']); ?>" class="inline-flex items-center gap-2 px-3 py-1.5 rounded border border-white/15 bg-jol-surface text-xs font-mono text-white/80 no-underline transition-all duration-200 ease-editorial hover:border-jol-cyan/60 hover:text-jol-cyan">
+                        <span><?php echo esc_html($sec['meta']['name']); ?></span>
+                        <span class="text-white/40"><?php echo intval($sec['query']->found_posts); ?></span>
+                    </a>
+                <?php endforeach; ?>
+            </nav>
+        <?php endif; ?>
 
-            // 該当する投稿がある場合のみ表示
-            if ($event_query->have_posts()) :
-        ?>
-                <section class="event-category-section <?php echo esc_attr($category['class']); ?>">
-                    <h2 class="event-category-heading">
-                        <span class="category-label <?php echo esc_attr($category['class']); ?>">
-                            <?php echo esc_html($category['name']); ?>
+        <div class="space-y-20 md:space-y-24">
+            <?php foreach ($sections as $sec) :
+                $meta  = $sec['meta'];
+                $query = $sec['query'];
+            ?>
+                <section id="event-cat-<?php echo esc_attr($meta['slug']); ?>" class="scroll-mt-8">
+                    <div class="flex items-end justify-between gap-4 mb-8 pb-4 border-b border-white/10">
+                        <div class="flex items-center gap-3">
+                            <span class="w-1 h-8 rounded-full <?php echo esc_attr($meta['bar_class']); ?>" aria-hidden="true"></span>
+                            <div>
+                                <p class="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-white/45 leading-none mb-1.5"><?php echo esc_html($meta['en']); ?></p>
+                                <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight leading-none m-0"><?php echo esc_html($meta['name']); ?></h2>
+                            </div>
+                        </div>
+                        <span class="inline-block px-2.5 py-1 rounded border font-mono text-xs <?php echo esc_attr($meta['badge_class']); ?>">
+                            <?php echo intval($query->found_posts); ?> ITEMS
                         </span>
-                    </h2>
-                    
-                    <div class="event-category-list">
-                        <?php while ($event_query->have_posts()) : $event_query->the_post(); ?>
-                            <article class="archiver-event-article">
-                                <a href="<?php the_permalink(); ?>" class="event-item">
-                                    <!-- ホバー時の閃光エフェクト用ライン -->
-                                    <span class="event-item-glint"></span>
+                    </div>
 
-                                    <p class="event-date">
-                                        <?php echo get_the_date('Y年'); ?>
-                                        <span><?php echo get_the_date('n月j日'); ?></span>
-                                    </p>
-                                    
-                                    <div class="event-wrapper">
-                                        <h3 class="event-name"><?php the_title(); ?></h3>
-                                        <p class="event-description">
-                                            <?php 
-                                            $excerpt = get_the_excerpt();
-                                            $excerpt = strip_tags($excerpt);
-                                            $excerpt = mb_substr($excerpt, 0, 100);
-                                            if (mb_strlen(get_the_excerpt()) > 100) {
-                                                $excerpt .= '...';
-                                            }
-                                            echo esc_html($excerpt);
-                                            ?>
-                                        </p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <?php while ($query->have_posts()) : $query->the_post();
+                            $raw_excerpt = trim(strip_tags(get_the_excerpt()));
+                            $excerpt     = $raw_excerpt ? mb_strimwidth($raw_excerpt, 0, 100, '...') : '';
+                            $thumb_url   = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'medium_large') : '';
+                        ?>
+                            <article class="group relative rounded-lg overflow-hidden bg-jol-surface/90 border border-white/10 transition-all duration-300 ease-editorial hover:-translate-y-1 <?php echo esc_attr($meta['hover_border']); ?>">
+                                <a href="<?php the_permalink(); ?>" class="flex flex-col sm:flex-row h-full no-underline text-inherit">
+                                    <?php if ($thumb_url) : ?>
+                                        <div class="relative shrink-0 w-full sm:w-[190px] aspect-[16/10] sm:aspect-square overflow-hidden bg-black border-b sm:border-b-0 sm:border-r border-white/10">
+                                            <img src="<?php echo esc_url($thumb_url); ?>"
+                                                alt="<?php echo esc_attr(get_the_title()); ?>"
+                                                class="w-full h-full object-cover transition-transform duration-500 ease-editorial group-hover:scale-105">
+                                        </div>
+                                    <?php else : ?>
+                                        <div class="shrink-0 w-full sm:w-[140px] flex sm:flex-col items-center sm:items-start justify-between sm:justify-center gap-2 p-4 sm:p-5 bg-black/50 border-b sm:border-b-0 sm:border-r border-white/10">
+                                            <span class="font-mono text-xs tracking-[0.12em] text-white/45"><?php echo esc_html(get_the_date('Y')); ?></span>
+                                            <span class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-white/85 leading-none"><?php echo esc_html(get_the_date('m.d')); ?></span>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <div class="flex flex-col flex-1 justify-between p-5 md:p-6 min-w-0">
+                                        <div>
+                                            <div class="flex items-center justify-between gap-2 mb-2">
+                                                <span class="inline-block px-2 py-0.5 text-[0.68rem] font-mono tracking-[0.06em] rounded border <?php echo esc_attr($meta['badge_class']); ?>">
+                                                    <?php echo esc_html($meta['name']); ?>
+                                                </span>
+                                                <time class="font-mono text-xs text-jol-muted" datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date('Y.m.d')); ?></time>
+                                            </div>
+                                            <h3 class="text-base md:text-lg font-bold text-jol-text leading-snug mb-2 transition-colors duration-200 <?php echo esc_attr($meta['hover_text']); ?>">
+                                                <?php the_title(); ?>
+                                            </h3>
+                                            <?php if ($excerpt) : ?>
+                                                <p class="text-xs md:text-sm text-white/60 leading-6 line-clamp-2 m-0"><?php echo esc_html($excerpt); ?></p>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono tracking-[0.08em] uppercase text-white/55 transition-colors duration-200 <?php echo esc_attr($meta['hover_text']); ?>">
+                                            <span>READ MORE</span>
+                                            <span class="transition-transform duration-300 ease-editorial group-hover:translate-x-1">→</span>
+                                        </div>
                                     </div>
-                                    
-                                    <!-- 丸型矢印ボタン -->
-                                    <span class="event-item-arrow">
-                                        <span class="arrow-text">→</span>
-                                    </span>
                                 </a>
                             </article>
                         <?php endwhile; ?>
                     </div>
                 </section>
-        <?php
-            endif;
-            wp_reset_postdata();
-        endforeach;
-
-        // カテゴリーに属さないイベントがある場合の表示
-        $uncategorized_args = array(
-            'post_type' => 'event',
-            'posts_per_page' => -1,
-            'post_status' => 'publish',
-            'orderby' => 'date',
-            'order' => 'DESC',
-            'tax_query' => array(
-                array(
-                    'taxonomy' => 'event_category',
-                    'operator' => 'NOT EXISTS'
-                )
-            )
-        );
-        $uncategorized_query = new WP_Query($uncategorized_args);
-
-        if ($uncategorized_query->have_posts()) :
-        ?>
-            <section class="event-category-section category-uncategorized">
-                <h2 class="event-category-heading">
-                    <span class="category-label">その他のイベント</span>
-                </h2>
-                
-                <div class="event-category-list">
-                    <?php while ($uncategorized_query->have_posts()) : $uncategorized_query->the_post(); ?>
-                        <article class="archiver-event-article">
-                            <a href="<?php the_permalink(); ?>" class="event-item">
-                                <!-- ホバー時の閃光エフェクト用ライン -->
-                                <span class="event-item-glint"></span>
-
-                                <p class="event-date">
-                                    <?php echo get_the_date('Y年'); ?>
-                                    <span><?php echo get_the_date('n月j日'); ?></span>
-                                </p>
-                                
-                                <div class="event-wrapper">
-                                    <h3 class="event-name"><?php the_title(); ?></h3>
-                                    <p class="event-description">
-                                        <?php 
-                                        $excerpt = get_the_excerpt();
-                                        $excerpt = strip_tags($excerpt);
-                                        $excerpt = mb_substr($excerpt, 0, 100);
-                                        if (mb_strlen(get_the_excerpt()) > 100) {
-                                            $excerpt .= '...';
-                                        }
-                                        echo esc_html($excerpt);
-                                        ?>
-                                    </p>
-                                </div>
-                                
-                                <!-- 丸型矢印ボタン -->
-                                <span class="event-item-arrow">
-                                    <span class="arrow-text">→</span>
-                                </span>
-                            </a>
-                        </article>
-                    <?php endwhile; ?>
-                </div>
-            </section>
-        <?php
-        endif;
-        wp_reset_postdata();
-
-        // イベント投稿が1件もない場合
-        $all_events_args = array(
-            'post_type' => 'event',
-            'posts_per_page' => 1,
-            'post_status' => 'publish'
-        );
-        $all_events_query = new WP_Query($all_events_args);
-        
-        if (!$all_events_query->have_posts()) :
-        ?>
-            <div class="no-events">
-                <p>現在、予定されているイベントはありません。</p>
-            </div>
-        <?php
-        endif;
-        wp_reset_postdata();
-        ?>
-    </div>
-</div>
-
-<!-- ページネーション -->
-<div class="liver-slider-container">
-    <div class="liver-slider-wrapper">
-        <div class="">
-            <?php
-            // カスタム投稿タイプ 'liver' の全ライバーを取得
-            $args = array(
-                'post_type' => 'liver',
-                'posts_per_page' => -1, // 全てのライバーを取得
-            );
-            $liver_query = new WP_Query($args);
-            $livers = array();
-
-            if ($liver_query->have_posts()) :
-                while ($liver_query->have_posts()) : $liver_query->the_post();
-                    $livers[] = array(
-                        'name' => get_the_title(),
-                        'channel' => get_field('channel_name'), // ACFフィールド 'channel_name' を使用
-                        'thumbnail' => has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'medium') : COMMON_LIVER_THUMBNAIL_URL,
-                        'permalink' => get_permalink(),
-                    );
-                endwhile;
-                wp_reset_postdata();
-            endif;
-
-
-            ?>
+                <?php wp_reset_postdata(); ?>
+            <?php endforeach; ?>
         </div>
-    </div>
-</div>
+    <?php else : ?>
+        <div class="rounded-lg border border-dashed border-white/15 p-12 text-center text-jol-muted">
+            <p>現在、予定されているイベントはありません。</p>
+        </div>
+    <?php endif; ?>
 </main>
+
 <?php get_template_part('template-parts/content/l-contact'); ?>
 <?php get_footer(); ?>
