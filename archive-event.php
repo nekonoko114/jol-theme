@@ -129,18 +129,21 @@
                         </span>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 <?php echo ($query->found_posts > 1) ? 'lg:grid-cols-2' : ''; ?> gap-6">
                         <?php while ($query->have_posts()) : $query->the_post();
-                            $raw_excerpt = trim(strip_tags(get_the_excerpt()));
-                            $excerpt     = $raw_excerpt ? mb_strimwidth($raw_excerpt, 0, 100, '...') : '';
+                            $raw_content = trim(wp_strip_all_tags(get_the_content()));
+                            $raw_excerpt = $raw_content ?: trim(str_replace('もっと見る', '', wp_strip_all_tags(get_the_excerpt())));
+                            $excerpt     = $raw_excerpt ? mb_strimwidth($raw_excerpt, 0, ($query->found_posts === 1 ? 160 : 100), '...') : '';
                             $thumb_url   = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'medium_large') : '';
+                            $fallback_thumb = get_template_directory_uri() . '/assets/images/explore/explore-events.webp';
                         ?>
                             <article class="group relative rounded-lg overflow-hidden bg-jol-surface/90 border border-white/10 transition-all duration-300 ease-editorial hover:-translate-y-1 <?php echo esc_attr($meta['hover_border']); ?>">
                                 <a href="<?php the_permalink(); ?>" class="flex flex-col sm:flex-row h-full no-underline text-inherit">
                                     <?php if ($thumb_url) : ?>
-                                        <div class="relative shrink-0 w-full sm:w-[190px] aspect-[16/10] sm:aspect-square overflow-hidden bg-black border-b sm:border-b-0 sm:border-r border-white/10">
+                                        <div class="relative shrink-0 w-full <?php echo ($query->found_posts === 1) ? 'sm:w-[240px] md:w-[280px] aspect-video sm:aspect-[16/10]' : 'sm:w-[190px] aspect-[16/10] sm:aspect-square'; ?> overflow-hidden bg-black border-b sm:border-b-0 sm:border-r border-white/10">
                                             <img src="<?php echo esc_url($thumb_url); ?>"
                                                 alt="<?php echo esc_attr(get_the_title()); ?>"
+                                                onerror="this.onerror=null;this.src='<?php echo esc_url($fallback_thumb); ?>';"
                                                 class="w-full h-full object-cover transition-transform duration-500 ease-editorial group-hover:scale-105">
                                         </div>
                                     <?php else : ?>
