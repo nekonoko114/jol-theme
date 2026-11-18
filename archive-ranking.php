@@ -12,11 +12,7 @@
     <main class="inner pt-12 md:pt-20 pb-24 md:pb-32">
         <?php if (have_posts()) : ?>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-8 mb-16">
-                <?php
-                $card_index = 1;
-                while (have_posts()) : the_post();
-                    $index_label = sprintf('%02d', $card_index);
-                ?>
+                <?php while (have_posts()) : the_post(); ?>
                     <article class="group relative rounded-lg overflow-hidden bg-jol-surface/90 border border-white/10 transition-all duration-300 ease-editorial hover:-translate-y-1.5 hover:border-jol-cyan/60 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6),0_0_24px_rgba(0,255,255,0.12)]">
                         <a href="<?php the_permalink(); ?>" class="flex flex-col h-full no-underline text-inherit">
                             <div class="relative aspect-[16/10] overflow-hidden bg-black border-b border-white/10">
@@ -29,8 +25,7 @@
                                             alt="<?php echo esc_attr(get_the_title()); ?>"
                                             class="w-full h-full object-cover brightness-110 transition-all duration-500 ease-editorial group-hover:scale-105 group-hover:brightness-125">
                                         <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent"></div>
-                                        <div class="pointer-events-none absolute inset-x-0 bottom-0 p-4 flex items-end justify-between">
-                                            <span class="font-display text-3xl font-bold tracking-tight text-white/30 group-hover:text-jol-cyan/60 transition-colors duration-300 leading-none"><?php echo esc_html($index_label); ?></span>
+                                        <div class="pointer-events-none absolute inset-x-0 bottom-0 p-4 flex items-end justify-end">
                                             <span class="font-mono text-xs text-white/60"><?php echo get_the_date('Y.m'); ?></span>
                                         </div>
                                     </div>
@@ -55,10 +50,7 @@
                             </div>
                         </a>
                     </article>
-                <?php
-                    $card_index++;
-                endwhile;
-                ?>
+                <?php endwhile; ?>
             </div>
 
             <!-- ページネーション -->

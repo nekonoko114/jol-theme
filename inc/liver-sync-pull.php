@@ -212,38 +212,89 @@ function jol_run_liver_sync() {
 }
 
 /**
- * TikTokのプロフィールURLからアバター画像URLと自己紹介文を抽出する関数
+ * TikTokの公式埋め込みエンドポイントおよびoEmbed APIから
+ * ライバー名・アバター画像URL・自己紹介文を抽出する関数
  */
 function jol_scrape_tiktok_data($url) {
     $result = array(
+        'name'      => '',
         'image_url' => '',
         'bio'       => '',
     );
 
-    $response = wp_remote_get($url, array(
-        'timeout' => 10,
-        'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
-    ));
-
-    if (is_wp_error($response)) {
-        return $result;
+    // URLからユーザーID（@username）を抽出
+    $username = '';
+    if (preg_match('/tiktok\.com\/@([^\/\?&#]+)/i', $url, $u_match)) {
+        $username = $u_match[1];
     }
 
-    $html = wp_remote_retrieve_body($response);
+    // 1. 公式埋め込みエンドポイント（https://www.tiktok.com/embed/@username）から取得
+    if ($username !== '') {
+        $embed_url = 'https://www.tiktok.com/embed/@' . rawurlencode($username);
+        $embed_res = wp_remote_get($embed_url, array(
+            'timeout'    => 15,
+            'user-agent' => 'Mozilla/5.0',
+        ));
 
-    // 1. 画像の抽出
-    if (preg_match('/<meta[^>]*property="og:image"[^>]*content="([^"]+)"/i', $html, $matches) || 
-        preg_match('/<meta[^>]*content="([^"]+)"[^>]*property="og:image"/i', $html, $matches)) {
-        $result['image_url'] = html_entity_decode($matches[1]);
-    } elseif (preg_match('/"avatar(?:Large|Medium|Thumb)":"([^"]+)"/', $html, $matches)) {
-        $result['image_url'] = str_replace(array('\u002F', '\\'), array('/', ''), $matches[1]);
+        if (!is_wp_error($embed_res) && wp_remote_retrieve_response_code($embed_res) === 200) {
+            $embed_html = wp_remote_retrieve_body($embed_res);
+
+            if (preg_match('/"avatarThumbUrl":"([^"]+)"/', $embed_html, $m)) {
+                $decoded = json_decode('"' . $m[1] . '"');
+                if ($decoded) {
+                    $result['image_url'] = $decoded;
+                }
+            }
+            if (preg_match('/"nickname":"([^"]+)"/', $embed_html, $m)) {
+                $decoded = json_decode('"' . $m[1] . '"');
+                if ($decoded !== null) {
+                    $result['name'] = $decoded;
+                }
+            }
+            if (preg_match('/"signature":"([^"]*)"/', $embed_html, $m)) {
+                $decoded = json_decode('"' . $m[1] . '"');
+                if ($decoded !== null) {
+                    $result['bio'] = $decoded;
+                }
+            }
+        }
+
+        // 2. 表示名が未取得の場合は公式oEmbed APIで補完
+        if ($result['name'] === '') {
+            $oembed_url = 'https://www.tiktok.com/oembed?url=' . rawurlencode('https://www.tiktok.com/@' . $username);
+            $oembed_res = wp_remote_get($oembed_url, array('timeout' => 10));
+            if (!is_wp_error($oembed_res) && wp_remote_retrieve_response_code($oembed_res) === 200) {
+                $oembed_json = json_decode(wp_remote_retrieve_body($oembed_res), true);
+                if (!empty($oembed_json['author_name'])) {
+                    $result['name'] = $oembed_json['author_name'];
+                }
+            }
+        }
     }
 
-    // 2. プロフィール文(signature)の抽出
-    if (preg_match('/"signature":"([^"]*)"/', $html, $matches)) {
-        $bio = json_decode('"' . $matches[1] . '"'); // \u3042 等のユニコードエスケープをデコード
-        if ($bio !== null) {
-            $result['bio'] = $bio;
+    // 3. フォールバック：直接URLからの抽出（従来互換）
+    if ($result['image_url'] === '') {
+        $response = wp_remote_get($url, array(
+            'timeout'    => 10,
+            'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+        ));
+
+        if (!is_wp_error($response)) {
+            $html = wp_remote_retrieve_body($response);
+
+            if (preg_match('/<meta[^>]*property="og:image"[^>]*content="([^"]+)"/i', $html, $matches) ||
+                preg_match('/<meta[^>]*content="([^"]+)"[^>]*property="og:image"/i', $html, $matches)) {
+                $result['image_url'] = html_entity_decode($matches[1]);
+            } elseif (preg_match('/"avatar(?:Large|Medium|Thumb)":"([^"]+)"/', $html, $matches)) {
+                $result['image_url'] = str_replace(array('\u002F', '\\'), array('/', ''), $matches[1]);
+            }
+
+            if ($result['bio'] === '' && preg_match('/"signature":"([^"]*)"/', $html, $matches)) {
+                $bio = json_decode('"' . $matches[1] . '"');
+                if ($bio !== null) {
+                    $result['bio'] = $bio;
+                }
+            }
         }
     }
 
