@@ -1,30 +1,131 @@
 <?php get_header(); ?>
 
-<div class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-black z-10 before:content-[''] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.5)_100%)] before:z-[1] before:pointer-events-none">
+<?php
+// トップページ共通で利用する所属ライバー5名を取得（HEROコラージュ＋スライダーで共有）
+$target_accounts = [
+    't.o.p_u_jin_',      // ユージン
+    'l5332541',          // さくら
+    'mizuki2525214',     // 一条美月
+    'chirin5497',        // Chiho
+    'mrm0115'            // まみ
+];
+
+$liver_args = [
+    'post_type'      => 'liver',
+    'post_status'    => 'publish',
+    'posts_per_page' => count($target_accounts),
+    'meta_query'     => [
+        [
+            'key'     => 'creator_account',
+            'value'   => $target_accounts,
+            'compare' => 'IN',
+        ],
+    ],
+    'orderby'        => 'meta_value',
+    'meta_key'       => 'creator_account',
+    'order'          => 'ASC',
+];
+
+$liver_query = new WP_Query($liver_args);
+$featured_livers = [];
+
+if ($liver_query->have_posts()) {
+    $posts = $liver_query->posts;
+    usort($posts, function ($a, $b) use ($target_accounts) {
+        $account_a = get_post_meta($a->ID, 'creator_account', true);
+        $account_b = get_post_meta($b->ID, 'creator_account', true);
+        $pos_a = array_search($account_a, $target_accounts);
+        $pos_b = array_search($account_b, $target_accounts);
+        if ($pos_a === false) $pos_a = PHP_INT_MAX;
+        if ($pos_b === false) $pos_b = PHP_INT_MAX;
+        return $pos_a - $pos_b;
+    });
+    $featured_livers = $posts;
+}
+wp_reset_postdata();
+?>
+
+<div class="relative w-full min-h-[calc(100vh-76px)] flex items-center overflow-hidden bg-black z-10 py-14 md:py-20 before:content-[''] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.55)_100%)] before:z-[1] before:pointer-events-none">
     <div id="particles-js" class="absolute inset-0 w-full h-full z-[1] pointer-events-auto"></div>
-    <div class="fv-content relative z-[2] text-jol-text py-12 px-8 md:py-16 md:px-20 bg-[#0f0f14]/35 border border-white/[0.07] backdrop-blur-[25px] rounded-lg max-w-[840px] w-[92%] md:w-[90%] box-border shadow-[0_30px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)]">
-        <h1 class="fv-title text-[2.1rem] md:text-[3.4rem] font-light mb-5 md:mb-6 tracking-[0.12em] leading-[1.5] bg-gradient-to-br from-jol-cyan via-white to-jol-purple bg-clip-text text-transparent text-center">未来のスターが、<span class="block md:inline font-extrabold [text-shadow:0_0_30px_rgba(138,43,226,0.3)]">ここから生まれる。</span></h1>
-        <p class="text-[0.95rem] md:text-[1.25rem] tracking-[0.12em] leading-[1.9] text-white/80 mb-8 md:mb-12 font-light text-center">J.O.Lの仲間と共に<br>『人生謳歌』しましょう。</p>
-        
-        <!-- CTAボタン -->
-        <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8">
-            <a href="<?php echo esc_url(home_url('/livers')); ?>" class="group relative inline-flex items-center justify-center w-full md:w-auto md:min-w-[230px] px-6 py-4 md:px-9 md:py-4 rounded text-[0.95rem] md:text-[0.98rem] font-semibold tracking-[1.5px] no-underline text-white bg-white/[0.03] box-border overflow-hidden transition-all duration-300 ease-editorial border border-jol-cyan/25 shadow-[0_4px_15px_rgba(0,0,0,0.2),0_0_10px_rgba(0,255,255,0.08)] hover:-translate-y-1 hover:bg-jol-cyan/[0.08] hover:border-jol-cyan hover:shadow-[0_12px_30px_rgba(0,0,0,0.4),0_0_25px_rgba(0,255,255,0.5)] hover:text-white">
-                <span class="pointer-events-none absolute top-0 -left-[150%] w-[60%] h-full bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-[25deg] z-[1] transition-all duration-700 group-hover:left-[200%]"></span>
-                所属ライバーを見る
-                <span class="ml-2.5 text-[1.1rem] transition-transform duration-300 ease-editorial group-hover:translate-x-1">→</span>
-            </a>
-            <a href="./contact" class="group relative inline-flex items-center justify-center w-full md:w-auto md:min-w-[230px] px-6 py-4 md:px-9 md:py-4 rounded text-[0.95rem] md:text-[0.98rem] font-semibold tracking-[1.5px] no-underline text-white bg-white/[0.03] box-border overflow-hidden transition-all duration-300 ease-editorial border border-jol-red/20 shadow-[0_4px_15px_rgba(0,0,0,0.2),0_0_10px_rgba(255,0,0,0.05)] hover:-translate-y-1 hover:bg-jol-red/[0.08] hover:border-jol-red hover:shadow-[0_12px_30px_rgba(0,0,0,0.4),0_0_25px_rgba(255,0,0,0.4)] hover:text-white">
-                <span class="pointer-events-none absolute top-0 -left-[150%] w-[60%] h-full bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-[25deg] z-[1] transition-all duration-700 group-hover:left-[200%]"></span>
-                事務所に応募する
-                <span class="ml-2.5 text-[1.1rem] transition-transform duration-300 ease-editorial group-hover:translate-x-1">→</span>
-            </a>
+
+    <div class="inner relative z-[2] w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            <!-- 左カラム：コピー＆CTA -->
+            <div class="lg:col-span-7 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded border border-jol-cyan/35 bg-jol-cyan/10 mb-6">
+                    <span class="w-1.5 h-1.5 rounded-full bg-jol-cyan shadow-[0_0_8px_#00FFFF]" aria-hidden="true"></span>
+                    <span class="font-mono text-[0.7rem] tracking-[0.16em] uppercase text-jol-cyan">TIKTOK LIVE STREAMING AGENCY</span>
+                </div>
+
+                <h1 class="fv-title text-3xl sm:text-5xl lg:text-[3.4rem] font-light mb-6 tracking-[0.06em] leading-[1.35] text-white">
+                    未来のスターが、<br class="hidden sm:inline">
+                    <span class="font-extrabold bg-gradient-to-r from-jol-cyan via-white to-jol-purple bg-clip-text text-transparent">ここから生まれる。</span>
+                </h1>
+
+                <p class="text-base md:text-lg tracking-[0.06em] leading-8 text-white/75 mb-10 max-w-xl mx-auto lg:mx-0 font-light">
+                    J.O.Lの仲間と共に『人生謳歌』しましょう。<br class="hidden sm:inline">
+                    あなたの個性と挑戦を、プロフェッショナルな体制でサポートします。
+                </p>
+
+                <!-- CTAボタン -->
+                <div class="flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-4">
+                    <a href="<?php echo esc_url(home_url('/livers/')); ?>" class="group relative inline-flex items-center justify-center w-full sm:w-auto sm:min-w-[220px] px-7 py-4 rounded text-[0.95rem] font-semibold tracking-[1.2px] no-underline text-white bg-white/[0.04] box-border overflow-hidden transition-all duration-300 ease-editorial border border-jol-cyan/35 shadow-[0_4px_15px_rgba(0,0,0,0.25),0_0_12px_rgba(0,255,255,0.1)] hover:-translate-y-1 hover:bg-jol-cyan/10 hover:border-jol-cyan hover:shadow-[0_12px_30px_rgba(0,0,0,0.45),0_0_24px_rgba(0,255,255,0.4)] hover:text-white">
+                        <span class="pointer-events-none absolute top-0 -left-[150%] w-[60%] h-full bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-[25deg] z-[1] transition-all duration-700 group-hover:left-[200%]"></span>
+                        <span>所属ライバーを見る</span>
+                        <span class="ml-2.5 text-[1.1rem] transition-transform duration-300 ease-editorial group-hover:translate-x-1">→</span>
+                    </a>
+                    <a href="<?php echo esc_url(home_url('/contact-creatore/')); ?>" class="group relative inline-flex items-center justify-center w-full sm:w-auto sm:min-w-[220px] px-7 py-4 rounded text-[0.95rem] font-semibold tracking-[1.2px] no-underline text-white bg-white/[0.04] box-border overflow-hidden transition-all duration-300 ease-editorial border border-jol-red/30 shadow-[0_4px_15px_rgba(0,0,0,0.25),0_0_12px_rgba(255,0,0,0.08)] hover:-translate-y-1 hover:bg-jol-red/10 hover:border-jol-red hover:shadow-[0_12px_30px_rgba(0,0,0,0.45),0_0_24px_rgba(255,0,0,0.35)] hover:text-white">
+                        <span class="pointer-events-none absolute top-0 -left-[150%] w-[60%] h-full bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-[25deg] z-[1] transition-all duration-700 group-hover:left-[200%]"></span>
+                        <span>事務所に応募する</span>
+                        <span class="ml-2.5 text-[1.1rem] transition-transform duration-300 ease-editorial group-hover:translate-x-1">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 右カラム：所属ライバー 2x2 コラージュ -->
+            <div class="lg:col-span-5">
+                <div class="grid grid-cols-2 gap-4 sm:gap-5 max-w-[440px] mx-auto lg:ml-auto pb-6">
+                    <?php
+                    $hero_livers = array_slice($featured_livers, 0, 4);
+                    if (!empty($hero_livers)) :
+                        foreach ($hero_livers as $idx => $h_post) :
+                            $h_name  = get_the_title($h_post->ID) ?: get_post_meta($h_post->ID, 'creator_name', true);
+                            $h_thumb = has_post_thumbnail($h_post->ID) ? get_the_post_thumbnail_url($h_post->ID, 'medium_large') : COMMON_LIVER_THUMBNAIL_URL;
+                            $h_url   = get_permalink($h_post->ID);
+                            $is_even = ($idx % 2 === 1);
+                            $border_hover = $is_even ? 'hover:border-jol-purple/70' : 'hover:border-jol-cyan/70';
+                    ?>
+                        <a href="<?php echo esc_url($h_url); ?>" class="group relative aspect-square rounded-lg overflow-hidden border border-white/15 bg-jol-surface no-underline transition-all duration-300 ease-editorial hover:-translate-y-1 <?php echo esc_attr($border_hover); ?> <?php echo $is_even ? 'translate-y-4 sm:translate-y-6' : ''; ?>">
+                            <img src="<?php echo esc_url($h_thumb); ?>"
+                                alt="<?php echo esc_attr($h_name); ?>"
+                                class="w-full h-full object-cover transition-transform duration-500 ease-editorial group-hover:scale-105">
+                            <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+                            <div class="absolute inset-x-0 bottom-0 p-3 z-10">
+                                <p class="text-xs sm:text-sm font-bold text-white truncate m-0 group-hover:text-jol-cyan transition-colors duration-200"><?php echo esc_html($h_name); ?></p>
+                            </div>
+                        </a>
+                    <?php
+                        endforeach;
+                    else :
+                        for ($i = 0; $i < 4; $i++) :
+                            $is_even = ($i % 2 === 1);
+                    ?>
+                        <div class="relative aspect-square rounded-lg overflow-hidden border border-white/10 bg-jol-surface <?php echo $is_even ? 'translate-y-4 sm:translate-y-6' : ''; ?>">
+                            <img src="<?php echo esc_url(COMMON_LIVER_THUMBNAIL_URL); ?>" alt="J.O.L LIVER" class="w-full h-full object-cover opacity-60">
+                        </div>
+                    <?php
+                        endfor;
+                    endif;
+                    ?>
+                </div>
+            </div>
         </div>
     </div>
-    
+
     <!-- スクロールインジケーター -->
-    <div class="fv-scroll absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center z-[2] pointer-events-none" aria-hidden="true">
-        <span class="text-[0.72rem] font-semibold text-white/40 tracking-[5px] mb-3 uppercase">SCROLL</span>
-        <span class="fv-scroll-line relative w-[2px] h-[45px] md:h-[60px] bg-white/[0.08] overflow-hidden"></span>
+    <div class="fv-scroll hidden md:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center z-[2] pointer-events-none" aria-hidden="true">
+        <span class="text-[0.7rem] font-semibold text-white/40 tracking-[5px] mb-2 uppercase">SCROLL</span>
+        <span class="fv-scroll-line relative w-[2px] h-[44px] bg-white/[0.08] overflow-hidden"></span>
     </div>
 </div>
 <section class="giver">
@@ -96,47 +197,9 @@
         <div class="liver-swiper relative w-full pb-14">
             <div class="swiper-wrapper items-center">
                 <?php
-                // カスタム投稿タイプ「liver」からライバー情報を取得
-                $target_accounts = [
-                    't.o.p_u_jin_',      // ユージン
-                    'l5332541',          // さくら
-                    'mizuki2525214',     // 一条美月
-                    'chirin5497',        // Chiho
-                    'mrm0115'            // まみ
-                ];
-
-                $liver_args = [
-                    'post_type'      => 'liver',
-                    'post_status'    => 'publish',
-                    'posts_per_page' => count($target_accounts),
-                    'meta_query'     => [
-                        [
-                            'key'     => 'creator_account',
-                            'value'   => $target_accounts,
-                            'compare' => 'IN',
-                        ],
-                    ],
-                    'orderby'        => 'meta_value',
-                    'meta_key'       => 'creator_account',
-                    'order'          => 'ASC',
-                ];
-
-                $liver_query = new WP_Query($liver_args);
-
-                if ($liver_query->have_posts()) :
-                    // $target_accounts の順番通りに投稿を並び替える
-                    $posts = $liver_query->posts;
-                    usort($posts, function($a, $b) use ($target_accounts) {
-                        $account_a = get_post_meta($a->ID, 'creator_account', true);
-                        $account_b = get_post_meta($b->ID, 'creator_account', true);
-                        $pos_a = array_search($account_a, $target_accounts);
-                        $pos_b = array_search($account_b, $target_accounts);
-                        if ($pos_a === false) $pos_a = PHP_INT_MAX;
-                        if ($pos_b === false) $pos_b = PHP_INT_MAX;
-                        return $pos_a - $pos_b;
-                    });
-
-                    foreach ($posts as $post) :
+                // HEROセクションで取得済みのライバー5名（$featured_livers）を再利用
+                if (!empty($featured_livers)) :
+                    foreach ($featured_livers as $post) :
                         setup_postdata($GLOBALS['post'] = $post);
                         $creator_name    = get_post_meta(get_the_ID(), 'creator_name', true);
                         $creator_account = get_post_meta(get_the_ID(), 'creator_account', true);

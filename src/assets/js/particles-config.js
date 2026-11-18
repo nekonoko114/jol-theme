@@ -272,18 +272,16 @@ function applySpiralLayout() {
     ctx.restore();
   }
 
-  // 緩やかな回転アニメーション（パーティクル回転＋グロー/フレア描画）
-  let rotation = 0;
-  const rotationSpeed = 0.000005; // 回転速度（調整可）
+  // 一定速度での緩やかな回転アニメーション（パーティクル回転＋グロー/フレア描画）
+  const rotationStepAngle = 0.0008; // 1フレームあたりの固定回転角（加速しない定速）
 
   function rotateStep() {
-    rotation += rotationSpeed;
-    // 各パーティクルを回転させる
+    // 各パーティクルを一定角度ずつ回転させる
     particles.forEach((p) => {
       const dx = p.x - cx;
       const dy = p.y - cy;
       const r = Math.sqrt(dx * dx + dy * dy);
-      const theta = Math.atan2(dy, dx) + rotation;
+      const theta = Math.atan2(dy, dx) + rotationStepAngle;
       p.x = cx + Math.cos(theta) * r;
       p.y = cy + Math.sin(theta) * r;
     });
