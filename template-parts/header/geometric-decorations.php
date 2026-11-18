@@ -1,20 +1,14 @@
 <!-- 背景幾何学模様SVGデコレーション -->
 <div class="bg-geometric-decorations" aria-hidden="true">
+    <!-- サイト全体背景画像（不透明度20%） -->
+    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/bg/support-bg.webp'); ?>"
+         alt=""
+         decoding="async"
+         class="fixed inset-0 w-full h-full object-cover object-center opacity-20">
+
     <!-- SVG 1: ドットマトリクス（グリッド：固定） -->
     <div class="geometric-shape geo-grid"></div>
     
-    <!-- SVG 2: テックサークル（右上：固定） -->
-    <svg class="geometric-shape geo-ring" viewBox="0 0 100 100" fill="none" stroke="currentColor">
-        <circle cx="50" cy="50" r="45" stroke-width="0.3" stroke-dasharray="2 2" />
-        <circle cx="50" cy="50" r="35" stroke-width="0.8" />
-        <circle cx="50" cy="50" r="20" stroke-width="0.3" stroke-dasharray="1 1" />
-        <line x1="50" y1="5" x2="50" y2="95" stroke-width="0.2" stroke-dasharray="4 4" />
-        <line x1="5" y1="50" x2="95" y2="50" stroke-width="0.2" stroke-dasharray="4 4" />
-    </svg>
-    <svg class="geometric-shape geo-ring-sub" viewBox="0 0 100 100" fill="none" stroke="currentColor">
-        <circle cx="50" cy="50" r="40" stroke-width="0.4" />
-        <circle cx="50" cy="50" r="30" stroke-width="0.2" stroke-dasharray="2 1" />
-    </svg>
     
     <!-- SVG 3: テックヘキサゴン（左上：スクロール） -->
     <svg class="geometric-shape geo-hexagon" viewBox="0 0 100 100" fill="none" stroke="currentColor">
